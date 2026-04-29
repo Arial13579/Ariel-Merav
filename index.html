@@ -673,43 +673,66 @@
     </div>
 </section>
 
-    <section id="future" class="py-20 bg-black relative">
-    <div class="container mx-auto px-6">
-        <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 reveal gradient-text">העתיד שלנו</h2>
-        
-        <!-- שימוש ב-items-stretch מבטיח שכל הכרטיסים יהיו באותו גובה -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+   
+      <section id="future" class="py-32 px-8 max-w-6xl mx-auto">
+    <div class="text-center mb-20 reveal">
+        <h2 class="text-5xl font-black text-white mb-4">העתיד שלנו</h2>
+        <div class="h-1 w-24 bg-[#3d0a0a] mx-auto rounded-full"></div>
+        <p class="mt-6 text-zinc-500 italic">החלומות שנגשים יחד...</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="future-card reveal group" style="transition-delay: 0.1s">
+            <img src="C:/Users/OSUser/Desktop/proposal/הצעת-נישואין-בוהו_015.jpg"
+" 
+                 alt="טבעת נישואין" 
+                 class="future-card-img grayscale hover:grayscale-0">
             
-            <!-- כרטיס 1: הצעת נישואין -->
-            <div class="future-card bg-gray-900/50 p-8 rounded-2xl border border-red-900/30 flex flex-col h-full reveal">
-                <div class="mb-6 overflow-hidden rounded-xl h-48">
-                    <img src="הצעת-נישואין-בוהו_015.jpg" alt="הצעת נישואין" class="w-full h-full object-cover">
-                </div>
-                <h3 class="text-2xl font-bold mb-4 text-white">הצעת הנישואין</h3>
-                <p class="text-gray-400 mb-6 flex-grow">הרגע שבו נבטיח אחד לשנייה את הנצח בצורה רשמית. רגע שיהיה רק שלנו, מושלם ומרגש.</p>
-                <button onclick="openEmptyGallery('הצעת הנישואין')" class="mt-auto w-full py-3 bg-red-600/20 hover:bg-red-600 transition-all rounded-lg text-white border border-red-600">צפייה בגלרייה</button>
-            </div>
+            <h3 class="text-2xl font-bold mb-4">הצעת הנישואין</h3>
+            <p class="text-zinc-400 font-light text-sm leading-relaxed mb-8">
+                הרגע שבו נבטיח אחד לשנייה את הנצח בצורה רשמית. רגע שיהיה רק שלנו, מושלם ומרגש.
+            </p>
+            <button onclick="openEmptyGallery('הצעת הנישואין')" class="view-btn">
+                <span>צפייה בגלרייה</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+            </button>
+        </div>
 
-            <!-- כרטיס 2: החתונה -->
-            <div class="future-card bg-gray-900/50 p-8 rounded-2xl border border-red-900/30 flex flex-col h-full reveal" style="transition-delay: 200ms;">
-                <div class="mb-6 overflow-hidden rounded-xl h-48">
-                    <img src="ariel.jpg" alt="החתונה" class="w-full h-full object-cover">
-                </div>
-                <h3 class="text-2xl font-bold mb-4 text-white">החתונה</h3>
-                <p class="text-gray-400 mb-6 flex-grow">היום שבו נחגוג את האהבה שלנו עם כל האנשים שיקרים לנו. תחילתו של הבית המשותף שלנו.</p>
-                <button onclick="openEmptyGallery('החתונה')" class="mt-auto w-full py-3 bg-red-600/20 hover:bg-red-600 transition-all rounded-lg text-white border border-red-600">צפייה בגלרייה</button>
-            </div>
+        <div class="future-card reveal group" style="transition-delay: 0.2s">
+            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800" 
+                 alt="חופה" 
+                 class="future-card-img grayscale hover:grayscale-0">
+            
+            <h3 class="text-2xl font-bold mb-4">החתונה</h3>
+            <p class="text-zinc-400 font-light text-sm leading-relaxed mb-8">
+                היום שבו נחגוג את האהבה שלנו עם כל האנשים שיקרים לנו. תחילתו של הבית המשותף שלנו.
+            </p>
+            <button onclick="openEmptyGallery('החתונה')" class="view-btn">
+                <span>צפייה בגלרייה</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+            </button>
+        </div>
 
-            <!-- כרטיס 3: המשפחה -->
-            <div class="future-card bg-gray-900/50 p-8 rounded-2xl border border-red-900/30 flex flex-col h-full reveal" style="transition-delay: 400ms;">
-                <div class="mb-6 overflow-hidden rounded-xl h-48">
-                    <img src="NEW-FAMILY.jpg" alt="המשפחה" class="w-full h-full object-cover">
-                </div>
-                <h3 class="text-2xl font-bold mb-4 text-white">המשפחה</h3>
-                <p class="text-gray-400 mb-6 flex-grow">הילדים שלנו, שיקבלו את הטוב משנינו. הדור הבא של האהבה הזאת, בבית מלא בשמחה וצחוק.</p>
-                <button onclick="openEmptyGallery('המשפחה')" class="mt-auto w-full py-3 bg-red-600/20 hover:bg-red-600 transition-all rounded-lg text-white border border-red-600">צפייה בגלרייה</button>
-            </div>
-
+        <div class="future-card reveal group" style="transition-delay: 0.3s">
+            <img src="C:/Users/OSUser/Desktop/proposal/NEW-FAMILY.jpg"
+ 
+                 alt="משפחה" 
+                 class="future-card-img grayscale hover:grayscale-0">
+            
+            <h3 class="text-2xl font-bold mb-4">המשפחה</h3>
+            <p class="text-zinc-400 font-light text-sm leading-relaxed mb-8">
+                הילדים שלנו, שיקבלו את הטוב משנינו. הדור הבא של האהבה הזאת, בבית מלא בשמחה וצחוק.
+            </p>
+            <button onclick="openEmptyGallery('המשפחה')" class="view-btn">
+                <span>צפייה בגלרייה</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+            </button>
         </div>
     </div>
 </section>
