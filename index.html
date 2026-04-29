@@ -509,7 +509,7 @@
             <div id="expanded" class="hidden w-full flex items-center justify-between px-6">
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 bg-zinc-900 rounded-lg overflow-hidden border border-white/10">
-                        <img src="https://github.com/Arial13579/Ariel-Merav/blob/main/Thoughts of Yossi Shitrit.PNG" class="w-full h-full object-cover">
+                      <img src="Thoughts of Yossi Shitrit.PNG" class="w-full h-full object-cover">
                     </div>
                     <div class="text-right">
                         <div class="text-[13px] font-bold">העתיד שלנו</div>
@@ -521,7 +521,7 @@
         </div>
     </div>
 
-    <audio id="bg-music" loop src="https://github.com/Arial13579/Ariel-Merav/blob/main/Thoughts of Yossi Shitrit_song.mp3"></audio>
+    <audio id="bg-music" loop src="Thoughts of Yossi Shitrit_song.mp3"></audio>
 
     
 <!-- HTML לתפריט - להדביק בתוך ה-<body> -->
@@ -1404,30 +1404,34 @@ const defaultGalleryHTML = `
             RedVortexModule.start();
         });
     }
-// פונקציה שמוודאת שכל התמונות נטענות מ-GitHub במידה והנתיב המקומי נכשל
 document.addEventListener("DOMContentLoaded", function() {
     const username = "Arial13579";
     const repo = "Ariel-Merav";
     const baseUrl = `https://raw.githubusercontent.com/${username}/${repo}/main/`;
 
-    // מעבר על כל התמונות באתר
-    document.querySelectorAll("img").forEach(img => {
-        const currentSrc = img.getAttribute("src");
-
-        // אם ה-src ריק או מקומי (כמו C:/), נחליף אותו בנתיב ה-GitHub
-        if (currentSrc && !currentSrc.startsWith("http")) {
-            img.src = baseUrl + currentSrc;
-        }
-
-        // טיפול בשגיאת טעינה (למשל אם הקובץ ב-GitHub הוא .JPG ולא .jpg)
-        img.onerror = function() {
-            if (this.src.toLowerCase().endsWith(".jpg")) {
-                this.src = this.src.replace(".jpg", ".JPG");
-            } else if (this.src.toLowerCase().endsWith(".png")) {
-                this.src = this.src.replace(".png", ".PNG");
+    // פונקציה לתיקון נתיבים - מטפלת גם בתמונות וגם באודיו
+    function fixPaths(selector, attribute) {
+        document.querySelectorAll(selector).forEach(el => {
+            let src = el.getAttribute(attribute);
+            
+            // אם הכתובת מקומית או רק שם קובץ
+            if (src && !src.startsWith("http") && !src.startsWith("data:")) {
+                // טיפול ברווחים בשם הקובץ (הופך רווח ל-%20)
+                const safeSrc = encodeURI(src);
+                el.setAttribute(attribute, baseUrl + safeSrc);
             }
-        };
-    });
+
+            // טיפול בשגיאות טעינה (אותיות גדולות/קטנות)
+            el.onerror = function() {
+                if (this.src && this.src.includes(".jpg")) {
+                    this.src = this.src.replace(".jpg", ".JPG");
+                }
+            };
+        });
+    }
+
+    fixPaths("img", "src");    // מתקן את כל התמונות (כולל במקטע העתיד)
+    fixPaths("audio", "src");  // מתקן את המוזיקה של הנגן
 });
     </script>
 </body>
