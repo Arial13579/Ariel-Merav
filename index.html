@@ -591,7 +591,8 @@
                      class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-in-out cursor-pointer">
             </div>
             <div class="story-img-stack story-img-1" data-tilt>
-             <img src="https://raw.githubusercontent.com/Arial13579/Ariel-Merav/main/11.jpg" alt="Ariel and Merav">
+            <!-- ה-JS למעלה כבר ידע להוסיף את הקישור של GitHub לפני השם -->
+            <img src="11.jpg" alt="Ariel and Merav">
  
                      class="w-full h-full object-cover shadow-2xl grayscale hover:grayscale-0 transition-all duration-700 ease-in-out cursor-pointer">
             </div>
@@ -1403,8 +1404,31 @@ const defaultGalleryHTML = `
             RedVortexModule.start();
         });
     }
-       // --- הגדרות נכסים (Assets) מ-GitHub ---
+// פונקציה שמוודאת שכל התמונות נטענות מ-GitHub במידה והנתיב המקומי נכשל
+document.addEventListener("DOMContentLoaded", function() {
+    const username = "Arial13579";
+    const repo = "Ariel-Merav";
+    const baseUrl = `https://raw.githubusercontent.com/${username}/${repo}/main/`;
 
+    // מעבר על כל התמונות באתר
+    document.querySelectorAll("img").forEach(img => {
+        const currentSrc = img.getAttribute("src");
+
+        // אם ה-src ריק או מקומי (כמו C:/), נחליף אותו בנתיב ה-GitHub
+        if (currentSrc && !currentSrc.startsWith("http")) {
+            img.src = baseUrl + currentSrc;
+        }
+
+        // טיפול בשגיאת טעינה (למשל אם הקובץ ב-GitHub הוא .JPG ולא .jpg)
+        img.onerror = function() {
+            if (this.src.toLowerCase().endsWith(".jpg")) {
+                this.src = this.src.replace(".jpg", ".JPG");
+            } else if (this.src.toLowerCase().endsWith(".png")) {
+                this.src = this.src.replace(".png", ".PNG");
+            }
+        };
+    });
+});
     </script>
 </body>
 </html>
