@@ -509,8 +509,7 @@
             <div id="expanded" class="hidden w-full flex items-center justify-between px-6">
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 bg-zinc-900 rounded-lg overflow-hidden border border-white/10">
-                     <img src="Thoughts of Yossi Shitrit.PNG">
-                    </div>
+<img src="Thoughts of Yossi Shitrit.PNG" alt="Yossi">                    </div>
                     <div class="text-right">
                         <div class="text-[13px] font-bold">העתיד שלנו</div>
                         <div id="music-status-text" class="text-[10px] opacity-40 text-white/50">מתחיל עכשיו</div>
@@ -521,8 +520,7 @@
         </div>
     </div>
 
-<audio src="Thoughts of Yossi Shitrit_song.mp3"></audio>
-    
+<audio id="bg-music" loop src="Thoughts of Yossi Shitrit_song.mp3"></audio>    
 <!-- HTML לתפריט - להדביק בתוך ה-<body> -->
 <div class="ios-dock-wrapper">
     <div class="ios-dock">
@@ -1388,7 +1386,8 @@ const defaultGalleryHTML = `
 
         return { start: init };
     })();
-
+//pic
+       
 document.addEventListener("DOMContentLoaded", function() {
     const username = "Arial13579";
     const repo = "Ariel-Merav";
@@ -1397,32 +1396,23 @@ document.addEventListener("DOMContentLoaded", function() {
     function fixPaths(selector, attribute) {
         document.querySelectorAll(selector).forEach(el => {
             let src = el.getAttribute(attribute);
-            
-            // אם הנתיב הוא שם קובץ בלבד או נתיב מקומי (מכיל סלאשים של Windows או פשוט ללא http)
-            if (src && !src.startsWith("http") && !src.startsWith("data:")) {
-                // ניקוי נתיבים מקומיים אם נשארו (מסיר את C:\Users... אם קיים בטעות)
-                const fileName = src.split(/[\\/]/).pop(); 
-                // קידוד השם כדי לטפל ברווחים ובעברית (כמו "הצעת-נישואין")
-                const safeSrc = encodeURI(fileName);
+            if (src && !src.startsWith("http")) {
+                // המרת רווחים ועברית לפורמט URL תקין
+                const safeSrc = encodeURI(src); 
                 el.setAttribute(attribute, baseUrl + safeSrc);
             }
-
-            // מנגנון תיקון שגיאות חכם
+            
+            // ניסיון תיקון אם הקובץ לא נמצא (שינוי סיומת לגדולה)
             el.onerror = function() {
-                // אם תמונה לא נטענה, ננסה להחליף בין סיומת קטנה לגדולה (jpg <-> JPG)
-                if (this.src.toLowerCase().endsWith(".jpg")) {
-                    this.src = this.src.includes(".jpg") ? this.src.replace(".jpg", ".JPG") : this.src.replace(".JPG", ".jpg");
-                } 
-                // טיפול בנכס של יוסי שטרית שמסתיים ב-PNG גדול
-                else if (this.src.toLowerCase().endsWith(".png")) {
+                if (this.src.toLowerCase().endsWith(".png")) {
                     this.src = this.src.includes(".png") ? this.src.replace(".png", ".PNG") : this.src.replace(".PNG", ".png");
                 }
             };
         });
     }
 
-    fixPaths("img", "src");    // מעבד את כל התמונות שלך
-    fixPaths("audio", "src");  // מעבד את קובץ ה-mp3 של יוסי שטרית
+    fixPaths("img", "src");
+    fixPaths("audio", "src");
 });
     </script>
 </body>
