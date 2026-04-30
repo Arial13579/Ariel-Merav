@@ -583,8 +583,7 @@
                      class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-in-out cursor-pointer">
             </div>
             <div class="story-img-stack story-img-1" data-tilt>
-<img src="https://github.com/Arial13579/Ariel-Merav/blob/main/11.jpg?raw=true" class="w-full h-full object-cover"   class="w-full h-full object-cover shadow-2xl grayscale hover:grayscale-0 transition-all duration-700 ease-in-out cursor-pointer">
-            </div>
+<img src="https://github.com/Arial13579/Ariel-Merav/blob/main/11.jpg?raw=true" class="w-full h-full object-cover shadow-2xl grayscale hover:grayscale-0 transition-all duration-700 ease-in-out cursor-pointer">            </div>
         </div>
     </div>
 </section>
@@ -644,8 +643,7 @@
         
         <div class="birthday-card-3d reveal group" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.3">
             <div class="photo-box">
-                <img src="C:/Users/OSUser/Desktop/proposal/ariel.jpg"  alt="Ariel" class="grayscale group-hover:grayscale-0 transition-all duration-700">
-                <div class="photo-overlay"></div>
+<img src="https://github.com/Arial13579/Ariel-Merav/blob/main/ariel.jpg?raw=true" alt="Ariel" class="grayscale group-hover:grayscale-0 transition-all duration-700">                <div class="photo-overlay"></div>
             </div>
             <div class="info-area">
                 <span class="name-tag">ARIEL</span>
@@ -655,8 +653,7 @@
 
         <div class="birthday-card-3d reveal group" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.3" style="transition-delay: 0.2s">
             <div class="photo-box">
-                <img src="C:/Users/OSUser/Desktop/proposal/marev.jpg"  alt="Meirav" class="grayscale group-hover:grayscale-0 transition-all duration-700">
-                <div class="photo-overlay"></div>
+<img src="https://github.com/Arial13579/Ariel-Merav/blob/main/marev.jpg?raw=true" alt="Meirav" class="grayscale group-hover:grayscale-0 transition-all duration-700">                <div class="photo-overlay"></div>
             </div>
             <div class="info-area">
                 <span class="name-tag">MEIRAV</span>
@@ -676,8 +673,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div class="future-card reveal group" style="transition-delay: 0.1s">
-            <img src="C:/Users/OSUser/Desktop/proposal/הצעת-נישואין-בוהו_015.jpg"
-" 
+<img src="https://github.com/Arial13579/Ariel-Merav/blob/main/%D7%94%D7%A6%D7%A2%D7%AA-%D7%A0%D7%99%D7%A9%D7%95%D7%90%D7%99%D7%9F-%D7%91%D7%95%D7%94%D7%95_015.jpg?raw=true" class="future-card-img grayscale hover:grayscale-0"
                  alt="טבעת נישואין" 
                  class="future-card-img grayscale hover:grayscale-0">
             
@@ -711,8 +707,7 @@
         </div>
 
         <div class="future-card reveal group" style="transition-delay: 0.3s">
-            <img src="C:/Users/OSUser/Desktop/proposal/NEW-FAMILY.jpg"
- 
+<img src="https://github.com/Arial13579/Ariel-Merav/blob/main/NEW-FAMILY.jpg?raw=true" class="future-card-img grayscale hover:grayscale-0" 
                  alt="משפחה" 
                  class="future-card-img grayscale hover:grayscale-0">
             
@@ -1029,12 +1024,18 @@ function updateMusicUI() {
             </div>
         `;
 
-        function openMedia() { 
-            document.getElementById('gallery-title').innerText = "זיכרונות";
-            document.getElementById('gallery-subtitle').innerText = "התמונות והסרטונים הכי יפים שלנו";
-            document.getElementById('gallery-body').innerHTML = defaultGalleryHTML;
-            _showModal();
-        }
+      function openMedia() {
+    const body = document.getElementById('gallery-body');
+    body.innerHTML = `
+        <div class="bento-grid">
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/ariel.jpg?raw=true"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/marev.jpg?raw=true"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/11.jpg?raw=true"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/P1.jpg?raw=true"></div>
+        </div>
+    `;
+    _showModal();
+}
 
         function openEmptyGallery(title) {
             document.getElementById('gallery-title').innerText = title;
