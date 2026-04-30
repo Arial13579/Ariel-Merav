@@ -482,18 +482,18 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8); /* רקע כהה */
-    backdrop-filter: blur(15px); /* הטשטוש המבוקש */
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(15px); /* הטשטוש שביקשת */
     -webkit-backdrop-filter: blur(15px);
-    z-index: 9999;
+    z-index: 10000;
     display: none; /* מוסתר בהתחלה */
-    overflow-y: auto; /* מאפשר גלילה בתוך הגלריה */
+    overflow-y: auto;
     padding: 20px;
 }
 
-/* כפתור האיקס הסוגר */
+/* כפתור האיקס */
 .close-modal-btn {
     position: fixed;
     top: 20px;
@@ -506,44 +506,41 @@
     border: none;
     font-size: 24px;
     cursor: pointer;
-    z-index: 10000;
+    z-index: 10001;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 
-/* עיצוב הגריד (Bento) בתוך המודל */
+/* עיצוב הגלריה */
 .bento-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     grid-auto-rows: 250px;
     gap: 15px;
     max-width: 1200px;
-    margin: 60px auto; /* רווח מלמעלה בשביל האיקס */
+    margin: 60px auto;
 }
 
 .gallery-card {
     border-radius: 15px;
     overflow: hidden;
+    background: #111;
 }
 
 .gallery-card img, .gallery-card video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
 }
 
-/* הגדרות הגדלים שביקשת */
 .card-large { grid-column: span 2; grid-row: span 2; }
 .card-tall { grid-row: span 2; }
 .card-wide { grid-column: span 2; }
 
 @media (max-width: 768px) {
     .card-large, .card-wide { grid-column: span 1; }
-    .bento-grid { grid-auto-rows: 200px; }
 }
 </style>
  
@@ -638,10 +635,10 @@
                 כל יום איתך הוא פרק חדש בספר הכי יפה שנכתב. מהרגע הראשון ידעתי שיש כאן משהו אחר, עמוק יותר, אמיתי. 
                 אנחנו יוצרים עולם שכולו מורכב מרגעים קטנים של אושר, צחוק והבנה עמוקה.
             </p>
-      <div id="media-modal" class="modal-overlay">
-    <button onclick="closeMedia()" class="close-modal-btn">✕</button>
-    <div id="dynamic-content"></div>
-</div>
+    <button onclick="openMedia()" class="mt-4 px-8 py-4 bg-white/5 border border-white/10 rounded-full hover:bg-[#3d0a0a] transition-all flex items-center gap-3">
+    <span class="opacity-70 font-bold">הצצה לזיכרונות</span>
+    <span class="opacity-40">🎞️</span>
+</button>
 
         </div>
 
@@ -1022,6 +1019,7 @@ function updateMusicUI() {
                 icon.style.filter = "none";
             }
         }
+// התוכן המעודכן עם כל הסרטונים והתמונות
 const defaultGalleryHTML = `
     <div class="bento-grid">
         <!-- סרטון פתיחה -->
@@ -1069,81 +1067,78 @@ const defaultGalleryHTML = `
         <!-- סרטון שמיני -->
         <div class="gallery-card card-large"><video muted loop autoplay playsinline><source src="https://github.com/Arial13579/Ariel-Merav/raw/main/VIDEO-2026-04-09-13-09-29.mp4" type="video/mp4"></video></div>
 
-        <!-- המשך שאר התמונות... -->
-        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962680_y.jpg"></div>
-        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962681_y.jpg"></div>
-        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962682_y.jpg"></div>
-        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962683_y.jpg"></div>
-        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962684_y.jpg"></div>
-        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962686_y.jpg"></div>
-        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962688_y.jpg"></div>
-        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962689_y.jpg"></div>
-        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962690_y.jpg"></div>
-        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962691_y.jpg"></div>
-        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962692_y.jpg"></div>
-        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962693_y.jpg"></div>
-        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962694_y.jpg"></div>
-        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962696_y.jpg"></div>
-        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962697_y.jpg"></div>
-        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962698_y.jpg"></div>
-        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962699_y.jpg"></div>
-        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962700_y.jpg"></div>
-        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962701_y.jpg"></div>
-        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962702_y.jpg"></div>
-        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962703_y.jpg"></div>
-        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962704_y.jpg"></div>
-        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962705_y.jpg"></div>
-        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962706_y.jpg"></div>
-        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962707_y.jpg"></div>
-        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962709_y.jpg"></div>
-        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962710_y.jpg"></div>
-        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962711_y.jpg"></div>
-        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962712_y.jpg"></div>
-        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962713_y.jpg"></div>
-        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962714_y.jpg"></div>
-        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962715_y.jpg"></div>
-        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962716_y.jpg"></div>
-        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962717_y.jpg"></div>
-        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962718_y.jpg"></div>
-        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962720_y.jpg"></div>
-        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962721_y.jpg"></div>
-        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962722_y.jpg"></div>
-        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962723_y.jpg"></div>
-        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962724_y.jpg"></div>
+        <!-- המשך שאר התמונות -->
+        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962680_y.jpg"></div>
+        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962681_y.jpg"></div>
+        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962682_y.jpg"></div>
+        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962683_y.jpg"></div>
+        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962684_y.jpg"></div>
+        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962686_y.jpg"></div>
+        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962688_y.jpg"></div>
+        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962689_y.jpg"></div>
+        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962690_y.jpg"></div>
+        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962691_y.jpg"></div>
+        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962692_y.jpg"></div>
+        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962693_y.jpg"></div>
+        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962694_y.jpg"></div>
+        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962696_y.jpg"></div>
+        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962697_y.jpg"></div>
+        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962698_y.jpg"></div>
+        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962699_y.jpg"></div>
+        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962700_y.jpg"></div>
+        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962701_y.jpg"></div>
+        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962702_y.jpg"></div>
+        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962703_y.jpg"></div>
+        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962704_y.jpg"></div>
+        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962705_y.jpg"></div>
+        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962706_y.jpg"></div>
+        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962707_y.jpg"></div>
+        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962709_y.jpg"></div>
+        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962710_y.jpg"></div>
+        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962711_y.jpg"></div>
+        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962712_y.jpg"></div>
+        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962713_y.jpg"></div>
+        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962714_y.jpg"></div>
+        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962715_y.jpg"></div>
+        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962716_y.jpg"></div>
+        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962717_y.jpg"></div>
+        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962718_y.jpg"></div>
+        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962720_y.jpg"></div>
+        <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962721_y.jpg"></div>
+        <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962722_y.jpg"></div>
+        <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962723_y.jpg"></div>
+        <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5807833333559962724_y.jpg"></div>
         <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5990337496899849542_y.jpg"></div>
         <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5990337496899849544_y.jpg"></div>
     </div>
-`;	
-       function openMedia() {
+`;
+
+function openMedia() {
     const modal = document.getElementById('media-modal');
     const content = document.getElementById('dynamic-content');
     
-    // הכנסת התוכן
+    // הזרקת התוכן המלא
     content.innerHTML = defaultGalleryHTML;
     
-    // הצגת החלון
+    // הצגת המודל
     modal.style.display = 'block';
     
-    // מניעת גלילת האתר ברקע
+    // חסימת גלילה באתר מאחורה
     document.body.style.overflow = 'hidden';
 }
 
 function closeMedia() {
     const modal = document.getElementById('media-modal');
+    
+    // הסתרת המודל
     modal.style.display = 'none';
     
     // החזרת הגלילה לאתר
     document.body.style.overflow = 'auto';
     
-    // ניקוי התוכן כדי לכבות סרטונים
+    // איפוס התוכן כדי לעצור את הסרטונים שרצים ברקע
     document.getElementById('dynamic-content').innerHTML = '';
 }
-
-// אופציונלי: סגירה עם כפתור ESC במקלדת
-document.addEventListener('keydown', (e) => {
-    if (e.key === "Escape") closeMedia();
-});
-
        
         // --- לוגיקת השאלון (Quiz) ---
         const quizData = [
