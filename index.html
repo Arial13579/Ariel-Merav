@@ -542,8 +542,13 @@
 @media (max-width: 768px) {
     .card-large, .card-wide { grid-column: span 1; }
 }
-</style>
- 
+/* הגדרות גדלים מיוחדים לגריד */
+    .card-large { grid-column: span 2; grid-row: span 2; }
+    .card-tall { grid-row: span 2; }
+    .card-wide { grid-column: span 2; }
+    @media (max-width: 768px) {
+        .card-large, .card-wide { grid-column: span 1; }
+    } 
     </style>
 </head>
 <body>
@@ -635,10 +640,17 @@
                 כל יום איתך הוא פרק חדש בספר הכי יפה שנכתב. מהרגע הראשון ידעתי שיש כאן משהו אחר, עמוק יותר, אמיתי. 
                 אנחנו יוצרים עולם שכולו מורכב מרגעים קטנים של אושר, צחוק והבנה עמוקה.
             </p>
-    <button onclick="openMedia()" class="mt-4 px-8 py-4 bg-white/5 border border-white/10 rounded-full hover:bg-[#3d0a0a] transition-all flex items-center gap-3">
+   <!-- הכפתור עצמו -->
+<button onclick="openMedia()" class="mt-4 px-8 py-4 bg-white/5 border border-white/10 rounded-full hover:bg-[#3d0a0a] transition-all flex items-center gap-3">
     <span class="opacity-70 font-bold">הצצה לזיכרונות</span>
     <span class="opacity-40">🎞️</span>
 </button>
+
+<!-- המבנה של החלון הקופץ (חייב להיות באותו דף) -->
+<div id="media-modal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 10000; display: none; overflow-y: auto; padding: 20px;">
+    <button onclick="closeMedia()" style="position: fixed; top: 20px; right: 20px; background: white; color: black; width: 45px; height: 45px; border-radius: 50%; border: none; font-size: 24px; cursor: pointer; z-index: 10001; font-weight: bold;">✕</button>
+    <div id="dynamic-content"></div>
+</div>
 
         </div>
 
@@ -1112,31 +1124,19 @@ const defaultGalleryHTML = `
         <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5990337496899849544_y.jpg"></div>
     </div>
 `;
-
 function openMedia() {
+    console.log("Button clicked!"); // לבדיקה בקונסול
     const modal = document.getElementById('media-modal');
     const content = document.getElementById('dynamic-content');
-    
-    // הזרקת התוכן המלא
     content.innerHTML = defaultGalleryHTML;
-    
-    // הצגת המודל
     modal.style.display = 'block';
-    
-    // חסימת גלילה באתר מאחורה
     document.body.style.overflow = 'hidden';
 }
 
 function closeMedia() {
     const modal = document.getElementById('media-modal');
-    
-    // הסתרת המודל
     modal.style.display = 'none';
-    
-    // החזרת הגלילה לאתר
     document.body.style.overflow = 'auto';
-    
-    // איפוס התוכן כדי לעצור את הסרטונים שרצים ברקע
     document.getElementById('dynamic-content').innerHTML = '';
 }
        
