@@ -567,10 +567,12 @@
                 כל יום איתך הוא פרק חדש בספר הכי יפה שנכתב. מהרגע הראשון ידעתי שיש כאן משהו אחר, עמוק יותר, אמיתי. 
                 אנחנו יוצרים עולם שכולו מורכב מרגעים קטנים של אושר, צחוק והבנה עמוקה.
             </p>
-            <button onclick="openMedia()" class="mt-4 px-8 py-4 bg-white/5 border border-white/10 rounded-full hover:bg-[#3d0a0a] transition-all flex items-center gap-3">
-                <span class="opacity-70 font-bold">הצצה לזיכרונות</span>
-                <span class="opacity-40">🎞️</span>
-            </button>
+           <div id="media-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; flex-direction: column; overflow-y: auto;">
+    <div style="padding: 20px; display: flex; justify-content: flex-end;">
+        <button onclick="closeMedia()" style="color: white; font-size: 30px; background: none; border: none; cursor: pointer;">✖</button>
+    </div>
+    <div id="dynamic-content"></div>
+</div>
         </div>
 
         <div class="reveal order-1 md:order-2 story-visual-container">
@@ -951,6 +953,7 @@ function updateMusicUI() {
             }
         }
 // 1. רשימת המדיה המלאה - מתוקנת עם קידוד לרווחים
+// 1. רשימת המדיה המלאה והמתוקנת
 const galleryMedia = [
     { type: 'img', src: 'https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5990337496899849546_y.jpg?raw=true', class: 'card-large' },
     { type: 'img', src: 'https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5990337496899849549_y.jpg?raw=true', class: '' },
@@ -1013,31 +1016,29 @@ const galleryMedia = [
     { type: 'img', src: 'https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5990337496899849544_y.jpg?raw=true', class: 'card-wide' }
 ];
 
-// 2. פונקציה לייצור ה-HTML (כולל הגנה מפני שגיאות)
-function generateGalleryHTML() {
-    if (!galleryMedia || galleryMedia.length === 0) return '<p>לא נמצאה מדיה</p>';
-    
+// 2. פונקציית ייצור ה-HTML
+window.generateGalleryHTML = function() {
     let html = '<div class="bento-grid">';
     galleryMedia.forEach(item => {
-        html += `<div class="gallery-card ${item.class || ''}" style="opacity: 0; transform: translateY(20px);">`;
+        html += `<div class="gallery-card ${item.class || ''}" style="opacity: 0; transform: translateY(30px);">`;
         if (item.type === 'img') {
-            html += `<img src="${item.src}" loading="lazy" alt="Gallery Image">`;
+            html += `<img src="${item.src}" loading="lazy">`;
         } else {
-            html += `<video muted loop autoplay playsinline><source src="${item.src}" type="video/mp4">הדפדפן שלך לא תומך בוידאו</video>`;
+            html += `<video muted loop autoplay playsinline><source src="${item.src}" type="video/mp4"></video>`;
         }
         html += `</div>`;
     });
     html += '</div>';
     return html;
-}
+};
 
-// 3. פונקציית פתיחת הגלריה
-function openMedia() {
+// 3. פונקציית הפתיחה
+window.openMedia = function() {
     const modal = document.getElementById('media-modal');
     const content = document.getElementById('dynamic-content');
-    
+
     if (!modal || !content) {
-        console.error("Missing HTML elements: media-modal or dynamic-content");
+        alert("חסר אלמנט media-modal ב-HTML!");
         return;
     }
 
@@ -1046,8 +1047,7 @@ function openMedia() {
     
     setTimeout(() => {
         modal.classList.add('active');
-        // הפעלת אנימציה רק אם GSAP קיים
-        if (typeof gsap !== 'undefined') {
+        if (window.gsap) {
             gsap.to(".gallery-card", { 
                 opacity: 1, 
                 y: 0, 
@@ -1055,23 +1055,21 @@ function openMedia() {
                 stagger: 0.05, 
                 ease: "power2.out" 
             });
-        } else {
-            // גיבוי אם אין GSAP
-            document.querySelectorAll('.gallery-card').forEach(el => el.style.opacity = '1');
         }
     }, 50);
-}
+};
 
-function closeMedia() { 
+// 4. פונקציית הסגירה
+window.closeMedia = function() {
     const modal = document.getElementById('media-modal');
     if (modal) {
         modal.classList.remove('active');
         setTimeout(() => {
             modal.style.display = 'none';
-            document.getElementById('dynamic-content').innerHTML = ''; 
+            document.getElementById('dynamic-content').innerHTML = '';
         }, 500);
     }
-}
+};
         // --- לוגיקת השאלון (Quiz) ---
         const quizData = [
             { q: "איפה נבלה את החופשה הבאה?", o: ["בפריז", "בתאילנד", "בבית עם סרט", "ביוון"], c: 1 },
