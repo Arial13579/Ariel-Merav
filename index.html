@@ -951,79 +951,83 @@ function updateMusicUI() {
             }
         }
 
-        // --- לוגיקת גלריית התמונות ---
-        const defaultGalleryHTML = `
+      const defaultGalleryHTML = `
             <div class="bento-grid">
-            <div class="gallery-card card-large"><img src="C:/Users/OSUser/Desktop/proposal/photo_5990337496899849546_y.jpg"></div>
-            <div class="gallery-card card-tall"><img src="C:/Users/OSUser/Desktop/proposal/photo_5990337496899849549_y.jpg"></div>
-            <div class="gallery-card card-wide"><img src="C:/Users/OSUser/Desktop/proposal/photo_5990337496899849550_y.jpg"></div>
-            <div class="gallery-card"><img src="C:/Users/OSUser/Desktop/proposal/photo_5990337496899849551_y.jpg"></div>
-            <div class="gallery-card card-large"><img src="C:/Users/OSUser/Desktop/proposal/photo_5990337496899849552_y.jpg"></div>
-            <div class="gallery-card card-tall"><img src="C:/Users/OSUser/Desktop/proposal/photo_5990337496899849553_y.jpg"></div>
+                <!-- שילוב אסימטרי של כל המדיה -->
+                <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5990337496899849546_y.jpg?raw=true"></div>
+                <div class="gallery-card card-tall"><video muted loop autoplay playsinline><source src="https://github.com/Arial13579/Ariel-Merav/blob/main/VIDEO-2026-04-09-11-57-49.mp4?raw=true" type="video/mp4"></video></div>
+                <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5990337496899849549_y.jpg?raw=true"></div>
+                <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5990337496899849550_y.jpg?raw=true"></div>
+                
+                <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5990337496899849551_y.jpg?raw=true"></div>
+                <div class="gallery-card card-large"><video muted loop autoplay playsinline><source src="https://github.com/Arial13579/Ariel-Merav/blob/main/VIDEO-2026-04-09-12-01-38.mp4?raw=true" type="video/mp4"></video></div>
+                <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5990337496899849552_y.jpg?raw=true"></div>
+                
+                <div class="gallery-card card-wide"><video muted loop autoplay playsinline><source src="https://github.com/Arial13579/Ariel-Merav/blob/main/VIDEO-2026-04-09-12-23-09.mp4?raw=true" type="video/mp4"></video></div>
+                <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5990337496899849553_y.jpg?raw=true"></div>
+                <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/11.jpg?raw=true"></div>
+                
+                <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962680_y.jpg?raw=true"></div>
+                <div class="gallery-card"><video muted loop autoplay playsinline><source src="https://github.com/Arial13579/Ariel-Merav/blob/main/VIDEO-2026-04-09-13-09-28%20(1).mp4?raw=true" type="video/mp4"></video></div>
+                <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/45.jpg?raw=true"></div>
+                
+                <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962681_y.jpg?raw=true"></div>
+                <div class="gallery-card card-large"><video muted loop autoplay playsinline><source src="https://github.com/Arial13579/Ariel-Merav/blob/main/VIDEO-2026-04-09-13-09-28%20(2).mp4?raw=true" type="video/mp4"></video></div>
+                <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962682_y.jpg?raw=true"></div>
 
-            <div class="gallery-card card-large"><video muted loop autoplay playsinline><source src="C:/Users/OSUser/Desktop/proposal/VIDEO-2026-04-09-11-57-49.mp4" type="video/mp4"></video></div>
-            <div class="gallery-card card-tall"><video muted loop autoplay playsinline><source src="C:/Users/OSUser/Desktop/proposal/VIDEO-2026-04-09-12-01-38.mp4" type="video/mp4"></video></div>
-            <div class="gallery-card card-wide"><video muted loop autoplay playsinline><source src="C:/Users/OSUser/Desktop/proposal/VIDEO-2026-04-09-12-23-09.mp4" type="video/mp4"></video></div>
-            <div class="gallery-card"><video muted loop autoplay playsinline><source src="C:/Users/OSUser/Desktop/proposal/VIDEO-2026-04-09-13-09-28 (1).mp4" type="video/mp4"></video></div>
-            <div class="gallery-card card-large"><video muted loop autoplay playsinline><source src="C:/Users/OSUser/Desktop/proposal/VIDEO-2026-04-09-13-09-28 (2).mp4" type="video/mp4"></video></div>
-            <div class="gallery-card card-tall"><video muted loop autoplay playsinline><source src="C:/Users/OSUser/Desktop/proposal/VIDEO-2026-04-09-13-09-28 (3).mp4" type="video/mp4"></video></div>
-            <div class="gallery-card card-wide"><video muted loop autoplay playsinline><source src="C:/Users/OSUser/Desktop/proposal/VIDEO-2026-04-09-13-09-28.mp4" type="video/mp4"></video></div>
-            <div class="gallery-card"><video muted loop autoplay playsinline><source src="C:/Users/OSUser/Desktop/proposal/VIDEO-2026-04-09-13-09-29.mp4" type="video/mp4"></video></div>
+                <div class="gallery-card card-wide"><video muted loop autoplay playsinline><source src="https://github.com/Arial13579/Ariel-Merav/blob/main/VIDEO-2026-04-09-13-09-28%20(3).mp4?raw=true" type="video/mp4"></video></div>
+                <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962683_y.jpg?raw=true"></div>
+                <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/46.jpg?raw=true"></div>
 
-            <div class="gallery-card card-large"><img src="C:/Users/OSUser/Desktop/proposal/11.jpg"></div>
-            <div class="gallery-card card-tall"><img src="C:/Users/OSUser/Desktop/proposal/45.jpg"></div>
-            <div class="gallery-card card-wide"><img src="C:/Users/OSUser/Desktop/proposal/46.jpg"></div>
-            <div class="gallery-card"><img src="C:/Users/OSUser/Desktop/proposal/P1.jpg"></div>
-            <div class="gallery-card card-large"><img src="C:/Users/OSUser/Desktop/proposal/P2.jpg"></div>
-            <div class="gallery-card card-tall"><img src="C:/Users/OSUser/Desktop/proposal/P3.jpg"></div>
-            <div class="gallery-card card-wide"><img src="C:/Users/OSUser/Desktop/proposal/P4.jpg"></div>
-            <div class="gallery-card"><img src="C:/Users/OSUser/Desktop/proposal/P5.jpg"></div>
+                <div class="gallery-card card-large"><video muted loop autoplay playsinline><source src="https://github.com/Arial13579/Ariel-Merav/blob/main/VIDEO-2026-04-09-13-09-28.mp4?raw=true" type="video/mp4"></video></div>
+                <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962684_y.jpg?raw=true"></div>
+                <div class="gallery-card card-wide"><video muted loop autoplay playsinline><source src="https://github.com/Arial13579/Ariel-Merav/blob/main/VIDEO-2026-04-09-13-09-29.mp4?raw=true" type="video/mp4"></video></div>
 
-            <div class="gallery-card card-large"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962680_y.jpg"></div>
-            <div class="gallery-card card-tall"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962681_y.jpg"></div>
-            <div class="gallery-card card-wide"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962682_y.jpg"></div>
-            <div class="gallery-card"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962683_y.jpg"></div>
-            <div class="gallery-card card-large"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962684_y.jpg"></div>
-            <div class="gallery-card card-tall"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962686_y.jpg"></div>
-            <div class="gallery-card card-wide"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962688_y.jpg"></div>
-            <div class="gallery-card"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962689_y.jpg"></div>
-            <div class="gallery-card card-large"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962690_y.jpg"></div>
-            <div class="gallery-card card-tall"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962691_y.jpg"></div>
-            <div class="gallery-card card-wide"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962692_y.jpg"></div>
-            <div class="gallery-card"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962693_y.jpg"></div>
-            <div class="gallery-card card-large"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962694_y.jpg"></div>
-            <div class="gallery-card card-tall"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962696_y.jpg"></div>
-            <div class="gallery-card card-wide"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962697_y.jpg"></div>
-            <div class="gallery-card"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962698_y.jpg"></div>
-            <div class="gallery-card card-large"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962699_y.jpg"></div>
-            <div class="gallery-card card-tall"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962700_y.jpg"></div>
-            <div class="gallery-card card-wide"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962701_y.jpg"></div>
-            <div class="gallery-card"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962702_y.jpg"></div>
-            <div class="gallery-card card-large"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962703_y.jpg"></div>
-            <div class="gallery-card card-tall"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962704_y.jpg"></div>
-            <div class="gallery-card card-wide"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962705_y.jpg"></div>
-            <div class="gallery-card"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962706_y.jpg"></div>
-            <div class="gallery-card card-large"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962707_y.jpg"></div>
-            <div class="gallery-card card-tall"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962709_y.jpg"></div>
-            <div class="gallery-card card-wide"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962710_y.jpg"></div>
-            <div class="gallery-card"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962711_y.jpg"></div>
-            <div class="gallery-card card-large"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962712_y.jpg"></div>
-            <div class="gallery-card card-tall"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962713_y.jpg"></div>
-            <div class="gallery-card card-wide"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962714_y.jpg"></div>
-            <div class="gallery-card"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962715_y.jpg"></div>
-            <div class="gallery-card card-large"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962716_y.jpg"></div>
-            <div class="gallery-card card-tall"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962717_y.jpg"></div>
-            <div class="gallery-card card-wide"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962718_y.jpg"></div>
-            <div class="gallery-card"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962720_y.jpg"></div>
-            <div class="gallery-card card-large"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962721_y.jpg"></div>
-            <div class="gallery-card card-tall"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962722_y.jpg"></div>
-            <div class="gallery-card card-wide"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962723_y.jpg"></div>
-            <div class="gallery-card"><img src="C:/Users/OSUser/Desktop/proposal/photo_5980783333559962724_y.jpg"></div>
-            <div class="gallery-card card-large"><img src="C:/Users/OSUser/Desktop/proposal/photo_5990337496899849542_y.jpg"></div>
-            <div class="gallery-card card-tall"><img src="C:/Users/OSUser/Desktop/proposal/photo_5990337496899849544_y.jpg"></div>
+                <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962686_y.jpg?raw=true"></div>
+                <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962688_y.jpg?raw=true"></div>
+                <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962689_y.jpg?raw=true"></div>
+                <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962690_y.jpg?raw=true"></div>
+                
+                <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962691_y.jpg?raw=true"></div>
+                <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962692_y.jpg?raw=true"></div>
+                <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962693_y.jpg?raw=true"></div>
+                <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962694_y.jpg?raw=true"></div>
+                
+                <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962696_y.jpg?raw=true"></div>
+                <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962697_y.jpg?raw=true"></div>
+                <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962698_y.jpg?raw=true"></div>
+                <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962699_y.jpg?raw=true"></div>
+
+                <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962700_y.jpg?raw=true"></div>
+                <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962701_y.jpg?raw=true"></div>
+                <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962702_y.jpg?raw=true"></div>
+                <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962703_y.jpg?raw=true"></div>
+
+                <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962704_y.jpg?raw=true"></div>
+                <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962705_y.jpg?raw=true"></div>
+                <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962706_y.jpg?raw=true"></div>
+                <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962707_y.jpg?raw=true"></div>
+
+                <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962709_y.jpg?raw=true"></div>
+                <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962710_y.jpg?raw=true"></div>
+                <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962711_y.jpg?raw=true"></div>
+                <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962712_y.jpg?raw=true"></div>
+
+                <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962713_y.jpg?raw=true"></div>
+                <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962714_y.jpg?raw=true"></div>
+                <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962715_y.jpg?raw=true"></div>
+                <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962716_y.jpg?raw=true"></div>
+
+                <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962717_y.jpg?raw=true"></div>
+                <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962718_y.jpg?raw=true"></div>
+                <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962720_y.jpg?raw=true"></div>
+                <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962721_y.jpg?raw=true"></div>
+
+                <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962722_y.jpg?raw=true"></div>
+                <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962723_y.jpg?raw=true"></div>
+                <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/photo_5980783333559962724_y.jpg?raw=true"></div>
             </div>
         `;
-
       function openMedia() {
     const body = document.getElementById('gallery-body');
     body.innerHTML = `
