@@ -477,78 +477,7 @@
 }
 
         <style>
-/* שכבת הרקע עם הטשטוש */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(15px); /* הטשטוש שביקשת */
-    -webkit-backdrop-filter: blur(15px);
-    z-index: 10000;
-    display: none; /* מוסתר בהתחלה */
-    overflow-y: auto;
-    padding: 20px;
-}
 
-/* כפתור האיקס */
-.close-modal-btn {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: white;
-    color: black;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    z-index: 10001;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
-
-/* עיצוב הגלריה */
-.bento-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    grid-auto-rows: 250px;
-    gap: 15px;
-    max-width: 1200px;
-    margin: 60px auto;
-}
-
-.gallery-card {
-    border-radius: 15px;
-    overflow: hidden;
-    background: #111;
-}
-
-.gallery-card img, .gallery-card video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.card-large { grid-column: span 2; grid-row: span 2; }
-.card-tall { grid-row: span 2; }
-.card-wide { grid-column: span 2; }
-
-@media (max-width: 768px) {
-    .card-large, .card-wide { grid-column: span 1; }
-}
-/* הגדרות גדלים מיוחדים לגריד */
-    .card-large { grid-column: span 2; grid-row: span 2; }
-    .card-tall { grid-row: span 2; }
-    .card-wide { grid-column: span 2; }
-    @media (max-width: 768px) {
-        .card-large, .card-wide { grid-column: span 1; }
-    } 
     </style>
 </head>
 <body>
@@ -639,19 +568,10 @@
             <p class="text-xl text-zinc-500 font-light leading-relaxed mb-6">
                 כל יום איתך הוא פרק חדש בספר הכי יפה שנכתב. מהרגע הראשון ידעתי שיש כאן משהו אחר, עמוק יותר, אמיתי. 
                 אנחנו יוצרים עולם שכולו מורכב מרגעים קטנים של אושר, צחוק והבנה עמוקה.
-            </p>
-   <!-- הכפתור עצמו -->
 <button onclick="openMedia()" class="mt-4 px-8 py-4 bg-white/5 border border-white/10 rounded-full hover:bg-[#3d0a0a] transition-all flex items-center gap-3">
-    <span class="opacity-70 font-bold">הצצה לזיכרונות</span>
-    <span class="opacity-40">🎞️</span>
-</button>
-
-<!-- המבנה של החלון הקופץ (חייב להיות באותו דף) -->
-<div id="media-modal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 10000; display: none; overflow-y: auto; padding: 20px;">
-    <button onclick="closeMedia()" style="position: fixed; top: 20px; right: 20px; background: white; color: black; width: 45px; height: 45px; border-radius: 50%; border: none; font-size: 24px; cursor: pointer; z-index: 10001; font-weight: bold;">✕</button>
-    <div id="dynamic-content"></div>
-</div>
-
+                <span class="opacity-70 font-bold">הצצה לזיכרונות</span>
+                <span class="opacity-40">🎞️</span>
+            </button>
         </div>
 
         <div class="reveal order-1 md:order-2 story-visual-container">
@@ -1124,21 +1044,40 @@ const defaultGalleryHTML = `
         <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5990337496899849544_y.jpg"></div>
     </div>
 `;
-function openMedia() {
-    console.log("Button clicked!"); // לבדיקה בקונסול
-    const modal = document.getElementById('media-modal');
-    const content = document.getElementById('dynamic-content');
-    content.innerHTML = defaultGalleryHTML;
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
-}
+ function openMedia() { 
+            document.getElementById('gallery-title').innerText = "זיכרונות";
+            document.getElementById('gallery-subtitle').innerText = "התמונות והסרטונים הכי יפים שלנו";
+            document.getElementById('gallery-body').innerHTML = defaultGalleryHTML;
+            _showModal();
+        }
 
-function closeMedia() {
-    const modal = document.getElementById('media-modal');
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto';
-    document.getElementById('dynamic-content').innerHTML = '';
-}
+        function openEmptyGallery(title) {
+            document.getElementById('gallery-title').innerText = title;
+            document.getElementById('gallery-subtitle').innerText = "מחכה לרגעים שנבנה יחד";
+            document.getElementById('gallery-body').innerHTML = `
+                <div class="flex flex-col items-center justify-center h-64 opacity-20 text-center">
+                    <span class="text-6xl mb-4 opacity-10">⌛</span>
+                    <p class="text-xl font-bold">אין נתונים להצגה</p>
+                    <p class="text-sm">הגלרייה תתעדכן לאחר שנתחיל את הפרק הזה...</p>
+                </div>
+            `;
+            _showModal();
+        }
+
+        function _showModal() {
+            const modal = document.getElementById('media-modal');
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('active');
+                gsap.to(".gallery-card", { opacity: 1, y: 0, duration: 0.6, stagger: 0.08, ease: "power2.out", delay: 0.3 });
+            }, 10);
+        }
+
+        function closeMedia() { 
+            const modal = document.getElementById('media-modal');
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 500);
+        }
        
         // --- לוגיקת השאלון (Quiz) ---
         const quizData = [
