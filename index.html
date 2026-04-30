@@ -1043,6 +1043,19 @@ function updateMusicUI() {
             _showModal();
         }
 
+
+  function openMedia() {
+    const body = document.getElementById('gallery-body');
+    body.innerHTML = `
+        <div class="bento-grid">
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/ariel.jpg?raw=true"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/marev.jpg?raw=true"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/11.jpg?raw=true"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/blob/main/P1.jpg?raw=true"></div>
+        </div>
+    `;
+    _showModal();
+}
         function _showModal() {
             const modal = document.getElementById('media-modal');
             modal.style.display = 'flex';
