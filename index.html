@@ -1060,6 +1060,7 @@ const defaultGalleryHTML = `
             `;
             _showModal();
         }
+       
 
         function _showModal() {
             const modal = document.getElementById('media-modal');
@@ -1075,7 +1076,21 @@ const defaultGalleryHTML = `
             modal.classList.remove('active');
             setTimeout(() => modal.style.display = 'none', 500);
         }
-       
+
+
+
+
+       function openMedia() { 
+    const modal = document.getElementById('media-modal');
+    if(!modal) {
+        alert("המודאל לא נמצא ב-HTML!");
+        return;
+    }
+    document.getElementById('gallery-body').innerHTML = defaultGalleryHTML;
+    modal.style.display = 'flex';
+    modal.classList.add('active');
+    console.log("הגלריה נפתחה!");
+}
         // --- לוגיקת השאלון (Quiz) ---
         const quizData = [
             { q: "איפה נבלה את החופשה הבאה?", o: ["בפריז", "בתאילנד", "בבית עם סרט", "ביוון"], c: 1 },
