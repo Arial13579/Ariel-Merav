@@ -978,54 +978,39 @@ function updateMusicUI() {
                 icon.classList.add('opacity-40');
                 icon.style.filter = "none";
             }
-        }
-// התוכן המעודכן והמתוקן - הכל בתוך גריד אחד מסודר
-const defaultGalleryHTML = `
+        }const defaultGalleryHTML = `
     <div class="bento-grid">
-        <!-- סרטון פתיחה -->
+        <!-- חלק 1: סרטונים ותמונות ראשונות (אלה שעבדו לך) -->
         <div class="gallery-card card-large"><video muted loop autoplay playsinline><source src="https://github.com/Arial13579/Ariel-Merav/raw/main/VIDEO-2026-04-09-11-57-49.mp4" type="video/mp4"></video></div>
-        
         <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5990337496899849546_y.jpg"></div>
         <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5990337496899849549_y.jpg"></div>
         
-        <!-- סרטון שני -->
         <div class="gallery-card"><video muted loop autoplay playsinline><source src="https://github.com/Arial13579/Ariel-Merav/raw/main/VIDEO-2026-04-09-12-01-38.mp4" type="video/mp4"></video></div>
-        
         <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5990337496899849550_y.jpg"></div>
         <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5990337496899849551_y.jpg"></div>
         
-        <!-- סרטון שלישי -->
         <div class="gallery-card card-tall"><video muted loop autoplay playsinline><source src="https://github.com/Arial13579/Ariel-Merav/raw/main/VIDEO-2026-04-09-12-23-09.mp4" type="video/mp4"></video></div>
-        
         <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5990337496899849552_y.jpg"></div>
         <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5990337496899849553_y.jpg"></div>
 
-        <!-- סרטון רביעי -->
         <div class="gallery-card card-large"><video muted loop autoplay playsinline><source src="https://github.com/Arial13579/Ariel-Merav/raw/main/VIDEO-2026-04-09-13-09-28%20(1).mp4" type="video/mp4"></video></div>
-        
         <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/45.jpg"></div>
         <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/46.jpg"></div>
         
-        <!-- סרטון חמישי -->
         <div class="gallery-card"><video muted loop autoplay playsinline><source src="https://github.com/Arial13579/Ariel-Merav/raw/main/VIDEO-2026-04-09-13-09-28%20(2).mp4" type="video/mp4"></video></div>
-        
         <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/P1.jpg"></div>
 
-        <!-- סרטון שישי -->
         <div class="gallery-card card-wide"><video muted loop autoplay playsinline><source src="https://github.com/Arial13579/Ariel-Merav/raw/main/VIDEO-2026-04-09-13-09-28%20(3).mp4" type="video/mp4"></video></div>
-        
         <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/P2.jpg"></div>
         <div class="gallery-card card-large"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/P3.jpg"></div>
         
-        <!-- סרטון שביעי -->
         <div class="gallery-card card-tall"><video muted loop autoplay playsinline><source src="https://github.com/Arial13579/Ariel-Merav/raw/main/VIDEO-2026-04-09-13-09-28.mp4" type="video/mp4"></video></div>
-        
         <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/P4.jpg"></div>
         <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/P5.jpg"></div>
 
-        <!-- סרטון שמיני -->
         <div class="gallery-card card-large"><video muted loop autoplay playsinline><source src="https://github.com/Arial13579/Ariel-Merav/raw/main/VIDEO-2026-04-09-13-09-29.mp4" type="video/mp4"></video></div>
 
+        <!-- חלק 2: התמונות הנוספות שביקשת להוסיף -->
         <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962680_y.jpg"></div>
         <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962681_y.jpg"></div>
         <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5980783333559962682_y.jpg"></div>
@@ -1069,7 +1054,6 @@ const defaultGalleryHTML = `
         <div class="gallery-card card-tall"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5990337496899849542_y.jpg"></div>
         <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5990337496899849544_y.jpg"></div>
     </div>
-
 `;
  function openMedia() { 
             document.getElementById('gallery-title').innerText = "זיכרונות";
