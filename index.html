@@ -848,23 +848,29 @@ html { scroll-behavior: smooth; }
                 </div>
 
    <script>
-
-(function() {
-        const pass = "1234"; // שנה כאן לסיסמה שאתה רוצה
+<script>
+    // פונקציה שרצה מיד עם טעינת ה-Body
+    (function() {
+        const pass = "1234"; // שנה כאן לסיסמה שלך
         const storageKey = "site_access_granted";
 
-        if (sessionStorage.getItem(storageKey) !== "true") {
-            let entered = prompt("נא להזין סיסמה כדי לצפות באתר:");
+        // בדיקה האם כבר אושר גישה בדפדפן הנוכחי
+        if (localStorage.getItem(storageKey) !== "true") {
+            // הסתרת הגוף של האתר עד להזנת סיסמה
+            document.documentElement.style.display = 'none';
+            
+            let entered = prompt("שלום אריאל ומירב, נא להזין סיסמה לצפייה:");
             
             if (entered === pass) {
-                sessionStorage.setItem(storageKey, "true");
+                localStorage.setItem(storageKey, "true");
+                document.documentElement.style.display = 'block';
             } else {
-                alert("סיסמה שגויה.");
-                window.location.href = "about:blank";
+                alert("סיסמה שגויה. הגישה נחסמה.");
+                window.location.href = "https://www.google.com";
             }
         }
     })();
-
+</script>
 
 
 function checkPuzzleSolved() {
