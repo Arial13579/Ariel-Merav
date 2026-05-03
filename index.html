@@ -6,6 +6,28 @@
     <title>אריאל ומירב - Matte Edition</title>
 
     <script src="https://cdn.tailwindcss.com"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script> <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;400;600;800&display=swap" rel="stylesheet"> <style>
+<script>
+    (function() {
+        const pass = "1234"; // שנה כאן לסיסמה שאתה רוצה
+        const storageKey = "site_access_granted";
+
+        // בודק אם המשתמש כבר הזין סיסמה בעבר בדפדפן הזה
+        if (sessionStorage.getItem(storageKey) !== "true") {
+            let entered = prompt("נא להזין סיסמה כדי לצפות באתר:");
+            
+            if (entered === pass) {
+                sessionStorage.setItem(storageKey, "true");
+            } else {
+                alert("סיסמה שגויה.");
+                window.location.href = "about:blank"; // שולח לדף ריק אם טעה
+            }
+        }
+    })();
+</script>
+        
+        
+        
+        
         /* הגדרת משתני עיצוב קבועים (CSS Variables) */
        :root {
             --bg-matte: #121212;      /* צבע רקע שחור מט */
@@ -17,6 +39,7 @@
         /* הגדרות כלליות לדף */
 html { scroll-behavior: smooth; }
         body {
+            
             font-family: 'Assistant', sans-serif;
             background-color: var(--bg-matte);
             color: var(--matte-text);
