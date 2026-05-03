@@ -15,8 +15,7 @@
         }
 
         /* הגדרות כלליות לדף */
-        * { scroll-behavior: smooth !important; } /* גלילה חלקה בין קישורים פנימיים */
-
+html { scroll-behavior: smooth; }
         body {
             font-family: 'Assistant', sans-serif;
             background-color: var(--bg-matte);
@@ -24,6 +23,14 @@
             overflow-x: hidden; /* מניעת גלילה לצדדים */
             margin: 0;
         }
+        @media (hover: hover) {
+    .dock-item:hover {
+        transform: translateY(-12px) scale(1.1);
+    }
+    .future-card:hover {
+        transform: translateY(-10px);
+    }
+}
           
 
         /* 📱 שורת המצב (Status Bar) בראש המסך - בסגנון אייפון */
@@ -32,6 +39,7 @@
             top: 0; left: 0; width: 100%; height: 44px;
             padding: 0 32px; display: flex; justify-content: space-between; align-items: center;
             z-index: 10000; background: rgba(18,18,18,0.8); backdrop-filter: blur(10px);
+            
         }
 
         /* האי הדינמי (Dynamic Island) */
