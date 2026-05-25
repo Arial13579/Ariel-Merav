@@ -603,16 +603,20 @@ html { scroll-behavior: smooth; }
 
       <section id="story" class="py-32 px-8 max-w-6xl mx-auto overflow-visible">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-        <div class="reveal order-2 md:order-1">
-            <h2 class="text-5xl font-black mb-6 border-r-4 border-[#3d0a0a] pr-4 text-white">הסיפור שלנו.</h2>
-            <p class="text-xl text-zinc-500 font-light leading-relaxed mb-6">
-                כל יום איתך הוא פרק חדש בספר הכי יפה שנכתב. מהרגע הראשון ידעתי שיש כאן משהו אחר, עמוק יותר, אמיתי. 
-                אנחנו יוצרים עולם שכולו מורכב מרגעים קטנים של אושר, צחוק והבנה עמוקה.
-<button onclick="openMedia()" class="mt-4 px-8 py-4 bg-white/5 border border-white/10 rounded-full hover:bg-[#3d0a0a] transition-all flex items-center gap-3">
-                <span class="opacity-70 font-bold">הצצה לזיכרונות</span>
-                <span class="opacity-40">🎞️</span>
-            </button>
+      <div id="media-modal">
+    <div class="modal-content !p-0 flex flex-col overflow-hidden">
+        <div class="sticky top-0 bg-[#1c1c1e]/90 backdrop-filter blur-md z-[20100] px-6 pt-4 pb-3 border-b border-white/5 rounded-t-[40px] flex flex-col flex-shrink-0">
+            <div class="ios-header-bar mb-3"></div>
+            <div class="flex justify-between items-center w-full">
+                <h3 id="modal-main-title" class="text-2xl font-black text-white">הסיפור שלנו 📖</h3>
+                <button onclick="closeMedia()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-all text-white flex items-center justify-center font-bold text-sm">✕</button>
+            </div>
         </div>
+        
+        <div id="gallery-body" class="p-6 overflow-y-auto flex-1">
+            </div>
+    </div>
+</div>
 
         <div class="reveal order-1 md:order-2 story-visual-container">
             <div class="story-img-stack story-img-3" data-tilt>
@@ -713,33 +717,19 @@ html { scroll-behavior: smooth; }
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div id="media-modal">
-    <div class="modal-content !p-0">
-        <div class="sticky top-0 bg-[#1c1c1e]/90 backdrop-filter blur-md z-[20100] px-6 pt-4 pb-3 border-b border-white/5 rounded-t-[40px] flex flex-col">
-            <div class="ios-header-bar mb-3"></div>
-            <div class="flex justify-between items-center w-full">
-                <h3 id="modal-main-title" class="text-2xl font-black text-white">הסיפור שלנו</h3>
-                <button onclick="closeMedia()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-all text-white flex items-center justify-center font-bold text-sm">✕</button>
-            </div>
-        </div>
-        
-        <div id="gallery-body" class="p-6">
-            </div>
-    </div>
-</div>
-        <div id="media-modal">
-    <div class="modal-content !p-0">
-        <div class="sticky top-0 bg-[#1c1c1e]/90 backdrop-filter blur-md z-[20100] px-6 pt-4 pb-3 border-b border-white/5 rounded-t-[40px] flex flex-col">
-            <div class="ios-header-bar mb-3"></div>
-            <div class="flex justify-between items-center w-full">
-                <h3 id="modal-main-title" class="text-2xl font-black text-white">הסיפור שלנו</h3>
-                <button onclick="closeMedia()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-all text-white flex items-center justify-center font-bold text-sm">✕</button>
-            </div>
-        </div>
-        
-        <div id="gallery-body" class="p-6">
-            </div>
-    </div>
+       <div class="future-card reveal group" style="transition-delay: 0.1s">
+    <img src="https://github.com/Arial13579/Ariel-Merav/blob/main/%D7%94%D7%A6%D7%A2%D7%AA-%D7%A0%D7%99%D7%A9%D7%95%D7%90%D7%99%D7%9F-%D7%91%D7%95%D7%94%D7%95_015.jpg?raw=true" 
+         class="future-card-img grayscale hover:grayscale-0" alt="טבעת נישואין">
+    
+    <h3 class="text-2xl font-bold mb-4">הצעת הנישואין</h3>
+   
+    
+    <button onclick="openProposalGallery()" class="view-btn">
+        <span>צפייה בגלרייה</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+    </button>
 </div>
 
         <div class="future-card reveal group" style="transition-delay: 0.2s">
@@ -1096,45 +1086,32 @@ function updateMusicUI() {
         <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5990337496899849544_y.jpg"></div>
     </div>
 `;
-// 1. פתיחת גלריית ברירת המחדל (הסיפור שלנו)
+// פתיחת גלריית ברירת המחדל (הסיפור שלנו)
 function openMedia() {
     const modal = document.getElementById('media-modal');
     const galleryBody = document.getElementById('gallery-body');
     const mainTitle = document.getElementById('modal-main-title');
     
-    if (!modal || !galleryBody) {
-        console.error("Missing modal elements!");
-        return;
-    }
+    if (!modal || !galleryBody) return;
 
-    // עדכון הכותרת הקבועה
-    if (mainTitle) mainTitle.innerText = "הסיפור שלנו 📖";
+    if (mainTitle) mainTitle.innerHTML = "הסיפור שלנו 📖";
+    galleryBody.innerHTML = defaultGalleryHTML; // מחזיר את ה-Bento Grid המקורי
 
-    // הזרקת ה-Bento Grid המקורי שלך לתוך הקונטיינר הנקי
-    galleryBody.innerHTML = defaultGalleryHTML;
-
-    // הצגת המודאל
     modal.style.display = 'flex';
-
-    // הפעלה כפויה של סרטונים (למקרה שהדפדפן חוסם אותם)
-    const videos = galleryBody.querySelectorAll('video');
-    videos.forEach(v => {
-        v.play().catch(e => console.log("Video autoplay blocked", e));
-    });
-
-    // אנימציית כניסה למודאל ולתמונות
+    galleryBody.scrollTop = 0;
+    
     setTimeout(() => {
         modal.classList.add('active');
         if (typeof gsap !== 'undefined') {
             gsap.fromTo(galleryBody.querySelectorAll('.gallery-card'), 
                 { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.5, stagger: 0.05, ease: "power2.out" }
+                { opacity: 1, y: 0, duration: 0.5, stagger: 0.04, ease: "power2.out" }
             );
         }
     }, 50);
 }
 
-// 2. פתיחת גלריית הצעת הנישואין (בלי להרוס את ה-HTML של האתר)
+// פתיחת גלריית הצעת הנישואין מהכרטיס שלך!
 function openProposalGallery() {
     const modal = document.getElementById('media-modal');
     const galleryBody = document.getElementById('gallery-body');
@@ -1142,10 +1119,9 @@ function openProposalGallery() {
     
     if (!modal || !galleryBody) return;
 
-    // עדכון הכותרת הקבועה להצעת נישואין
-    if (mainTitle) mainTitle.innerText = "הצעת הנישואין שלנו 💍";
+    if (mainTitle) mainTitle.innerHTML = "הצעת הנישואין שלנו 💍";
 
-    // הזרקת התמונות ישירות לקונטיינר הפנימי, מבלי למחוק את ה-id של גלרי באדי!
+    // הזרקת גריד התמונות של הצעת הנישואין לתוך גוף הגלריה
     galleryBody.innerHTML = `
         <div class="bento-grid">
             <div class="gallery-card card-large">
@@ -1204,6 +1180,8 @@ function openProposalGallery() {
     `;
 
     modal.style.display = 'flex';
+    galleryBody.scrollTop = 0;
+    
     setTimeout(() => {
         modal.classList.add('active');
         if (typeof gsap !== 'undefined') {
@@ -1215,45 +1193,18 @@ function openProposalGallery() {
     }, 10);
 }
 
-// 3. פונקציה לגלריה ריקה (כמו חתונה / ילדים)
-function openEmptyGallery(title) {
-    const modal = document.getElementById('media-modal');
-    const galleryBody = document.getElementById('gallery-body');
-    const mainTitle = document.getElementById('modal-main-title');
-    
-    if (!modal || !galleryBody) return;
-
-    if (mainTitle) mainTitle.innerText = title;
-
-    galleryBody.innerHTML = `
-        <div class="flex flex-col items-center justify-center py-16 text-center">
-            <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4 border border-white/10">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-            </div>
-            <p class="text-white/60 font-medium mb-1">הגלריה עדיין ריקה</p>
-            <p class="text-white/40 text-sm">התמונות מאירוע זה יעלו בקרוב</p>
-        </div>
-    `;
-    modal.style.display = 'flex';
-    setTimeout(() => modal.classList.add('active'), 10);
-}
-
-// 4. סגירת הגלריה וניקוי בטוח
+// סגירה נקייה
 function closeMedia() {
     const modal = document.getElementById('media-modal');
     const galleryBody = document.getElementById('gallery-body');
-    
     if (!modal) return;
-    modal.classList.remove('active');
     
+    modal.classList.remove('active');
     setTimeout(() => {
         modal.style.display = 'none';
-        if (galleryBody) galleryBody.innerHTML = ''; // מנקה רק את התוכן הפנימי, המבנה החיצוני נשאר חי וקיים!
+        if (galleryBody) galleryBody.innerHTML = ''; 
     }, 500);
 }
-
         function _showModal() {
             const modal = document.getElementById('media-modal');
             modal.style.display = 'flex';
