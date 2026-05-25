@@ -1082,142 +1082,21 @@ function updateMusicUI() {
         <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5990337496899849544_y.jpg"></div>
     </div>
 `;
- function openMedia() { 
-            document.getElementById('gallery-title').innerText = "זיכרונות";
-            document.getElementById('gallery-subtitle').innerText = "התמונות והסרטונים הכי יפים שלנו";
-            document.getElementById('gallery-body').innerHTML = defaultGalleryHTML;
-            _showModal();
-        }
-// 1. הפונקציה המקורית של האתר - מחזירה את המצב לקדמותו עבור שאר הכפתורים
-function openEmptyGallery(title) {
-    const modal = document.getElementById('media-modal');
-    const modalContent = modal.querySelector('.modal-content');
-    modalContent.innerHTML = `
-        <div class="ios-header-bar"></div>
-        <div class="flex justify-between items-center mb-6">
-            <h3 class="text-2xl font-black text-white">${title}</h3>
-            <button onclick="closeMedia()" class="text-sm opacity-50 hover:opacity-100 transition-all text-white">סגור</button>
-        </div>
-        <div class="flex flex-col items-center justify-center py-12 text-center">
-            <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4 border border-white/10">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-            </div>
-            <p class="text-white/60 font-medium mb-1">הגלריה עדיין ריקה</p>
-            <p class="text-white/40 text-sm">התמונות מאירוע זה יעלו בקרוב</p>
-        </div>
-    `;
-    modal.style.display = 'flex';
-    setTimeout(() => modal.classList.add('active'), 10);
-}
+//pop
 
-function openMedia(title, type) {
-    const modal = document.getElementById('media-modal');
-    const modalContent = modal.querySelector('.modal-content');
-    
-    // ניקוי מוחלט של שאריות כדי למנוע כפילויות של אלמנטים
-    modalContent.innerHTML = ''; 
-    
-    const event = storyEvents.find(e => e.title === title);
-    if (!event) return;
 
-    // בניית המבנה הסטנדרטי ששאר האתר והאנימציות מצפים לו
-    modalContent.innerHTML = `
-        <div class="ios-header-bar"></div>
-        <div class="flex justify-between items-center mb-6 pr-2">
-            <h3 class="text-2xl font-black text-white">${title}</h3>
-        </div>
-        <div id="bento-grid" class="bento-grid"></div>
-    `;
-    
-    const grid = modalContent.querySelector('#bento-grid');
-
-    event.media.forEach((item, index) => {
-        const card = document.createElement('div');
-        card.className = 'gallery-card opacity-0 translate-y-4';
-        
-        if (index === 0) card.classList.add('card-large');
-        else if (index === 1) card.classList.add('card-tall');
-
-        if (item.type === 'video') {
-            card.innerHTML = `
-                <video muted loop autoplay playsinline class="w-full h-full object-cover rounded-xl">
-                    <source src="${item.url}" type="video/mp4">
-                </video>
-            `;
-        } else {
-            card.innerHTML = `<img src="${item.url}" alt="${title}" loading="lazy" class="w-full h-full object-cover rounded-xl">`;
-        }
-        grid.appendChild(card);
-    });
-
-    modal.style.display = 'flex';
-    setTimeout(() => {
-        modal.classList.add('active');
-        gsap.to(grid.querySelectorAll('.gallery-card'), {
-            opacity: 1,
-            y: 0,
-            duration: 0.5,
-            stagger: 0.05,
-            ease: "power2.out"
-        });
-    }, 10);
-}
-
-function closeMedia() {
+       function openMedia(title, type) {
     const modal = document.getElementById('media-modal');
     if (!modal) return;
-    
-    modal.classList.remove('active');
-    setTimeout(() => {
-        modal.style.display = 'none';
-        const modalContent = modal.querySelector('.modal-content');
-        if (modalContent) modalContent.innerHTML = ''; // מנקה את תוכן המודאל לחלוטין למניעת באגים
-    }, 300);
-}
 
-function openEmptyGallery(title) {
-    const modal = document.getElementById('media-modal');
-    const modalContent = modal.querySelector('.modal-content');
+    // מציאת כותרת המודאל המקורית של האתר שלך (בדרך כלל h3 בתוך המודאל)
+    const modalTitle = modal.querySelector('h3');
+    if (modalTitle) modalTitle.innerText = title;
     
-    modalContent.innerHTML = '';
-    modalContent.innerHTML = `
-        <div class="ios-header-bar"></div>
-        <div class="flex justify-between items-center mb-6 pr-2">
-            <h3 class="text-2xl font-black text-white">${title}</h3>
-        </div>
-        <div class="flex flex-col items-center justify-center py-12 text-center">
-            <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4 border border-white/10">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-            </div>
-            <p class="text-white/60 font-medium mb-1">הגלריה עדיין ריקה</p>
-            <p class="text-white/40 text-sm">התמונות מאירוע זה יעלו בקרוב</p>
-        </div>
-    `;
-    modal.style.display = 'flex';
-    setTimeout(() => modal.classList.add('active'), 10);
-}
-
-function openProposalGallery() {
-    const modal = document.getElementById('media-modal');
-    const modalContent = modal.querySelector('.modal-content');
-    
-    modalContent.innerHTML = ''; // ניקוי מקדים
-    
-    function openMedia(title, type) {
-    const modal = document.getElementById('media-modal');
-    const titleElement = document.getElementById('modal-title-text');
+    // מציאת הגריד המקורי שלך מבלי לשנות לו את ה-HTML החיצוני
     const grid = document.getElementById('bento-grid');
-    
-    // הגנה מפני קריסה - אם האלמנטים לא קיימים, לא ממשיכים
-    if (!titleElement || !grid) return;
-
-    // עדכון הכותרת וניקוי הגריד
-    titleElement.innerText = title;
-    grid.innerHTML = ''; 
+    if (!grid) return;
+    grid.innerHTML = ''; // ניקוי התמונות הקודמות בלבד
 
     const event = storyEvents.find(e => e.title === title);
     if (!event) return;
@@ -1244,35 +1123,37 @@ function openProposalGallery() {
     modal.style.display = 'flex';
     setTimeout(() => {
         modal.classList.add('active');
-        gsap.to(grid.querySelectorAll('.gallery-card'), {
-            opacity: 1,
-            y: 0,
-            duration: 0.5,
-            stagger: 0.05,
-            ease: "power2.out"
-        });
+        if (typeof gsap !== 'undefined') {
+            gsap.to(grid.querySelectorAll('.gallery-card'), {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                stagger: 0.05,
+                ease: "power2.out"
+            });
+        }
     }, 10);
 }
 
 function openProposalGallery() {
     const modal = document.getElementById('media-modal');
-    const titleElement = document.getElementById('modal-title-text');
-    const grid = document.getElementById('bento-grid');
-    
-    // הגנה מפני קריסה
-    if (!titleElement || !grid) return;
+    if (!modal) return;
 
-    // עדכון הכותרת הייעודית מבלי לדרוס את האלמנט עצמו
-    titleElement.innerText = "הצעת הנישואין שלנו 💍";
+    // עדכון הכותרת המקורית של האתר שלך להצעת נישואין
+    const modalTitle = modal.querySelector('h3');
+    if (modalTitle) modalTitle.innerText = "הצעת הנישואין שלנו 💍";
     
-    // הזרקת התמונות אך ורק לתוך הגריד הקיים!
+    // גישה לגריד המקורי שלך
+    const grid = document.getElementById('bento-grid');
+    if (!grid) return;
+    
+    // הזרקת התמונות ישירות לתוך ה-grid המקורי שלך - שומר על כל ה-CSS והעיצוב המקורי של האתר!
     grid.innerHTML = `
         <div class="gallery-card card-large opacity-0 translate-y-4">
             <video muted loop autoplay playsinline class="w-full h-full object-cover rounded-xl">
                 <source src="https://github.com/Arial13579/Ariel-Merav/raw/main/video_Tezza-796033.mp4" type="video/mp4">
             </video>
         </div>
-
         <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2446.JPG" class="w-full h-full object-cover rounded-xl"></div>
         <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2447.JPG" class="w-full h-full object-cover rounded-xl"></div>
         <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2452.JPG" class="w-full h-full object-cover rounded-xl"></div>
@@ -1325,14 +1206,15 @@ function openProposalGallery() {
     modal.style.display = 'flex';
     setTimeout(() => {
         modal.classList.add('active');
-        // הפעלת האנימציה על הכרטיסים המוזרקים
-        gsap.to(grid.querySelectorAll(".gallery-card"), {
-            opacity: 1,
-            y: 0,
-            duration: 0.4,
-            stagger: 0.02,
-            ease: "power2.out"
-        });
+        if (typeof gsap !== 'undefined') {
+            gsap.to(grid.querySelectorAll(".gallery-card"), {
+                opacity: 1,
+                y: 0,
+                duration: 0.4,
+                stagger: 0.02,
+                ease: "power2.out"
+            });
+        }
     }, 10);
 }
 
@@ -1343,79 +1225,43 @@ function closeMedia() {
     modal.classList.remove('active');
     setTimeout(() => {
         modal.style.display = 'none';
-        // מנקים בצורה עדינה רק את הגרפיקה והטקסט הפנימי, ולא דורסים את התגיות עצמן!
         const grid = document.getElementById('bento-grid');
-        const titleElement = document.getElementById('modal-title-text');
-        if (grid) grid.innerHTML = '';
-        if (titleElement) titleElement.innerText = '';
+        if (grid) grid.innerHTML = ''; // מנקה רק את התמונות הפנימיות, לא נוגע במבנה!
     }, 300);
 }
 
 function openEmptyGallery(title) {
     const modal = document.getElementById('media-modal');
-    const titleElement = document.getElementById('modal-title-text');
-    const grid = document.getElementById('bento-grid');
+    if (!modal) return;
+
+    const modalTitle = modal.querySelector('h3');
+    if (modalTitle) modalTitle.innerText = title;
     
-    if (titleElement) titleElement.innerText = title;
-    if (grid) {
-        grid.innerHTML = `
-            <div class="col-span-full flex flex-col items-center justify-center py-12 text-center">
-                <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4 border border-white/10">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                </div>
-                <p class="text-white/60 font-medium mb-1">הגלריה עדיין ריקה</p>
-                <p class="text-white/40 text-sm">התמונות מאירוע זה יעלו בקרוב</p>
+    const grid = document.getElementById('bento-grid');
+    if (!grid) return;
+
+    grid.innerHTML = `
+        <div class="col-span-full flex flex-col items-center justify-center py-12 text-center">
+            <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4 border border-white/10">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
             </div>
-        `;
-    }
+            <p class="text-white/60 font-medium mb-1">הגלריה עדיין ריקה</p>
+            <p class="text-white/40 text-sm">התמונות מאירוע זה יעלו בקרוב</p>
+        </div>
+    `;
     modal.style.display = 'flex';
     setTimeout(() => modal.classList.add('active'), 10);
 }
-        function _showModal() {
-            const modal = document.getElementById('media-modal');
-            modal.style.display = 'flex';
-            setTimeout(() => {
-                modal.classList.add('active');
-                gsap.to(".gallery-card", { opacity: 1, y: 0, duration: 0.6, stagger: 0.08, ease: "power2.out", delay: 0.3 });
-            }, 10);
-        }
-
-        function closeMedia() { 
-            const modal = document.getElementById('media-modal');
-            modal.classList.remove('active');
-            setTimeout(() => modal.style.display = 'none', 500);
-        }
 
 
 
-function openMedia() {
-    const modal = document.getElementById('media-modal');
-    const galleryBody = document.getElementById('gallery-body');
-    
-    if (!modal || !galleryBody) {
-        console.error("Missing modal elements!");
-        return;
-    }
 
-    // הזרקת התוכן
-    galleryBody.innerHTML = defaultGalleryHTML;
-    
-    // הצגת המודאל
-    modal.style.display = 'flex';
-    
-    // הפעלה כפויה של סרטונים (למקרה שהדפדפן חוסם אותם)
-    const videos = galleryBody.querySelectorAll('video');
-    videos.forEach(v => {
-        v.play().catch(e => console.log("Video autoplay blocked", e));
-    });
 
-    // אנימציה קלה ומהירה רק כדי לוודא שזה קופץ לעין
-    setTimeout(() => {
-        modal.classList.add('active');
-    }, 50);
-}
+
+
+       //pop
         // --- לוגיקת השאלון (Quiz) ---
         const quizData = [
             { q: "מי התחת של אריאל?", o: ["האסלה", "מירב", "ביבי נתניהו ", "אף אחד"], c: 1 },
