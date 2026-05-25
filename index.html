@@ -722,7 +722,7 @@ html { scroll-behavior: smooth; }
             <p class="text-zinc-400 font-light text-sm leading-relaxed mb-8">
                 הרגע שבו נבטיח אחד לשנייה את הנצח בצורה רשמית. רגע שיהיה רק שלנו, מושלם ומרגש.
             </p>
-          <button onclick="openMedia()" class="view-btn flex items-center gap-2">
+      <button onclick="openMedia()" class="view-btn flex items-center gap-2">
     <span>צפייה בגלרייה</span>
     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -1455,7 +1455,79 @@ function openMedia() {
             RedVortexModule.start();
         });
     }
-    </script>
 
+
+
+
+
+       //buttun_pop
+       function openMedia() {
+    document.getElementById('media-modal').classList.remove('hidden');
+}
+function closeMedia() {
+    document.getElementById('media-modal').classList.add('hidden');
+}
+    </script>
+    
+<div id="media-modal" class="fixed inset-0 z-[9999] hidden bg-black/95 overflow-y-auto p-4">
+    <div class="max-w-6xl mx-auto mt-10">
+        <button onclick="closeMedia()" class="text-white text-xl mb-4 bg-white/10 px-4 py-2 rounded-full">✕ סגירה</button>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="col-span-2 row-span-2 rounded-xl overflow-hidden border border-white/10">
+                <video muted loop autoplay playsinline class="w-full h-full object-cover">
+                    <source src="https://github.com/Arial13579/Ariel-Merav/raw/main/video_Tezza-796033.mp4" type="video/mp4">
+                </video>
+            </div>
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2446.JPG" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2447.JPG" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2452.JPG" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2453.JPG" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2655.JPG" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_3310.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_3333.JPG" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_9649.JPG" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_9934.JPG" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_9940.JPG" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/result.png" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/source_6a12bdf4aef4a6182bf077cc.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0169.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0382.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0449.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0508.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0686.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0949.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-1601.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-2337.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3195.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3268.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3624.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3761.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-4425.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-5196.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-5329.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6065.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6401.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6462.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6774.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7347.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7512.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7911.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7960.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7960ffg44.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-796044tt.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-79602223.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-79603434.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-796034343.jpeg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8125.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8263.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8310.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8406.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8507.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8726.jpg" class="rounded-xl w-full h-48 object-cover">
+            <img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8782.jpg" class="rounded-xl w-full h-48 object-cover">
+        </div>
+    </div>
+</div>
 </body>
 </html>
