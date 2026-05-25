@@ -713,22 +713,20 @@ html { scroll-behavior: smooth; }
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="future-card reveal group" style="transition-delay: 0.1s">
-<img src="https://github.com/Arial13579/Ariel-Merav/blob/main/%D7%94%D7%A6%D7%A2%D7%AA-%D7%A0%D7%99%D7%A9%D7%95%D7%90%D7%99%D7%9F-%D7%91%D7%95%D7%94%D7%95_015.jpg?raw=true" class="future-card-img grayscale hover:grayscale-0"
-                 alt="טבעת נישואין" 
-                 class="future-card-img grayscale hover:grayscale-0">
-            
-            <h3 class="text-2xl font-bold mb-4">הצעת הנישואין</h3>
-            <p class="text-zinc-400 font-light text-sm leading-relaxed mb-8">
-                הרגע שבו נבטיח אחד לשנייה את הנצח בצורה רשמית. רגע שיהיה רק שלנו, מושלם ומרגש.
-            </p>
-           <button onclick="openProposalGallery()" class="view-btn">
-    <span>צפייה בגלרייה</span>
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-    </svg>
-</button>
+        <div id="media-modal">
+    <div class="modal-content !p-0">
+        <div class="sticky top-0 bg-[#1c1c1e]/90 backdrop-filter blur-md z-[20100] px-6 pt-4 pb-3 border-b border-white/5 rounded-t-[40px] flex flex-col">
+            <div class="ios-header-bar mb-3"></div>
+            <div class="flex justify-between items-center w-full">
+                <h3 id="modal-main-title" class="text-2xl font-black text-white">הסיפור שלנו</h3>
+                <button onclick="closeMedia()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-all text-white flex items-center justify-center font-bold text-sm">✕</button>
+            </div>
         </div>
+        
+        <div id="gallery-body" class="p-6">
+            </div>
+    </div>
+</div>
 
         <div class="future-card reveal group" style="transition-delay: 0.2s">
             <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800" 
@@ -1084,55 +1082,63 @@ function updateMusicUI() {
         <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5990337496899849544_y.jpg"></div>
     </div>
 `;
- function openMedia() { 
-            document.getElementById('gallery-title').innerText = "זיכרונות";
-            document.getElementById('gallery-subtitle').innerText = "התמונות והסרטונים הכי יפים שלנו";
-            document.getElementById('gallery-body').innerHTML = defaultGalleryHTML;
-            _showModal();
-        }
-// 1. הפונקציה המקורית של האתר - מחזירה את המצב לקדמותו עבור שאר הכפתורים
-function openEmptyGallery(title) {
+// 1. פתיחת גלריית ברירת המחדל (הסיפור שלנו)
+function openMedia() {
     const modal = document.getElementById('media-modal');
-    const modalContent = modal.querySelector('.modal-content');
-    modalContent.innerHTML = `
-        <div class="ios-header-bar"></div>
-        <div class="flex justify-between items-center mb-6">
-            <h3 class="text-2xl font-black text-white">${title}</h3>
-            <button onclick="closeMedia()" class="text-sm opacity-50 hover:opacity-100 transition-all text-white">סגור</button>
-        </div>
-        <div class="flex flex-col items-center justify-center py-12 text-center">
-            <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4 border border-white/10">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-            </div>
-            <p class="text-white/60 font-medium mb-1">הגלריה עדיין ריקה</p>
-            <p class="text-white/40 text-sm">התמונות מאירוע זה יעלו בקרוב</p>
-        </div>
-    `;
+    const galleryBody = document.getElementById('gallery-body');
+    const mainTitle = document.getElementById('modal-main-title');
+    
+    if (!modal || !galleryBody) {
+        console.error("Missing modal elements!");
+        return;
+    }
+
+    // עדכון הכותרת הקבועה
+    if (mainTitle) mainTitle.innerText = "הסיפור שלנו 📖";
+
+    // הזרקת ה-Bento Grid המקורי שלך לתוך הקונטיינר הנקי
+    galleryBody.innerHTML = defaultGalleryHTML;
+
+    // הצגת המודאל
     modal.style.display = 'flex';
-    setTimeout(() => modal.classList.add('active'), 10);
+
+    // הפעלה כפויה של סרטונים (למקרה שהדפדפן חוסם אותם)
+    const videos = galleryBody.querySelectorAll('video');
+    videos.forEach(v => {
+        v.play().catch(e => console.log("Video autoplay blocked", e));
+    });
+
+    // אנימציית כניסה למודאל ולתמונות
+    setTimeout(() => {
+        modal.classList.add('active');
+        if (typeof gsap !== 'undefined') {
+            gsap.fromTo(galleryBody.querySelectorAll('.gallery-card'), 
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.5, stagger: 0.05, ease: "power2.out" }
+            );
+        }
+    }, 50);
 }
 
-// 2. פונקציה חדשה לחלוטין - אך ורק עבור הצעת הנישואין שלך
+// 2. פתיחת גלריית הצעת הנישואין (בלי להרוס את ה-HTML של האתר)
 function openProposalGallery() {
     const modal = document.getElementById('media-modal');
-    const modalContent = modal.querySelector('.modal-content');
+    const galleryBody = document.getElementById('gallery-body');
+    const mainTitle = document.getElementById('modal-main-title');
     
-    modalContent.innerHTML = `
-        <div class="ios-header-bar"></div>
-        <div class="flex justify-between items-center mb-6">
-            <h3 class="text-2xl font-black text-white">הצעת הנישואין שלנו 💍</h3>
-            <button onclick="closeMedia()" class="text-sm opacity-50 hover:opacity-100 transition-all text-white">סגור</button>
-        </div>
-        
+    if (!modal || !galleryBody) return;
+
+    // עדכון הכותרת הקבועה להצעת נישואין
+    if (mainTitle) mainTitle.innerText = "הצעת הנישואין שלנו 💍";
+
+    // הזרקת התמונות ישירות לקונטיינר הפנימי, מבלי למחוק את ה-id של גלרי באדי!
+    galleryBody.innerHTML = `
         <div class="bento-grid">
             <div class="gallery-card card-large">
                 <video muted loop autoplay playsinline class="w-full h-full object-cover rounded-xl">
                     <source src="https://github.com/Arial13579/Ariel-Merav/raw/main/video_Tezza-796033.mp4" type="video/mp4">
                 </video>
             </div>
-
             <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2446.JPG" loading="lazy"></div>
             <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2447.JPG" loading="lazy"></div>
             <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2452.JPG" loading="lazy"></div>
@@ -1186,16 +1192,53 @@ function openProposalGallery() {
     modal.style.display = 'flex';
     setTimeout(() => {
         modal.classList.add('active');
-        gsap.to(".gallery-card", {
-            opacity: 1,
-            y: 0,
-            duration: 0.5,
-            stagger: 0.03, // אנימציה מהירה וחלקה יותר להרבה תמונות
-            ease: "power2.out"
-        });
+        if (typeof gsap !== 'undefined') {
+            gsap.fromTo(galleryBody.querySelectorAll('.gallery-card'), 
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.5, stagger: 0.02, ease: "power2.out" }
+            );
+        }
     }, 10);
 }
-       
+
+// 3. פונקציה לגלריה ריקה (כמו חתונה / ילדים)
+function openEmptyGallery(title) {
+    const modal = document.getElementById('media-modal');
+    const galleryBody = document.getElementById('gallery-body');
+    const mainTitle = document.getElementById('modal-main-title');
+    
+    if (!modal || !galleryBody) return;
+
+    if (mainTitle) mainTitle.innerText = title;
+
+    galleryBody.innerHTML = `
+        <div class="flex flex-col items-center justify-center py-16 text-center">
+            <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4 border border-white/10">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+            </div>
+            <p class="text-white/60 font-medium mb-1">הגלריה עדיין ריקה</p>
+            <p class="text-white/40 text-sm">התמונות מאירוע זה יעלו בקרוב</p>
+        </div>
+    `;
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+// 4. סגירת הגלריה וניקוי בטוח
+function closeMedia() {
+    const modal = document.getElementById('media-modal');
+    const galleryBody = document.getElementById('gallery-body');
+    
+    if (!modal) return;
+    modal.classList.remove('active');
+    
+    setTimeout(() => {
+        modal.style.display = 'none';
+        if (galleryBody) galleryBody.innerHTML = ''; // מנקה רק את התוכן הפנימי, המבנה החיצוני נשאר חי וקיים!
+    }, 500);
+}
 
         function _showModal() {
             const modal = document.getElementById('media-modal');
