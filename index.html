@@ -870,37 +870,73 @@ html { scroll-behavior: smooth; }
     })();
 
 
-function checkPuzzleSolved() {
-    // ... לוגיקת הבדיקה הקיימת שלך שבודקת אם הפאזל הושלם ...
-    // אם הבדיקה מחזירה true:
-    onPuzzleComplete();
-}
-
 function onPuzzleComplete() {
     const successScreen = document.getElementById('puz-success');
     const progressBar = document.getElementById('puz-progress-bar');
     const puzzleSection = document.getElementById('puzzle');
-
-    // 1. הצגת מסך הצלחה
-    successScreen.style.display = 'flex';
     
-    // 2. הפעלת זוהר ירוק מאחורי האתר (על כל המקטע)
+    // מוצאים את הקונטיינר של לוח המשחק (איפה שחלקי הפאזל יושבים) כדי לסגור אותו ישר
+    const puzzleBoard = document.getElementById('puzzle-board') || document.querySelector('#puzzle-app-container > div:nth-child(3)');
+
+    // 1. סגירת/הסתרת הפאזל מיד כדי שלא יראו אותו ברקע
+    if (puzzleBoard) {
+        puzzleBoard.style.opacity = '0';
+        puzzleBoard.style.transform = 'scale(0.95)';
+        puzzleBoard.style.transition = 'all 0.4s ease';
+    }
+
+    // 2. עדכון טקסט ההצלחה להודעה מגניבה
+    // (מוודא שיש אלמנט טקסט פנימי, אם אין הוא ישתמש ב-successScreen עצמו)
+    const successText = successScreen.querySelector('h3, p') || successScreen;
+    successScreen.innerHTML = `
+        <div class="text-center animate-bounce flex flex-col items-center gap-2">
+            <span class="text-6xl mb-2">🏆</span>
+            <h2 class="text-5xl font-black tracking-tight" style="color: #4ade80; text-shadow: 0 0 30px rgba(74, 222, 128, 0.6);">אלופים! 🔥</h2>
+            <p class="text-zinc-400 text-sm font-light tracking-widest mt-1">מכינים את האתגר הבא...</p>
+        </div>
+    `;
+
+    // 3. הצגת מסך ההצלחה ורוחב מלא ב-Flex
+    successScreen.style.display = 'flex';
+    successScreen.style.opacity = '1';
+    
+    // 4. הפעלת זוהר ירוק מט עמוק ומגניב מאחורי כל המקטע
     puzzleSection.classList.add('success-glow');
 
-    // 3. אנימציה של פס התקדמות
-    setTimeout(() => {
-        progressBar.style.width = '100%';
-    }, 100);
+    // 5. אנימציה חלקה של פס התקדמות ל-100%
+    if (progressBar) {
+        progressBar.style.transition = 'width 2.2s cubic-bezier(0.4, 0, 0.2, 1)';
+        setTimeout(() => {
+            progressBar.style.width = '100%';
+        }, 100);
+    }
 
-    // 4. מעבר אוטומטי לפאזל הבא אחרי 2.5 שניות
+    // 6. מעבר אוטומטי לפאזל הבא אחרי 2.5 שניות (2500 מילישניות)
     setTimeout(() => {
+        // הסרת אפקט הזוהר הירוק
         puzzleSection.classList.remove('success-glow');
+        
+        // העלמת מסך ההצלחה
         successScreen.style.display = 'none';
-        progressBar.style.width = '0%';
-        puzNext(); // קריאה לפונקציה שלך שמחליפה תמונה
+        
+        // איפוס בר ההתקדמות לפעם הבאה
+        if (progressBar) {
+            progressBar.style.transition = 'none';
+            progressBar.style.width = '0%';
+        }
+        
+        // החזרת הלוח לנראות מלאה בשביל הפאזל הבא
+        if (puzzleBoard) {
+            puzzleBoard.style.opacity = '1';
+            puzzleBoard.style.transform = 'scale(1)';
+        }
+
+        // קריאה לפונקציה הקיימת שלך שמחליפה תמונה ומאותחלת מחדש
+        if (typeof puzNext === 'function') {
+            puzNext(); 
+        }
     }, 2500);
 }
-
 
 
         // רישום תוסף ה-ScrollTrigger של GSAP לאנימציות גלילה
