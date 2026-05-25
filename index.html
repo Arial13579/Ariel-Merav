@@ -870,12 +870,69 @@ html { scroll-behavior: smooth; }
     })();
 
 
+// משתנה גלובלי חדש שימנע כפילויות בהפעלת מסך הניצחון
+let isPuzzleCompleting = false; 
+let puzzleCheckInterval = null;
+
+// פונקציית ההשוואה האוטומטית שבודקת אם הפאזל הושלם
+function startPuzzleAutoCheck() {
+    // אם כבר יש טיימר רץ, ננקה אותו קודם
+    if (puzzleCheckInterval) clearInterval(puzzleCheckInterval);
+    
+    puzzleCheckInterval = setInterval(() => {
+        // אם אנחנו כבר בתהליך מעבר שלב, אין צורך לבדוק
+        if (isPuzzleCompleting) return;
+
+        const pieces = document.querySelectorAll('.puzzle-piece');
+        if (pieces.length === 0) return;
+
+        let isAllCorrect = true;
+
+        // עוברים על כל החלקים ובודקים אם המיקום הנוכחי שווה למיקום המקורי
+        pieces.forEach(piece => {
+            const currentIdx = parseInt(piece.dataset.currentIdx);
+            const originalIdx = parseInt(piece.dataset.originalIdx);
+            
+            if (currentIdx !== originalIdx) {
+                isAllCorrect = false;
+            }
+        });
+
+        // אם המנגנון מזהה שכל החלקים במקום - ניצחון!
+        if (isAllCorrect) {
+            clearInterval(puzzleCheckInterval); // עוצרים את הטיימר מיד
+            onPuzzleComplete();
+            // הפעלת מנגנון ההשוואה האוטומטי כל חצי שנייה
+    startPuzzleAutoCheck();
+        }
+    }, 500); // בודק אוטומטית כל 500 מילישניות (חצי שנייה)
+}
+
+// מעדכנים גם את פונקציית הבדיקה הידנית המקורית כדי שתתמוך במנגנון
+function puzCheck() {
+    // המנגנון האוטומטי כבר מטפל בזה, אבל נשאיר תמיכה למקרה של גרירה ידנית
+    const pieces = document.querySelectorAll('.puzzle-piece');
+    let isAllCorrect = true;
+    pieces.forEach(piece => {
+        if (parseInt(piece.dataset.currentIdx) !== parseInt(piece.dataset.originalIdx)) {
+            isAllCorrect = false;
+        }
+    });
+    if (isAllCorrect && !isPuzzleCompleting) {
+        if (puzzleCheckInterval) clearInterval(puzzleCheckInterval);
+        onPuzzleComplete();
+    }
+}
+
 function onPuzzleComplete() {
+    if (isPuzzleCompleting) return; // הגנה מפני קריאות כפולות
+    isPuzzleCompleting = true;
+
     const successScreen = document.getElementById('puz-success');
     const progressBar = document.getElementById('puz-progress-bar');
     const puzzleSection = document.getElementById('puzzle');
     
-    // מוצאים את הקונטיינר של לוח המשחק (איפה שחלקי הפאזל יושבים) כדי לסגור אותו ישר
+    // מוצאים את הקונטיינר של לוח המשחק (איפה שחלקי הפאזל יושבים)
     const puzzleBoard = document.getElementById('puzzle-board') || document.querySelector('#puzzle-app-container > div:nth-child(3)');
 
     // 1. סגירת/הסתרת הפאזל מיד כדי שלא יראו אותו ברקע
@@ -885,9 +942,7 @@ function onPuzzleComplete() {
         puzzleBoard.style.transition = 'all 0.4s ease';
     }
 
-    // 2. עדכון טקסט ההצלחה להודעה מגניבה
-    // (מוודא שיש אלמנט טקסט פנימי, אם אין הוא ישתמש ב-successScreen עצמו)
-    const successText = successScreen.querySelector('h3, p') || successScreen;
+    // 2. עדכון טקסט ההצלחה להודעה ירוקה וזוהרת
     successScreen.innerHTML = `
         <div class="text-center animate-bounce flex flex-col items-center gap-2">
             <span class="text-6xl mb-2">🏆</span>
@@ -896,11 +951,11 @@ function onPuzzleComplete() {
         </div>
     `;
 
-    // 3. הצגת מסך ההצלחה ורוחב מלא ב-Flex
+    // 3. הצגת מסך ההצלחה
     successScreen.style.display = 'flex';
     successScreen.style.opacity = '1';
     
-    // 4. הפעלת זוהר ירוק מט עמוק ומגניב מאחורי כל המקטע
+    // 4. הפעלת זוהר ירוק עמוק מאחורי כל המקטע
     puzzleSection.classList.add('success-glow');
 
     // 5. אנימציה חלקה של פס התקדמות ל-100%
@@ -911,7 +966,7 @@ function onPuzzleComplete() {
         }, 100);
     }
 
-    // 6. מעבר אוטומטי לפאזל הבא אחרי 2.5 שניות (2500 מילישניות)
+    // 6. מעבר אוטומטי לפאזל הבא אחרי 2.5 שניות
     setTimeout(() => {
         // הסרת אפקט הזוהר הירוק
         puzzleSection.classList.remove('success-glow');
@@ -919,7 +974,7 @@ function onPuzzleComplete() {
         // העלמת מסך ההצלחה
         successScreen.style.display = 'none';
         
-        // איפוס בר ההתקדמות לפעם הבאה
+        // איפוס בר ההתקדמות
         if (progressBar) {
             progressBar.style.transition = 'none';
             progressBar.style.width = '0%';
@@ -931,9 +986,14 @@ function onPuzzleComplete() {
             puzzleBoard.style.transform = 'scale(1)';
         }
 
-        // קריאה לפונקציה הקיימת שלך שמחליפה תמונה ומאותחלת מחדש
+        // שינוי סטטוס כדי לאפשר בדיקות לפאזל הבא
+        isPuzzleCompleting = false;
+
+        // קריאה לפונקציה שמחליפה תמונה
         if (typeof puzNext === 'function') {
             puzNext(); 
+            // הפעלה מחדש של מנגנון ההשוואה האוטומטי עבור התמונה החדשה
+            startPuzzleAutoCheck();
         }
     }, 2500);
 }
