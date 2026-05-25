@@ -870,133 +870,37 @@ html { scroll-behavior: smooth; }
     })();
 
 
-// משתנה גלובלי חדש שימנע כפילויות בהפעלת מסך הניצחון
-let isPuzzleCompleting = false; 
-let puzzleCheckInterval = null;
-
-// פונקציית ההשוואה האוטומטית שבודקת אם הפאזל הושלם
-function startPuzzleAutoCheck() {
-    // אם כבר יש טיימר רץ, ננקה אותו קודם
-    if (puzzleCheckInterval) clearInterval(puzzleCheckInterval);
-    
-    puzzleCheckInterval = setInterval(() => {
-        // אם אנחנו כבר בתהליך מעבר שלב, אין צורך לבדוק
-        if (isPuzzleCompleting) return;
-
-        const pieces = document.querySelectorAll('.puzzle-piece');
-        if (pieces.length === 0) return;
-
-        let isAllCorrect = true;
-
-        // עוברים על כל החלקים ובודקים אם המיקום הנוכחי שווה למיקום המקורי
-        pieces.forEach(piece => {
-            const currentIdx = parseInt(piece.dataset.currentIdx);
-            const originalIdx = parseInt(piece.dataset.originalIdx);
-            
-            if (currentIdx !== originalIdx) {
-                isAllCorrect = false;
-            }
-        });
-
-        // אם המנגנון מזהה שכל החלקים במקום - ניצחון!
-        if (isAllCorrect) {
-            clearInterval(puzzleCheckInterval); // עוצרים את הטיימר מיד
-            onPuzzleComplete();
-            // הפעלת מנגנון ההשוואה האוטומטי כל חצי שנייה
-    startPuzzleAutoCheck();
-        }
-    }, 500); // בודק אוטומטית כל 500 מילישניות (חצי שנייה)
-}
-
-// מעדכנים גם את פונקציית הבדיקה הידנית המקורית כדי שתתמוך במנגנון
-function puzCheck() {
-    // המנגנון האוטומטי כבר מטפל בזה, אבל נשאיר תמיכה למקרה של גרירה ידנית
-    const pieces = document.querySelectorAll('.puzzle-piece');
-    let isAllCorrect = true;
-    pieces.forEach(piece => {
-        if (parseInt(piece.dataset.currentIdx) !== parseInt(piece.dataset.originalIdx)) {
-            isAllCorrect = false;
-        }
-    });
-    if (isAllCorrect && !isPuzzleCompleting) {
-        if (puzzleCheckInterval) clearInterval(puzzleCheckInterval);
-        onPuzzleComplete();
-    }
+function checkPuzzleSolved() {
+    // ... לוגיקת הבדיקה הקיימת שלך שבודקת אם הפאזל הושלם ...
+    // אם הבדיקה מחזירה true:
+    onPuzzleComplete();
 }
 
 function onPuzzleComplete() {
-    if (isPuzzleCompleting) return; // הגנה מפני קריאות כפולות
-    isPuzzleCompleting = true;
-
     const successScreen = document.getElementById('puz-success');
     const progressBar = document.getElementById('puz-progress-bar');
     const puzzleSection = document.getElementById('puzzle');
-    
-    // מוצאים את הקונטיינר של לוח המשחק (איפה שחלקי הפאזל יושבים)
-    const puzzleBoard = document.getElementById('puzzle-board') || document.querySelector('#puzzle-app-container > div:nth-child(3)');
 
-    // 1. סגירת/הסתרת הפאזל מיד כדי שלא יראו אותו ברקע
-    if (puzzleBoard) {
-        puzzleBoard.style.opacity = '0';
-        puzzleBoard.style.transform = 'scale(0.95)';
-        puzzleBoard.style.transition = 'all 0.4s ease';
-    }
-
-    // 2. עדכון טקסט ההצלחה להודעה ירוקה וזוהרת
-    successScreen.innerHTML = `
-        <div class="text-center animate-bounce flex flex-col items-center gap-2">
-            <span class="text-6xl mb-2">🏆</span>
-            <h2 class="text-5xl font-black tracking-tight" style="color: #4ade80; text-shadow: 0 0 30px rgba(74, 222, 128, 0.6);">אלופים! 🔥</h2>
-            <p class="text-zinc-400 text-sm font-light tracking-widest mt-1">מכינים את האתגר הבא...</p>
-        </div>
-    `;
-
-    // 3. הצגת מסך ההצלחה
+    // 1. הצגת מסך הצלחה
     successScreen.style.display = 'flex';
-    successScreen.style.opacity = '1';
     
-    // 4. הפעלת זוהר ירוק עמוק מאחורי כל המקטע
+    // 2. הפעלת זוהר ירוק מאחורי האתר (על כל המקטע)
     puzzleSection.classList.add('success-glow');
 
-    // 5. אנימציה חלקה של פס התקדמות ל-100%
-    if (progressBar) {
-        progressBar.style.transition = 'width 2.2s cubic-bezier(0.4, 0, 0.2, 1)';
-        setTimeout(() => {
-            progressBar.style.width = '100%';
-        }, 100);
-    }
-
-    // 6. מעבר אוטומטי לפאזל הבא אחרי 2.5 שניות
+    // 3. אנימציה של פס התקדמות
     setTimeout(() => {
-        // הסרת אפקט הזוהר הירוק
+        progressBar.style.width = '100%';
+    }, 100);
+
+    // 4. מעבר אוטומטי לפאזל הבא אחרי 2.5 שניות
+    setTimeout(() => {
         puzzleSection.classList.remove('success-glow');
-        
-        // העלמת מסך ההצלחה
         successScreen.style.display = 'none';
-        
-        // איפוס בר ההתקדמות
-        if (progressBar) {
-            progressBar.style.transition = 'none';
-            progressBar.style.width = '0%';
-        }
-        
-        // החזרת הלוח לנראות מלאה בשביל הפאזל הבא
-        if (puzzleBoard) {
-            puzzleBoard.style.opacity = '1';
-            puzzleBoard.style.transform = 'scale(1)';
-        }
-
-        // שינוי סטטוס כדי לאפשר בדיקות לפאזל הבא
-        isPuzzleCompleting = false;
-
-        // קריאה לפונקציה שמחליפה תמונה
-        if (typeof puzNext === 'function') {
-            puzNext(); 
-            // הפעלה מחדש של מנגנון ההשוואה האוטומטי עבור התמונה החדשה
-            startPuzzleAutoCheck();
-        }
+        progressBar.style.width = '0%';
+        puzNext(); // קריאה לפונקציה שלך שמחליפה תמונה
     }, 2500);
 }
+
 
 
         // רישום תוסף ה-ScrollTrigger של GSAP לאנימציות גלילה
@@ -1210,93 +1114,87 @@ function openEmptyGallery(title) {
     setTimeout(() => modal.classList.add('active'), 10);
 }
 
+// 2. פונקציה חדשה לחלוטין - אך ורק עבור הצעת הנישואין שלך
 function openProposalGallery() {
     const modal = document.getElementById('media-modal');
     const modalContent = modal.querySelector('.modal-content');
     
-    // רשימת הכתובות המקוריות שלך
-    const rawImages = [
-        "IMG_2446.JPG", "IMG_2447.JPG", "IMG_2452.JPG", "IMG_2453.JPG", 
-        "IMG_2655.JPG", "IMG_3310.jpg", "IMG_3333.JPG", "IMG_9649.JPG", 
-        "IMG_9934.JPG", "IMG_9940.JPG", "result.png", "source_6a12bdf4aef4a6182bf077cc.jpg", 
-        "Tezza-0169.jpg", "Tezza-0382.jpg", "Tezza-0449.jpg", "Tezza-0508.jpg", 
-        "Tezza-0686.jpg", "Tezza-0949.jpg", "Tezza-1601.jpg", "Tezza-2337.jpg", 
-        "Tezza-3195.jpg", "Tezza-3268.jpg", "Tezza-3624.jpg", "Tezza-3761.jpg", 
-        "Tezza-4425.jpg", "Tezza-5196.jpg", "Tezza-5329.jpg", "Tezza-6065.jpg", 
-        "Tezza-6401.jpg", "Tezza-6462.jpg", "Tezza-6774.jpg", "Tezza-7347.jpg", 
-        "Tezza-7512.jpg", "Tezza-7911.jpg", "Tezza-7960.jpg", "Tezza-7960ffg44.jpg", 
-        "Tezza-796044tt.jpg", "Tezza-79602223.jpg", "Tezza-79603434.jpg", "Tezza-796034343.jpeg", 
-        "Tezza-8125.jpg", "Tezza-8263.jpg", "Tezza-8310.jpg", "Tezza-8406.jpg", 
-        "Tezza-8507.jpg", "Tezza-8726.jpg", "Tezza-8782.jpg"
-    ];
-
-    // בניית ה-HTML של התמונות
-    let imagesHTML = '';
-    rawImages.forEach(img => {
-        imagesHTML += `<div class="gallery-card opacity-0 translate-y-4"><img src="https://cdn.jsdelivr.net/gh/Arial13579/Ariel-Merav@main/${img}" loading="lazy" class="w-full h-full object-cover rounded-xl"></div>`;
-    });
-    
-    // הזרקת המבנה החדש - שים לב לכפתור הסגירה הקבוע (fixed-close-btn)
     modalContent.innerHTML = `
         <div class="ios-header-bar"></div>
-        
-        <button onclick="closeMedia()" class="fixed top-6 left-6 z-[60] bg-black/50 hover:bg-black/80 backdrop-blur-md text-white w-10 h-10 rounded-full flex items-center justify-center border border-white/10 transition-all active:scale-95 shadow-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-        </button>
-
-        <div class="flex justify-between items-center mb-6 pr-2">
+        <div class="flex justify-between items-center mb-6">
             <h3 class="text-2xl font-black text-white">הצעת הנישואין שלנו 💍</h3>
+            <button onclick="closeMedia()" class="text-sm opacity-50 hover:opacity-100 transition-all text-white">סגור</button>
         </div>
         
-        <div id="bento-grid" class="bento-grid">
-            <div class="gallery-card card-large opacity-0 translate-y-4">
+        <div class="bento-grid">
+            <div class="gallery-card card-large">
                 <video muted loop autoplay playsinline class="w-full h-full object-cover rounded-xl">
-                    <source src="https://cdn.jsdelivr.net/gh/Arial13579/Ariel-Merav@main/video_Tezza-796033.mp4" type="video/mp4">
+                    <source src="https://github.com/Arial13579/Ariel-Merav/raw/main/video_Tezza-796033.mp4" type="video/mp4">
                 </video>
             </div>
-            ${imagesHTML}
+
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2446.JPG" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2447.JPG" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2452.JPG" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2453.JPG" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2655.JPG" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_3310.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_3333.JPG" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_9649.JPG" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_9934.JPG" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_9940.JPG" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/result.png" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/source_6a12bdf4aef4a6182bf077cc.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0169.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0382.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0449.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0508.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0686.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0949.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-1601.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-2337.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3195.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3268.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3624.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3761.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-4425.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-5196.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-5329.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6065.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6401.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6462.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6774.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7347.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7512.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7911.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7960.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7960ffg44.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-796044tt.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-79602223.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-79603434.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-796034343.jpeg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8125.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8263.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8310.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8406.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8507.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8726.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8782.jpg" loading="lazy"></div>
         </div>
     `;
 
-    // הצגת המודאל
     modal.style.display = 'flex';
     setTimeout(() => {
         modal.classList.add('active');
-        // הפעלת האנימציה של GSAP על הכרטיסים
-        gsap.to(modalContent.querySelectorAll(".gallery-card"), {
+        gsap.to(".gallery-card", {
             opacity: 1,
             y: 0,
-            duration: 0.4,
-            stagger: 0.02,
+            duration: 0.5,
+            stagger: 0.03, // אנימציה מהירה וחלקה יותר להרבה תמונות
             ease: "power2.out"
         });
     }, 10);
 }
-
-       function closeMedia() {
-    const modal = document.getElementById('media-modal');
-    if (!modal) return;
-    
-    modal.classList.remove('active');
-    setTimeout(() => {
-        modal.style.display = 'none';
-        // מנקים את התוכן כדי שהגלריות האחרות יוכלו לבנות אותו מחדש מאפס בלי התנגשויות
-        const modalContent = modal.querySelector('.modal-content');
-        if (modalContent) {
-            modalContent.innerHTML = '';
-        }
-    }, 300); // הזמן של האנימציה ב-CSS
-}
-
-
-
-
-
-
-
-
        
 
         function _showModal() {
