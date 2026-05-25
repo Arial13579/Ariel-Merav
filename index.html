@@ -722,12 +722,12 @@ html { scroll-behavior: smooth; }
             <p class="text-zinc-400 font-light text-sm leading-relaxed mb-8">
                 הרגע שבו נבטיח אחד לשנייה את הנצח בצורה רשמית. רגע שיהיה רק שלנו, מושלם ומרגש.
             </p>
-            <button onclick="openEmptyGallery('הצעת הנישואין')" class="view-btn">
-                <span>צפייה בגלרייה</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-            </button>
+          <button onclick="openProposalGallery()" class="view-btn">
+    <span>צפייה בגלרייה</span>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+    </svg>
+</button>
         </div>
 
         <div class="future-card reveal group" style="transition-delay: 0.2s">
@@ -1455,6 +1455,116 @@ function openMedia() {
             RedVortexModule.start();
         });
     }
+
+
+
+       function openProposalGallery() {
+    const modal = document.getElementById('media-modal');
+    // כאן תוכל למצוא או להחליף את אלמנט התוכן הפנימי של המודאל
+    const modalContent = modal.querySelector('.modal-content');
+    
+    // רשימת הקישורים לתמונות שלך (החלף את הקישורים לדוגמה בקישורים האמיתיים שלך מ-GitHub/Unsplash)
+    const images = [
+      
+<div class="bento-grid">
+    <div class="gallery-card card-large">
+        <video muted loop autoplay playsinline>
+            <source src="https://github.com/Arial13579/Ariel-Merav/raw/main/video_Tezza-796033.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2446.JPG"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2447.JPG"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2452.JPG"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2453.JPG"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2655.JPG"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_3310.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_3333.JPG"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_9649.JPG"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_9934.JPG"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_9940.JPG"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/result.png"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/source_6a12bdf4aef4a6182bf077cc.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0169.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0382.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0449.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0508.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0686.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0949.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-1601.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-2337.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3195.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3268.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3624.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3761.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-4425.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-5196.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-5329.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6065.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6401.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6462.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6774.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7347.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7512.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7911.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7960.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7960ffg44.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-796044tt.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-79602223.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-79603434.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-796034343.jpeg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8125.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8263.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8310.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8406.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8507.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8726.jpg"></div>
+    <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8782.jpg"></div>
+</div>
+    ];
+
+    // יצירת מבנה ה-Bento Grid היוקרתי בתוך המודאל
+    modalContent.innerHTML = `
+        <div class="ios-header-bar"></div>
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-black text-white">הצעת הנישואין שלנו 💍</h3>
+            <button onclick="closeMedia()" class="text-sm opacity-50 hover:opacity-100 transition-all text-white">סגור</button>
+        </div>
+        
+        <div class="bento-grid">
+            <div class="gallery-card card-large">
+                <img src="${images[0]}" alt="Proposal 1" loading="lazy">
+            </div>
+            <div class="gallery-card card-tall">
+                <img src="${images[1]}" alt="Proposal 2" loading="lazy">
+            </div>
+            <div class="gallery-card">
+                <img src="${images[2]}" alt="Proposal 3" loading="lazy">
+            </div>
+            <div class="gallery-card">
+                <img src="${images[3]}" alt="Proposal 4" loading="lazy">
+            </div>
+            <div class="gallery-card card-large">
+                <img src="${images[4]}" alt="Proposal 5" loading="lazy">
+            </div>
+        </div>
+    `;
+
+    // הצגת החלון הקופץ והפעלת האנימציה (בדומה ל-openMedia הקיים שלך)
+    modal.style.display = 'flex';
+    setTimeout(() => {
+        modal.classList.add('active');
+        
+        // הפעלת אנימציית כניסה הדרגתית (Fade in) לכרטיסים בגריד באמצעות GSAP שכבר טעון אצלך
+        gsap.to(".gallery-card", {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: "power2.out"
+        });
+    }, 10);
+}
     </script>
 </body>
 </html>
