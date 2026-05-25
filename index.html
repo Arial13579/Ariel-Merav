@@ -1084,163 +1084,23 @@ function updateMusicUI() {
         <div class="gallery-card card-wide"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/photo_5990337496899849544_y.jpg"></div>
     </div>
 `;
-function openMedia(title, type) {
-    const modal = document.getElementById('media-modal');
-    if (!modal) return;
-
-    // מציאת כותרת המודאל המקורית של האתר שלך (בדרך כלל h3 בתוך המודאל)
-    const modalTitle = modal.querySelector('h3');
-    if (modalTitle) modalTitle.innerText = title;
-    
-    // מציאת הגריד המקורי שלך מבלי לשנות לו את ה-HTML החיצוני
-    const grid = document.getElementById('bento-grid');
-    if (!grid) return;
-    grid.innerHTML = ''; // ניקוי התמונות הקודמות בלבד
-
-    const event = storyEvents.find(e => e.title === title);
-    if (!event) return;
-
-    event.media.forEach((item, index) => {
-        const card = document.createElement('div');
-        card.className = 'gallery-card opacity-0 translate-y-4';
-        
-        if (index === 0) card.classList.add('card-large');
-        else if (index === 1) card.classList.add('card-tall');
-
-        if (item.type === 'video') {
-            card.innerHTML = `
-                <video muted loop autoplay playsinline class="w-full h-full object-cover rounded-xl">
-                    <source src="${item.url}" type="video/mp4">
-                </video>
-            `;
-        } else {
-            card.innerHTML = `<img src="${item.url}" alt="${title}" loading="lazy" class="w-full h-full object-cover rounded-xl">`;
+ function openMedia() { 
+            document.getElementById('gallery-title').innerText = "זיכרונות";
+            document.getElementById('gallery-subtitle').innerText = "התמונות והסרטונים הכי יפים שלנו";
+            document.getElementById('gallery-body').innerHTML = defaultGalleryHTML;
+            _showModal();
         }
-        grid.appendChild(card);
-    });
-
-    modal.style.display = 'flex';
-    setTimeout(() => {
-        modal.classList.add('active');
-        if (typeof gsap !== 'undefined') {
-            gsap.to(grid.querySelectorAll('.gallery-card'), {
-                opacity: 1,
-                y: 0,
-                duration: 0.5,
-                stagger: 0.05,
-                ease: "power2.out"
-            });
-        }
-    }, 10);
-}
-
-function openProposalGallery() {
-    const modal = document.getElementById('media-modal');
-    if (!modal) return;
-
-    // עדכון הכותרת המקורית של האתר שלך להצעת נישואין
-    const modalTitle = modal.querySelector('h3');
-    if (modalTitle) modalTitle.innerText = "הצעת הנישואין שלנו 💍";
-    
-    // גישה לגריד המקורי שלך
-    const grid = document.getElementById('bento-grid');
-    if (!grid) return;
-    
-    // הזרקת התמונות ישירות לתוך ה-grid המקורי שלך - שומר על כל ה-CSS והעיצוב המקורי של האתר!
-    grid.innerHTML = `
-        <div class="gallery-card card-large opacity-0 translate-y-4">
-            <video muted loop autoplay playsinline class="w-full h-full object-cover rounded-xl">
-                <source src="https://github.com/Arial13579/Ariel-Merav/raw/main/video_Tezza-796033.mp4" type="video/mp4">
-            </video>
-        </div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2446.JPG" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2447.JPG" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2452.JPG" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2453.JPG" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2655.JPG" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_3310.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_3333.JPG" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_9649.JPG" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_9934.JPG" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_9940.JPG" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/result.png" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/source_6a12bdf4aef4a6182bf077cc.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0169.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0382.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0449.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0508.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0686.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0949.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-1601.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-2337.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3195.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3268.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3624.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3761.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-4425.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-5196.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-5329.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6065.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6401.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6462.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6774.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7347.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7512.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7911.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7960.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7960ffg44.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-796044tt.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-79602223.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-79603434.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-796034343.jpeg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8125.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8263.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8310.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8406.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8507.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8726.jpg" class="w-full h-full object-cover rounded-xl"></div>
-        <div class="gallery-card opacity-0 translate-y-4"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8782.jpg" class="w-full h-full object-cover rounded-xl"></div>
-    `;
-
-    modal.style.display = 'flex';
-    setTimeout(() => {
-        modal.classList.add('active');
-        if (typeof gsap !== 'undefined') {
-            gsap.to(grid.querySelectorAll(".gallery-card"), {
-                opacity: 1,
-                y: 0,
-                duration: 0.4,
-                stagger: 0.02,
-                ease: "power2.out"
-            });
-        }
-    }, 10);
-}
-
-function closeMedia() {
-    const modal = document.getElementById('media-modal');
-    if (!modal) return;
-    
-    modal.classList.remove('active');
-    setTimeout(() => {
-        modal.style.display = 'none';
-        const grid = document.getElementById('bento-grid');
-        if (grid) grid.innerHTML = ''; // מנקה רק את התמונות הפנימיות, לא נוגע במבנה!
-    }, 300);
-}
-
+// 1. הפונקציה המקורית של האתר - מחזירה את המצב לקדמותו עבור שאר הכפתורים
 function openEmptyGallery(title) {
     const modal = document.getElementById('media-modal');
-    if (!modal) return;
-
-    const modalTitle = modal.querySelector('h3');
-    if (modalTitle) modalTitle.innerText = title;
-    
-    const grid = document.getElementById('bento-grid');
-    if (!grid) return;
-
-    grid.innerHTML = `
-        <div class="col-span-full flex flex-col items-center justify-center py-12 text-center">
+    const modalContent = modal.querySelector('.modal-content');
+    modalContent.innerHTML = `
+        <div class="ios-header-bar"></div>
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-black text-white">${title}</h3>
+            <button onclick="closeMedia()" class="text-sm opacity-50 hover:opacity-100 transition-all text-white">סגור</button>
+        </div>
+        <div class="flex flex-col items-center justify-center py-12 text-center">
             <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4 border border-white/10">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -1253,7 +1113,133 @@ function openEmptyGallery(title) {
     modal.style.display = 'flex';
     setTimeout(() => modal.classList.add('active'), 10);
 }
+
+// 2. פונקציה חדשה לחלוטין - אך ורק עבור הצעת הנישואין שלך
+function openProposalGallery() {
+    const modal = document.getElementById('media-modal');
+    const modalContent = modal.querySelector('.modal-content');
+    
+    modalContent.innerHTML = `
+        <div class="ios-header-bar"></div>
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-black text-white">הצעת הנישואין שלנו 💍</h3>
+            <button onclick="closeMedia()" class="text-sm opacity-50 hover:opacity-100 transition-all text-white">סגור</button>
+        </div>
+        
+        <div class="bento-grid">
+            <div class="gallery-card card-large">
+                <video muted loop autoplay playsinline class="w-full h-full object-cover rounded-xl">
+                    <source src="https://github.com/Arial13579/Ariel-Merav/raw/main/video_Tezza-796033.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2446.JPG" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2447.JPG" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2452.JPG" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2453.JPG" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_2655.JPG" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_3310.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_3333.JPG" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_9649.JPG" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_9934.JPG" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/IMG_9940.JPG" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/result.png" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/source_6a12bdf4aef4a6182bf077cc.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0169.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0382.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0449.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0508.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0686.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-0949.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-1601.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-2337.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3195.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3268.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3624.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-3761.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-4425.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-5196.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-5329.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6065.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6401.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6462.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-6774.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7347.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7512.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7911.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7960.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-7960ffg44.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-796044tt.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-79602223.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-79603434.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-796034343.jpeg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8125.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8263.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8310.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8406.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8507.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8726.jpg" loading="lazy"></div>
+            <div class="gallery-card"><img src="https://github.com/Arial13579/Ariel-Merav/raw/main/Tezza-8782.jpg" loading="lazy"></div>
+        </div>
+    `;
+
+    modal.style.display = 'flex';
+    setTimeout(() => {
+        modal.classList.add('active');
+        gsap.to(".gallery-card", {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            stagger: 0.03, // אנימציה מהירה וחלקה יותר להרבה תמונות
+            ease: "power2.out"
+        });
+    }, 10);
+}
        
+
+        function _showModal() {
+            const modal = document.getElementById('media-modal');
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('active');
+                gsap.to(".gallery-card", { opacity: 1, y: 0, duration: 0.6, stagger: 0.08, ease: "power2.out", delay: 0.3 });
+            }, 10);
+        }
+
+        function closeMedia() { 
+            const modal = document.getElementById('media-modal');
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 500);
+        }
+
+
+
+function openMedia() {
+    const modal = document.getElementById('media-modal');
+    const galleryBody = document.getElementById('gallery-body');
+    
+    if (!modal || !galleryBody) {
+        console.error("Missing modal elements!");
+        return;
+    }
+
+    // הזרקת התוכן
+    galleryBody.innerHTML = defaultGalleryHTML;
+    
+    // הצגת המודאל
+    modal.style.display = 'flex';
+    
+    // הפעלה כפויה של סרטונים (למקרה שהדפדפן חוסם אותם)
+    const videos = galleryBody.querySelectorAll('video');
+    videos.forEach(v => {
+        v.play().catch(e => console.log("Video autoplay blocked", e));
+    });
+
+    // אנימציה קלה ומהירה רק כדי לוודא שזה קופץ לעין
+    setTimeout(() => {
+        modal.classList.add('active');
+    }, 50);
+}
         // --- לוגיקת השאלון (Quiz) ---
         const quizData = [
             { q: "מי התחת של אריאל?", o: ["האסלה", "מירב", "ביבי נתניהו ", "אף אחד"], c: 1 },
