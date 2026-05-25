@@ -722,7 +722,7 @@ html { scroll-behavior: smooth; }
             <p class="text-zinc-400 font-light text-sm leading-relaxed mb-8">
                 הרגע שבו נבטיח אחד לשנייה את הנצח בצורה רשמית. רגע שיהיה רק שלנו, מושלם ומרגש.
             </p>
-          <button onclick="openEmptyGallery('הצעת הנישואין')" class="view-btn">
+           <button onclick="openProposalGallery()" class="view-btn">
     <span>צפייה בגלרייה</span>
     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -1090,16 +1090,39 @@ function updateMusicUI() {
             document.getElementById('gallery-body').innerHTML = defaultGalleryHTML;
             _showModal();
         }
-
-    function openEmptyGallery(title) {
+// 1. הפונקציה המקורית של האתר - מחזירה את המצב לקדמותו עבור שאר הכפתורים
+function openEmptyGallery(title) {
     const modal = document.getElementById('media-modal');
     const modalContent = modal.querySelector('.modal-content');
-    
-    // הזרקת המבנה המדויק עם הוידאו וכל התמונות שביקשת
     modalContent.innerHTML = `
         <div class="ios-header-bar"></div>
         <div class="flex justify-between items-center mb-6">
-            <h3 class="text-2xl font-black text-white">${title} שלנו 💍</h3>
+            <h3 class="text-2xl font-black text-white">${title}</h3>
+            <button onclick="closeMedia()" class="text-sm opacity-50 hover:opacity-100 transition-all text-white">סגור</button>
+        </div>
+        <div class="flex flex-col items-center justify-center py-12 text-center">
+            <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4 border border-white/10">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+            </div>
+            <p class="text-white/60 font-medium mb-1">הגלריה עדיין ריקה</p>
+            <p class="text-white/40 text-sm">התמונות מאירוע זה יעלו בקרוב</p>
+        </div>
+    `;
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+// 2. פונקציה חדשה לחלוטין - אך ורק עבור הצעת הנישואין שלך
+function openProposalGallery() {
+    const modal = document.getElementById('media-modal');
+    const modalContent = modal.querySelector('.modal-content');
+    
+    modalContent.innerHTML = `
+        <div class="ios-header-bar"></div>
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-black text-white">הצעת הנישואין שלנו 💍</h3>
             <button onclick="closeMedia()" class="text-sm opacity-50 hover:opacity-100 transition-all text-white">סגור</button>
         </div>
         
@@ -1160,17 +1183,14 @@ function updateMusicUI() {
         </div>
     `;
 
-    // פתיחת המודאל והפעלת האנימציה החלקה
     modal.style.display = 'flex';
     setTimeout(() => {
         modal.classList.add('active');
-        
-        // חשיפה הדרגתית של התמונות עם ה-GSAP הקיים שלך באתר
         gsap.to(".gallery-card", {
             opacity: 1,
             y: 0,
             duration: 0.5,
-            stagger: 0.05,
+            stagger: 0.03, // אנימציה מהירה וחלקה יותר להרבה תמונות
             ease: "power2.out"
         });
     }, 10);
