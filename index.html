@@ -1213,31 +1213,46 @@ function openProposalGallery() {
         }
 
 
-
+//problem
 function openMedia() {
     const modal = document.getElementById('media-modal');
-    const galleryBody = document.getElementById('gallery-body');
-    
-    if (!modal || !galleryBody) {
+    // אנחנו תופסים את התוכן הראשי של המודאל במקום לחפש אלמנטים ספציפיים
+    const modalContent = modal.querySelector('.modal-content');
+
+    if (!modal || !modalContent) {
         console.error("Missing modal elements!");
         return;
     }
 
-    // הזרקת התוכן
-    galleryBody.innerHTML = defaultGalleryHTML;
-    
+    // בונים מחדש את כל מבנה המודאל (כותרת, כפתור סגירה והגלריה) בדיוק כמו בפונקציות האחרות
+    modalContent.innerHTML = `
+        <div class="ios-header-bar"></div>
+        <div class="flex justify-between items-center mb-8 px-2">
+            <div>
+                <h2 class="text-3xl font-extrabold text-white tracking-tight" id="gallery-title">זיכרונות</h2>
+                <p class="text-zinc-500 text-sm" id="gallery-subtitle">התמונות והסרטונים הכי יפים שלנו</p>
+            </div>
+            <button onclick="closeMedia()" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-sm font-bold backdrop-blur-md opacity-40 hover:opacity-100 transition-opacity">✕</button>
+        </div>
+        <div id="gallery-body">
+            ${defaultGalleryHTML}
+        </div>
+        <div class="h-20"></div>
+    `;
+
     // הצגת המודאל
     modal.style.display = 'flex';
     
     // הפעלה כפויה של סרטונים (למקרה שהדפדפן חוסם אותם)
-    const videos = galleryBody.querySelectorAll('video');
+    const videos = modalContent.querySelectorAll('video');
     videos.forEach(v => {
         v.play().catch(e => console.log("Video autoplay blocked", e));
     });
 
-    // אנימציה קלה ומהירה רק כדי לוודא שזה קופץ לעין
+    // הוספת קלאס פעיל לאנימציה וטריגר של GSAP לתמונות
     setTimeout(() => {
         modal.classList.add('active');
+        gsap.to(".gallery-card", { opacity: 1, y: 0, duration: 0.6, stagger: 0.08, ease: "power2.out", delay: 0.3 });
     }, 50);
 }
         // --- לוגיקת השאלון (Quiz) ---
