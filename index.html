@@ -1401,39 +1401,37 @@ function openMedia() {
             target.style.backgroundPosition = sBg;
             target.dataset.correct = sIdx;
             puzCheck();
-        }
-       function showPuzzleSuccessAlert() {
-    // יצירת אלמנט ההתראה
+    function showPuzzleSuccessAlert() {
+    // יצירת אלמנט ההתראה עם קלאסים התחלתיים של שקיפות (opacity-0) ומיקום גבוה (-translate-y-4)
     const alertBox = document.createElement('div');
-    alertBox.className = "fixed top-10 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-xl text-emerald-400 px-6 py-4 rounded-2xl shadow-[0_8px_32px_rgba(16,185,129,0.2)] opacity-0 -translate-y-4 transition-all duration-500 ease-out";
+    alertBox.className = "fixed top-12 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-xl text-emerald-400 px-6 py-4 rounded-2xl shadow-[0_8px_32px_rgba(16,185,129,0.2)] transition-all duration-500 ease-out opacity-0 -translate-y-4 pointer-events-none";
     
-    // התוכן של ההודעה כולל אייקון וי ירוק
+    // תוכן ההתראה
     alertBox.innerHTML = `
         <div class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-sm">✓</div>
         <div class="flex flex-col">
-            <span class="font-bold text-lg tracking-wide">כל הכבוד!</span>
+            <span class="font-bold text-sm tracking-wide text-white">כל הכבוד!</span>
             <span class="text-xs opacity-80">הפאזל הושלם בהצלחה, עוברים לתמונה הבאה...</span>
         </div>
     `;
 
     document.body.appendChild(alertBox);
 
-    // טריגר לאנימציית כניסה
+    // טריגר לאנימציית כניסה - החלפת קלאסים בצורה נקייה ששומרת על המרכוז
     setTimeout(() => {
-        alertBox.style.opacity = "1";
-        alertBox.style.transform = "translate(-50%, 0)";
+        alertBox.classList.remove('opacity-0', '-translate-y-4');
+        alertBox.classList.add('opacity-100', 'translate-y-0');
     }, 50);
 
-    // העלמה אוטומטית אחרי 2.5 שניות
+    // אנימציית יציאה ומחיקה מהדף לאחר 2.5 שניות
     setTimeout(() => {
-        alertBox.style.opacity = "0";
-        alertBox.style.transform = "translate(-50%, -20px)";
+        alertBox.classList.remove('opacity-100', 'translate-y-0');
+        alertBox.classList.add('opacity-0', '-translate-y-4');
         setTimeout(() => {
             alertBox.remove();
         }, 500);
     }, 2500);
 }
-
       function puzCheck() {
     const pieces = Array.from(document.querySelectorAll('.puz-piece'));
     const win = pieces.every((p, i) => parseInt(p.dataset.correct) === i);
