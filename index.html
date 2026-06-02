@@ -1313,6 +1313,7 @@ function openMedia() {
                 }, 1000);
             }
         }
+//problem
 
         // --- לוגיקת הפאזל (Puzzle) ---
   const puzImages = [
@@ -1401,24 +1402,74 @@ function openMedia() {
             target.dataset.correct = sIdx;
             puzCheck();
         }
+       function showPuzzleSuccessAlert() {
+    // יצירת אלמנט ההתראה
+    const alertBox = document.createElement('div');
+    alertBox.className = "fixed top-10 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-xl text-emerald-400 px-6 py-4 rounded-2xl shadow-[0_8px_32px_rgba(16,185,129,0.2)] opacity-0 -translate-y-4 transition-all duration-500 ease-out";
+    
+    // התוכן של ההודעה כולל אייקון וי ירוק
+    alertBox.innerHTML = `
+        <div class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-sm">✓</div>
+        <div class="flex flex-col">
+            <span class="font-bold text-lg tracking-wide">כל הכבוד!</span>
+            <span class="text-xs opacity-80">הפאזל הושלם בהצלחה, עוברים לתמונה הבאה...</span>
+        </div>
+    `;
 
-        function puzCheck() {
-            const pieces = Array.from(document.querySelectorAll('.puz-piece'));
-            const win = pieces.every((p, i) => parseInt(p.dataset.correct) === i);
-            if (win) {
-                const board = document.getElementById('puz-board');
-                const success = document.getElementById('puz-success');
-                const progressBar = document.getElementById('puz-progress-bar');
-                board.classList.add('puz-win-glow');
-                success.style.display = 'flex';
-                setTimeout(() => {
-                    progressBar.style.transition = 'width 2.5s linear';
-                    progressBar.style.width = '100%';
-                }, 50);
-                puzAutoTimer = setTimeout(() => { if(success.style.display === 'flex') puzNext(); }, 2500);
-            }
-        }
+    document.body.appendChild(alertBox);
 
+    // טריגר לאנימציית כניסה
+    setTimeout(() => {
+        alertBox.style.opacity = "1";
+        alertBox.style.transform = "translate(-50%, 0)";
+    }, 50);
+
+    // העלמה אוטומטית אחרי 2.5 שניות
+    setTimeout(() => {
+        alertBox.style.opacity = "0";
+        alertBox.style.transform = "translate(-50%, -20px)";
+        setTimeout(() => {
+            alertBox.remove();
+        }, 500);
+    }, 2500);
+}
+
+      function puzCheck() {
+    const pieces = Array.from(document.querySelectorAll('.puz-piece'));
+    const win = pieces.every((p, i) => parseInt(p.dataset.correct) === i);
+    if (win) {
+        // קריאה להתראה המגניבה החדשה שלך ברגע הניצחון!
+        showPuzzleSuccessAlert();
+
+        const board = document.getElementById('puz-board');
+        const success = document.getElementById('puz-success');
+        const progressBar = document.getElementById('puz-progress-bar');
+        
+        board.classList.add('puz-win-glow');
+        success.style.display = 'flex';
+        
+        setTimeout(() => {
+            progressBar.style.transition = 'width 2.5s linear';
+            progressBar.style.width = '100%';
+        }, 50);
+        
+        puzAutoTimer = setTimeout(() => {
+            if(success.style.display === 'flex') puzNext();
+        }, 2500);
+    }
+}
+
+
+
+
+
+
+       
+       
+
+
+
+       
         // פונקציית גלילה חלקה
         function scrollToSec(id) { 
             const el = document.getElementById(id);
