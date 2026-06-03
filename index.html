@@ -1291,7 +1291,7 @@ function openMedia() {
 
 
        
-// --- לוגיקת הפאזל המקצועית (Puzzle Mechanics) ---
+// --- לוגיקת הפאזל (Puzzle Mechanics) ---
 const puzImages = [
     "https://github.com/Arial13579/Ariel-Merav/blob/main/P3.jpg?raw=true",
     "https://github.com/Arial13579/Ariel-Merav/blob/main/P4.jpg?raw=true",
@@ -1303,14 +1303,14 @@ let puzCurrentIdx = 0;
 let puzDragSource = null;
 let puzAutoTimer = null;
 
-// פונקציית בדיקה מדויקת ב-100% - משווה בין מיקום החלק למיקום היעד שלו בלוח
+// פונקציית בדיקה: רצה על כל החלקים ובודקת אם המיקום הנוכחי שלהם יוצר תמונה שלמה
 function puzCheck() {
     const pieces = document.querySelectorAll('.puz-piece');
     let isSolved = true;
     
-    pieces.forEach(p => {
-        // השוואה ישירה בין החלק הנוכחי לבין המיקום הנכון שלו על הגריד
-        if (parseInt(p.dataset.correct) !== parseInt(p.dataset.slot)) {
+    pieces.forEach((p, index) => {
+        // אם המזהה המקורי של החלק לא שווה למיקום שלו על גבי הלוח באותו רגע - הפאזל לא שלם
+        if (parseInt(p.dataset.correct) !== index) {
             isSolved = false;
         }
     });
@@ -1320,7 +1320,7 @@ function puzCheck() {
     }
 }
 
-// פונקציית המעבר לפאזל הבא (כולל מנגנון הגנה מפני תקיעה בתמונה ה-5)
+// פונקציית המעבר לפאזל הבא - כולל חזרה אוטומטית לתמונה הראשונה בסוף הסבב
 function puzNext() {
     if (document.getElementById('puzzle')) document.getElementById('puzzle').classList.remove('success-glow');
     if (document.getElementById('puz-success')) document.getElementById('puz-success').style.display = 'none';
@@ -1328,7 +1328,7 @@ function puzNext() {
 
     puzCurrentIdx++;
     
-    // הגנה קריטית: אם הגענו מעבר לתמונה החמישית, חוזרים לתמונה הראשונה (אינדקס 0)
+    // אם עברנו את התמונה החמישית, חוזרים לתמונה הראשונה (אינדקס 0) בצורה חלקה
     if (puzCurrentIdx >= puzImages.length) {
         puzCurrentIdx = 0;
     }
@@ -1336,7 +1336,7 @@ function puzNext() {
     puzInit(); 
 }
 
-// פונקציית אתחול ובניית חלקי הפאזל
+// פונקציית האתחול ובניית הפאזל מהתחלה
 function puzInit() {
     const board = document.getElementById('puz-board');
     if (!board) return;
@@ -1345,9 +1345,9 @@ function puzInit() {
     const progressBar = document.getElementById('puz-progress-bar');
     
     if (puzAutoTimer) clearTimeout(puzAutoTimer);
-    success.style.display = 'none';
+    if (success) success.style.display = 'none';
     board.classList.remove('puz-win-glow');
-    progressBar.style.width = '0%';
+    if (progressBar) progressBar.style.width = '0%';
     board.innerHTML = '';
 
     const img = new Image();
@@ -1364,15 +1364,11 @@ function puzInit() {
         let indices = Array.from({length: diff * diff}, (_, i) => i);
         let shuffled = [...indices].sort(() => Math.random() - 0.5);
         
-        // יצירת החלקים ושיוך המזהים הפיזיים והווירטואליים
-        shuffled.forEach((correctIdx, slotIndex) => {
+        shuffled.forEach((correctIdx) => {
             const piece = document.createElement('div');
             piece.className = 'puz-piece';
             piece.draggable = true;
-            
-            // שמירת המיקומים לבדיקה המתמטית
-            piece.dataset.correct = correctIdx; // איזה חלק מהתמונה זה
-            piece.dataset.slot = slotIndex;     // באיזה משבצת בלוח הוא יושב כרגע
+            piece.dataset.correct = correctIdx; // שומר את המיקום המקורי של החתיכה בתמונה
             
             const r = Math.floor(correctIdx / diff);
             const c = correctIdx % diff;
@@ -1380,13 +1376,13 @@ function puzInit() {
             piece.style.backgroundSize = `${diff * 100}% ${diff * 100}%`;
             piece.style.backgroundPosition = `${(c/(diff-1))*100}% ${(r/(diff-1))*100}%`;
             
-            // אירועי גרירה (Desktop)
+            // אירועי גרירה למחשב
             piece.ondragstart = (e) => { puzDragSource = piece; piece.classList.add('puz-dragging'); };
             piece.ondragover = (e) => e.preventDefault();
             piece.ondrop = (e) => puzSwap(piece);
             piece.ondragend = () => piece.classList.remove('puz-dragging');
             
-            // אירועי מגע (Mobile)
+            // אירועי מגע לטלפונים
             piece.ontouchstart = (e) => { puzDragSource = piece; };
             piece.ontouchend = (e) => {
                 const touch = e.changedTouches[0];
@@ -1398,41 +1394,35 @@ function puzInit() {
     };
 }
 
-// פונקציית החלפת המיקומים בין החלקים בזמן גרירה
+// פונקציית החלפת החלקים בעת גרירה ושחרור
 function puzSwap(target) {
     if (!puzDragSource || puzDragSource === target) return;
     
     const sBg = puzDragSource.style.backgroundPosition;
     const sIdx = puzDragSource.dataset.correct;
     
-    // החלפת תצוגה ויזואלית ומזהה תמונה של המקור
+    // החלפת נתונים בין החלק הנגרר לחלק היעד
     puzDragSource.style.backgroundPosition = target.style.backgroundPosition;
     puzDragSource.dataset.correct = target.dataset.correct;
     
-    // החלפת תצוגה ויזואלית ומזהה תמונה של היעד
     target.style.backgroundPosition = sBg;
     target.dataset.correct = sIdx;
     
-    // הרצת בדיקת שלמות מיד לאחר ההחלפה
+    // בדיקה מיידית האם ההחלפה הזו פתרה את הפאזל
     puzCheck();
 }
 
-// פונקציית ניהול מסך ההצלחה, האנימציה והמעבר האוטומטי לשלב הבא
+// פונקציית סיום והקפצת ההתראה - זהה לחלוטין לכל 5 השלבים!
 function onPuzzleComplete() {
     const successScreen = document.getElementById('puz-success');
     const progressBar = document.getElementById('puz-progress-bar');
     const puzzleSection = document.getElementById('puzzle');
 
-    if (!successScreen) return;
-
-    const successTitle = successScreen.querySelector('div, h2, h3');
-    const successSub = successScreen.querySelector('p');
-
-    // 1. הצגת חלונית ההצלחה
-    successScreen.style.display = 'flex';
+    // 1. קפיצת התראת ההצלחה
+    if (successScreen) successScreen.style.display = 'flex';
     if (puzzleSection) puzzleSection.classList.add('success-glow');
 
-    // 2. הפעלת אנימציית פס ההתקדמות (טעינה של 2 שניות)
+    // 2. טעינת חזותית של פס ההתקדמות (אנימציה של 2 שניות)
     if (progressBar) {
         progressBar.style.transition = 'none';
         progressBar.style.width = '0%';
@@ -1442,29 +1432,10 @@ function onPuzzleComplete() {
         }, 50);
     }
 
-    // 3. טיפול ייעודי וייחודי לתמונה החמישית והאחרונה (אינדקס 4)
-    if (puzCurrentIdx === puzImages.length - 1) {
-        if (successTitle) successTitle.innerHTML = "סיימתם את כל הפאזלים! 🏆🎉";
-        if (successSub) successSub.innerHTML = "כל הכבוד, מירב ואריאל! השלמתם את כל השלבים בהצלחה! ♥";
-        
-        // מעבר אוטומטי חזרה לפאזל הראשון אחרי 3 שניות כדי למנוע נעילה
-        setTimeout(() => {
-            if (puzzleSection) puzzleSection.classList.remove('success-glow');
-            successScreen.style.display = 'none';
-            puzCurrentIdx = 0; // איפוס לתמונה הראשונה
-            puzInit();
-        }, 3000);
-        return;
-    }
-
-    // 4. הודעת מעבר רגילה לשלבים 1 עד 4
-    if (successTitle) successTitle.innerText = "כל הכבוד! 🎉";
-    if (successSub) successSub.innerText = `השלמתם את פאזל ${puzCurrentIdx + 1}/5! מעבירים לפאזל הבא...`;
-
-    // מעבר אוטומטי מבוקר לפאזל הבא
+    // 3. מעבר אוטומטי מבוקר לפאזל הבא אחרי 2.5 שניות בכל מצב
     setTimeout(() => {
         if (puzzleSection) puzzleSection.classList.remove('success-glow');
-        successScreen.style.display = 'none';
+        if (successScreen) successScreen.style.display = 'none';
         puzNext();
     }, 2500);
 }
@@ -1480,12 +1451,11 @@ function scrollToSec(id) {
     }
 }
 
-// הפעלה ראשונית של הכל בטעינת ה-DOM
+// הפעלת פאזל ראשונית בטעינת הדף
 window.onload = () => {
     if (typeof loadQuiz === 'function') loadQuiz();
     puzInit();
     
-    // אינטגרציה עם ספריות האנימציה הקיימות שלך באתר
     if (typeof gsap !== 'undefined') {
         gsap.utils.toArray(".reveal").forEach(el => {
             gsap.to(el, { 
