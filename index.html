@@ -1291,7 +1291,10 @@ function openMedia() {
 
 
        
-// --- לוגיקת הפאזל (Puzzle Mechanics) ---
+// =================================================================
+// --- קוד פאזל מלא ומאוחד - מבוסס מזהים מספריים ורמות קושי דינמיות ---
+// =================================================================
+
 const puzImages = [
     "https://github.com/Arial13579/Ariel-Merav/blob/main/P3.jpg?raw=true",
     "https://github.com/Arial13579/Ariel-Merav/blob/main/P4.jpg?raw=true",
@@ -1299,130 +1302,152 @@ const puzImages = [
     "https://github.com/Arial13579/Ariel-Merav/blob/main/P1.jpg?raw=true",
     "https://github.com/Arial13579/Ariel-Merav/blob/main/P2.jpg?raw=true"
 ];
+
 let puzCurrentIdx = 0;
 let puzDragSource = null;
 let puzAutoTimer = null;
 
-// פונקציית בדיקה: רצה על כל החלקים ובודקת אם המיקום הנוכחי שלהם יוצר תמונה שלמה
-function puzCheck() {
-    const pieces = document.querySelectorAll('.puz-piece');
-    let isSolved = true;
-    
-    pieces.forEach((p, index) => {
-        // אם המזהה המקורי של החלק לא שווה למיקום שלו על גבי הלוח באותו רגע - הפאזל לא שלם
-        if (parseInt(p.dataset.correct) !== index) {
-            isSolved = false;
-        }
-    });
-
-    if (isSolved) {
-        onPuzzleComplete(); 
-    }
-}
-
-// פונקציית המעבר לפאזל הבא - כולל חזרה אוטומטית לתמונה הראשונה בסוף הסבב
-function puzNext() {
-    if (document.getElementById('puzzle')) document.getElementById('puzzle').classList.remove('success-glow');
-    if (document.getElementById('puz-success')) document.getElementById('puz-success').style.display = 'none';
-    if (document.getElementById('puz-progress-bar')) document.getElementById('puz-progress-bar').style.width = '0%';
-
-    puzCurrentIdx++;
-    
-    // אם עברנו את התמונה החמישית, חוזרים לתמונה הראשונה (אינדקס 0) בצורה חלקה
-    if (puzCurrentIdx >= puzImages.length) {
-        puzCurrentIdx = 0;
-    }
-    
-    puzInit(); 
-}
-
-// פונקציית האתחול ובניית הפאזל מהתחלה
+/**
+ * 1. אתחול הפאזל, בניית הגריד הדינמי וערבוב המספרים הסידוריים
+ */
 function puzInit() {
     const board = document.getElementById('puz-board');
     if (!board) return;
-    const diff = parseInt(document.getElementById('puz-diff').value);
+    
+    // קריאת רמת הקושי בזמן אמת מה-Select (קל=3, בינוני=4, קשה=5)
+    const diff = parseInt(document.getElementById('puz-diff').value) || 3;
     const success = document.getElementById('puz-success');
     const progressBar = document.getElementById('puz-progress-bar');
+    const puzzleSection = document.getElementById('puzzle');
     
+    // איפוס אלמנטים חזותיים של שלבים קודמים
     if (puzAutoTimer) clearTimeout(puzAutoTimer);
     if (success) success.style.display = 'none';
-    board.classList.remove('puz-win-glow');
+    if (puzzleSection) puzzleSection.classList.remove('success-glow');
     if (progressBar) progressBar.style.width = '0%';
     board.innerHTML = '';
 
+    // טעינת התמונה הנוכחית וחישוב המידות שלה
     const img = new Image();
     img.src = puzImages[puzCurrentIdx];
     img.onload = () => {
         const aspect = img.width / img.height;
         let w = Math.min(window.innerWidth * 0.9, 500);
         let h = w / aspect;
+        
+        // הגדרת מידות וחלוקת הגריד בהתאם לרמת הקושי (diff x diff)
         board.style.width = w + 'px';
         board.style.height = h + 'px';
         board.style.gridTemplateColumns = `repeat(${diff}, 1fr)`;
         board.style.gridTemplateRows = `repeat(${diff}, 1fr)`;
         
-        let indices = Array.from({length: diff * diff}, (_, i) => i);
-        let shuffled = [...indices].sort(() => Math.random() - 0.5);
+        const totalPieces = diff * diff;
         
-        shuffled.forEach((correctIdx) => {
+        // שלב א': יצירת המשבצות הפיזיות בלוח לפי הסדר (מ-0 עד כמות החלקים)
+        for (let i = 0; i < totalPieces; i++) {
             const piece = document.createElement('div');
             piece.className = 'puz-piece';
             piece.draggable = true;
-            piece.dataset.correct = correctIdx; // שומר את המיקום המקורי של החתיכה בתמונה
             
-            const r = Math.floor(correctIdx / diff);
-            const c = correctIdx % diff;
+            // הגדרות עיצוב רקע בסיסיות
             piece.style.backgroundImage = `url(${puzImages[puzCurrentIdx]})`;
             piece.style.backgroundSize = `${diff * 100}% ${diff * 100}%`;
-            piece.style.backgroundPosition = `${(c/(diff-1))*100}% ${(r/(diff-1))*100}%`;
             
-            // אירועי גרירה למחשב
+            // מאזיני אירועים לגרירה (מחשבים ודסקטופ)
             piece.ondragstart = (e) => { puzDragSource = piece; piece.classList.add('puz-dragging'); };
             piece.ondragover = (e) => e.preventDefault();
             piece.ondrop = (e) => puzSwap(piece);
             piece.ondragend = () => piece.classList.remove('puz-dragging');
             
-            // אירועי מגע לטלפונים
+            // מאזיני אירועים למסכי מגע (טלפונים וטאבלטים)
             piece.ontouchstart = (e) => { puzDragSource = piece; };
             piece.ontouchend = (e) => {
                 const touch = e.changedTouches[0];
                 const target = document.elementFromPoint(touch.clientX, touch.clientY);
                 if (target && target.classList.contains('puz-piece')) puzSwap(target);
             };
+            
             board.appendChild(piece);
+        }
+        
+        // שלב ב': יצירת מערך אינדקסים מעורבב בצורה אקראית לחלוטין
+        let order = Array.from({ length: totalPieces }, (_, i) => i);
+        let isIdentical = true;
+        
+        // לולאת הגנה שמוודאת שהערבוב לא ייצא בטעות פתור מהתחלה
+        while (isIdentical && totalPieces > 1) {
+            order.sort(() => Math.random() - 0.5);
+            isIdentical = order.every((val, index) => val === index);
+        }
+        
+        // שלב ג': הלבשת המיקומים המעורבבים והמספרים הסידוריים על החלקים בלוח
+        const pieces = board.querySelectorAll('.puz-piece');
+        pieces.forEach((piece, index) => {
+            const targetIdx = order[index];
+            const r = Math.floor(targetIdx / diff);
+            const c = targetIdx % diff;
+            
+            // הגדרת החיתוך הגרפי המתאים לאותו מספר
+            piece.style.backgroundPosition = `${(c / (diff - 1)) * 100}% ${(r / (diff - 1)) * 100}%`;
+            
+            // הצמדת המספר הסידורי האמיתי של החלק כמאפיין דינמי
+            piece.dataset.correctIndex = targetIdx;
         });
     };
 }
 
-// פונקציית החלפת החלקים בעת גרירה ושחרור
+/**
+ * 2. פונקציית החלפת נתונים בין חלקים (בזמן גרירה או מגע)
+ */
 function puzSwap(target) {
     if (!puzDragSource || puzDragSource === target) return;
     
-    const sBg = puzDragSource.style.backgroundPosition;
-    const sIdx = puzDragSource.dataset.correct;
-    
-    // החלפת נתונים בין החלק הנגרר לחלק היעד
+    // החלפת הסטייל הוויזואלי (תמונת החיתוך)
+    const tempBg = puzDragSource.style.backgroundPosition;
     puzDragSource.style.backgroundPosition = target.style.backgroundPosition;
-    puzDragSource.dataset.correct = target.dataset.correct;
+    target.style.backgroundPosition = tempBg;
     
-    target.style.backgroundPosition = sBg;
-    target.dataset.correct = sIdx;
+    // החלפת המספר הסידורי המוצמד (הלוגיקה הנסתרת)
+    const tempIndex = puzDragSource.dataset.correctIndex;
+    puzDragSource.dataset.correctIndex = target.dataset.correctIndex;
+    target.dataset.correctIndex = tempIndex;
     
-    // בדיקה מיידית האם ההחלפה הזו פתרה את הפאזל
+    // הרצת בדיקת סדר מיד לאחר כל החלפה
     puzCheck();
 }
 
-// פונקציית סיום והקפצת ההתראה - זהה לחלוטין לכל 5 השלבים!
+/**
+ * 3. בדיקת השלמת הפאזל: רצה על כל החלקים לפי סדר ה-DOM שלהם
+ */
+function puzCheck() {
+    const pieces = document.querySelectorAll('.puz-piece');
+    let isSolved = true;
+    
+    pieces.forEach((piece, index) => {
+        // אם המספר הסידורי של החלק לא תואם בדיוק את המיקום הפיזי שלו הנוכחי בלולאה - הפאזל לא שלם
+        if (parseInt(piece.dataset.correctIndex) !== index) {
+            isSolved = false;
+        }
+    });
+
+    // אם כל המספרים מסודרים בסדר עולה מושלם (0, 1, 2, 3...) - הפאזל שלם!
+    if (isSolved) {
+        onPuzzleComplete(); 
+    }
+}
+
+/**
+ * 4. טיפול במסך ההצלחה ובאנימציית הטעינה של פס ההתקדמות
+ */
 function onPuzzleComplete() {
     const successScreen = document.getElementById('puz-success');
     const progressBar = document.getElementById('puz-progress-bar');
     const puzzleSection = document.getElementById('puzzle');
 
-    // 1. קפיצת התראת ההצלחה
     if (successScreen) successScreen.style.display = 'flex';
     if (puzzleSection) puzzleSection.classList.add('success-glow');
 
-    // 2. טעינת חזותית של פס ההתקדמות (אנימציה של 2 שניות)
+    // הרצת האנימציה של פס הטעינה (מתמלא לאורך 2 שניות)
     if (progressBar) {
         progressBar.style.transition = 'none';
         progressBar.style.width = '0%';
@@ -1432,15 +1457,34 @@ function onPuzzleComplete() {
         }, 50);
     }
 
-    // 3. מעבר אוטומטי מבוקר לפאזל הבא אחרי 2.5 שניות בכל מצב
-    setTimeout(() => {
-        if (puzzleSection) puzzleSection.classList.remove('success-glow');
-        if (successScreen) successScreen.style.display = 'none';
+    // מעבר אוטומטי מבוקר לשלב הבא לאחר 2.5 שניות
+    puzAutoTimer = setTimeout(() => {
         puzNext();
     }, 2500);
 }
 
-// פונקציית גלילה חלקה
+/**
+ * 5. מעבר לפאזל הבא וניהול הלולאה (פתרון בעיית החסימה בתמונה ה-5)
+ */
+function puzNext() {
+    if (document.getElementById('puzzle')) document.getElementById('puzzle').classList.remove('success-glow');
+    if (document.getElementById('puz-success')) document.getElementById('puz-success').style.display = 'none';
+    if (document.getElementById('puz-progress-bar')) document.getElementById('puz-progress-bar').style.width = '0%';
+
+    puzCurrentIdx++;
+    
+    // ההגנה המנצחת: אם חרגנו ממערך 5 התמונות, מאפסים חזרה לתמונה הראשונה (0)
+    if (puzCurrentIdx >= puzImages.length) {
+        puzCurrentIdx = 0;
+    }
+    
+    // בנייה מחדש של הפאזל הבא
+    puzInit(); 
+}
+
+/**
+ * 6. פונקציית עזר לגלילה חלקה
+ */
 function scrollToSec(id) { 
     const element = document.getElementById(id);
     if (element) {
@@ -1451,11 +1495,17 @@ function scrollToSec(id) {
     }
 }
 
-// הפעלת פאזל ראשונית בטעינת הדף
+/**
+ * 7. אינטגרציה מלאה ובטוחה עם עליית ה-DOM וספריות האנימציה באתר שלך
+ */
 window.onload = () => {
+    // הפעלת הקוויז במידה וקיים
     if (typeof loadQuiz === 'function') loadQuiz();
+    
+    // אתחול ראשוני של הפאזל
     puzInit();
     
+    // תמיכה ב-GSAP במידה והיא מותקנת אצלך בדף לאפקטים
     if (typeof gsap !== 'undefined') {
         gsap.utils.toArray(".reveal").forEach(el => {
             gsap.to(el, { 
@@ -1468,10 +1518,17 @@ window.onload = () => {
         });
     }
 
+    // תמיכה באפקט הטיה (VanillaTilt) במידה וקיים
     if (typeof VanillaTilt !== 'undefined') {
         VanillaTilt.init(document.querySelectorAll("[data-tilt]"), { max: 5, speed: 400 });
     }
 };
+
+
+
+
+
+       
 
 
 
