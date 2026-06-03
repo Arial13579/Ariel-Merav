@@ -518,6 +518,60 @@ html { scroll-behavior: smooth; }
     object-fit: cover;
     display: block;
 }
+
+
+
+
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+.page{background:#000;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 16px 40px;font-family:'Heebo',sans-serif;direction:rtl;-webkit-font-smoothing:antialiased}
+.main-title{font-size:22px;font-weight:700;color:#fff;margin-bottom:2px;text-align:center}
+.sub-title{font-size:12px;color:#555;margin-bottom:18px;text-align:center;font-weight:300}
+.wheel-scene{perspective:700px;width:440px;height:440px;margin:0 auto;cursor:grab;position:relative}
+.wheel-scene:active{cursor:grabbing}
+.wheel-scene.done{cursor:not-allowed;pointer-events:none}
+.wheel-3d{transform-style:preserve-3d;width:100%;height:100%}
+canvas#wc{border-radius:50%;display:block;touch-action:none}
+.needle{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:26px solid #fff;filter:drop-shadow(0 2px 8px rgba(255,255,255,0.5));z-index:5}
+.hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 38% 35%,#3a3a3a,#000);border:1.5px solid #333;box-shadow:inset 0 2px 8px rgba(255,255,255,0.08),0 0 20px rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;z-index:10;transition:opacity 0.3s}
+.hub:active{transform:translate(-50%,-50%) scale(0.93)}
+.hub.done-hub{cursor:not-allowed;opacity:0.3}
+.hub-inner{font-size:10px;font-weight:700;color:#fff;text-align:center;line-height:1.3;letter-spacing:0.5px}
+.toast-wrap{height:40px;display:flex;align-items:center;justify-content:center;margin:10px 0 6px}
+.toast{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:20px;padding:8px 20px;font-size:13px;font-weight:600;color:#fff;opacity:0;transform:translateY(6px);transition:opacity 0.3s,transform 0.3s;white-space:nowrap;max-width:380px;overflow:hidden;text-overflow:ellipsis}
+.toast.show{opacity:1;transform:translateY(0)}
+.progress-wrap{width:380px;margin:0 auto 12px}
+.prog-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+.prog-count{font-size:26px;font-weight:700;color:#fff}
+.prog-max{font-size:12px;color:#555;font-weight:300}
+.prog-track{width:100%;height:2px;background:#1a1a1a;border-radius:2px}
+.prog-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#444,#fff);transition:width 0.5s ease}
+.divider{width:380px;height:1px;background:#1a1a1a;margin:14px auto}
+.log-section{width:380px;margin:0 auto}
+.log-label{font-size:10px;font-weight:600;letter-spacing:2px;color:#555;margin-bottom:8px}
+.log-table{width:100%;border-collapse:collapse}
+.log-table th{font-size:10px;font-weight:600;color:#444;letter-spacing:1px;padding:0 8px 6px;text-align:right;border-bottom:1px solid #1a1a1a}
+.log-table td{font-size:12px;color:#888;padding:7px 8px;border-bottom:1px solid #111;text-align:right;vertical-align:middle}
+.log-table tr:last-child td{border-bottom:none}
+.log-table td:first-child{color:#444;font-size:11px;font-weight:600}
+.log-table td.wish-name{color:#ccc}
+.empty-state{font-size:12px;color:#333;text-align:center;padding:16px 0}
+.win-wrap{display:none;position:relative;width:380px;margin:16px auto 0;background:#0a0a0a;border:1px solid #1e1e1e;border-radius:20px;padding:32px 20px 24px;text-align:center;overflow:hidden}
+.win-wrap.show{display:block}
+.win-title{font-size:26px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.4}
+.win-sub{font-size:14px;color:#555;line-height:1.8;margin-bottom:8px}
+.win-canvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+.reset-area{margin-top:16px;border-top:1px solid #1a1a1a;padding-top:16px}
+.reset-btn{background:#1a1a1a;border:1px solid #444;border-radius:50px;font-family:'Heebo',sans-serif;font-size:12px;color:#aaa;cursor:pointer;padding:9px 24px;letter-spacing:1px;transition:background 0.2s,color 0.2s}
+.reset-btn:hover{background:#2a2a2a;color:#fff}
+.pass-box{display:none;margin-top:12px;flex-direction:column;align-items:center;gap:8px}
+.pass-box.show{display:flex}
+.pass-input{background:#0d0d0d;border:1px solid #333;border-radius:10px;padding:8px 14px;font-size:13px;color:#fff;font-family:'Heebo',sans-serif;text-align:center;width:160px;outline:none}
+.pass-confirm{background:#fff;color:#000;border:none;border-radius:50px;padding:8px 20px;font-size:12px;font-weight:700;font-family:'Heebo',sans-serif;cursor:pointer}
+.pass-err{font-size:11px;color:#c44;display:none}
+.pass-err.show{display:block}
+.rim-shadow{position:absolute;top:0;left:0;width:440px;height:440px;border-radius:50%;pointer-events:none;z-index:1;box-shadow:inset 0 -18px 40px rgba(0,0,0,0.7),inset 0 18px 30px rgba(255,255,255,0.04)}
+.main-reset-section{width:380px;margin:0 auto;text-align:center;padding:4px 0}
     </style>
 </head>
 <body>
@@ -800,6 +854,72 @@ html { scroll-behavior: smooth; }
         </div>
     </div>
 </section>
+
+
+
+
+
+
+
+
+<div class="page">
+  <div class="main-title">גלגל המשאלות</div>
+  <div class="sub-title">25 נקודות — ליום ההולדת שלך</div>
+  <div class="wheel-scene" id="wheelOuter">
+    <div class="wheel-3d" id="wheel3d">
+      <canvas id="wc" width="440" height="440"></canvas>
+      <div class="rim-shadow"></div>
+    </div>
+    <div class="needle"></div>
+    <div class="hub" id="spinBtn"><div class="hub-inner">סובבי</div></div>
+  </div>
+  <div class="toast-wrap"><div class="toast" id="toast"></div></div>
+  <div class="progress-wrap">
+    <div class="prog-row">
+      <div class="prog-count"><span id="progCount">0</span><span style="font-size:14px;color:#555;font-weight:300"> / 25</span></div>
+      <div class="prog-max">נקודות זכות</div>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+  </div>
+  <div class="divider"></div>
+  <div class="main-reset-section">
+    <button class="reset-btn" id="resetBtnMain">🔄 איפוס גלגל</button>
+    <div class="pass-box" id="passBoxMain">
+      <input class="pass-input" type="password" id="passInputMain" placeholder="סיסמה"/>
+      <div class="pass-err" id="passErrMain">סיסמה שגויה</div>
+      <button class="pass-confirm" id="passConfirmMain">אישור</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="log-section">
+    <div class="log-label">משאלות שנצברו</div>
+    <div id="logContainer"><div class="empty-state">עדיין אין נקודות</div></div>
+  </div>
+  <div class="win-wrap" id="winWrap">
+    <canvas class="win-canvas" id="winCanvas" width="380" height="340"></canvas>
+    <div class="win-title">🎂 מזל טוב!<br>הגעת ל-25</div>
+    <div class="win-sub">כל הנקודות נצברו.<br>מגיע לך כל מה שרצית.<br><span style="color:#444;font-size:12px">הגלגל נעול ✨</span></div>
+    <div class="reset-area">
+      <button class="reset-btn" id="resetBtn">איפוס</button>
+      <div class="pass-box" id="passBox">
+        <input class="pass-input" type="password" id="passInput" placeholder="סיסמה"/>
+        <div class="pass-err" id="passErr">סיסמה שגויה</div>
+        <button class="pass-confirm" id="passConfirm">אישור</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+        
+
+
+
+        
                     <section id="letter-section" class="py-40 px-6" style="background: transparent;">
     <!-- השארתי את הקלאס reveal כמו שהוא ב-Main.html המקורי כדי ש-GSAP יזהה אותו -->
     <div class="max-w-3xl mx-auto reveal">
@@ -1652,6 +1772,53 @@ window.onload = () => {
             RedVortexModule.start();
         });
     }
+       const WISHES=["עיסוי מלא","יום הכן","בחירה חופשית","ערב פיצה וסרט","יום הכן","טיול מפתיע","לצאת לקניות","יציאה רומנטית","משחק ביתי לבחירתי","ארוחת שף בבית","כרטיסים להופעה","בחירה חופשית","נסיעה לסוף שבוע","עיסוי רגליים","ערב ריקודים","חופשה קצרה","בחירה חופשית","ארוחה במסעדה","טיול לשטח","פינוק מסאז בבית","בחירה חופשית","סרט ופופקורן","יום ספא","קפה בוקר ביחד","בחירה חופשית"];
+const SEG=25,ARC=(2*Math.PI)/SEG;
+const canvas=document.getElementById('wc'),ctx=canvas.getContext('2d');
+const CX=220,CY=220,R=214;
+const PASS="As996633!";
+let claimed=JSON.parse(localStorage.getItem('ww8c')||'null')||new Array(25).fill(false);
+let log=JSON.parse(localStorage.getItem('ww8l')||'[]');
+let spinning=false,angle=0,isDone=false;
+let isDragging=false,lastDA=0,dragVel=0,lastDT=0;
+let tiltX=0,tiltY=0,animTilt=null;
+function getLanded(){const norm=((-angle%(2*Math.PI))+(2*Math.PI))%(2*Math.PI);return Math.floor(norm/ARC)%SEG;}
+function applyTilt(){document.getElementById('wheel3d').style.transform=`rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;}
+function smoothTilt(tx,ty,dur=500){const sx=tiltX,sy=tiltY,start=performance.now();cancelAnimationFrame(animTilt);function step(now){const t=Math.min((now-start)/dur,1),e=1-Math.pow(1-t,3);tiltX=sx+(tx-sx)*e;tiltY=sy+(ty-sy)*e;applyTilt();if(t<1)animTilt=requestAnimationFrame(step);}animTilt=requestAnimationFrame(step);}
+function pointsCount(){return claimed.filter(Boolean).length;}
+function getSegFill(i){if(claimed[i])return i%2===0?'#1e1e1e':'#171717';return i%2===0?'#111':'#0c0c0c';}
+function drawSegments(a){for(let i=0;i<SEG;i++){const s=a+i*ARC-Math.PI/2,en=s+ARC;ctx.beginPath();ctx.moveTo(CX,CY);ctx.arc(CX,CY,R,s,en);ctx.closePath();ctx.fillStyle=getSegFill(i);ctx.fill();ctx.strokeStyle='#000';ctx.lineWidth=1.5;ctx.stroke();ctx.save();ctx.translate(CX,CY);ctx.rotate(a+i*ARC-Math.PI/2+ARC/2);const txt=WISHES[i];if(!claimed[i]){const fs=txt.length>6?10:11;ctx.font=`600 ${fs}px Heebo,sans-serif`;ctx.fillStyle='#777';ctx.fillText(txt,R-14,4);}else{ctx.font='400 10px Heebo,sans-serif';ctx.fillStyle='#303030';ctx.fillText(i+1,R-14,4);}ctx.restore();}}
+function drawWheel(a,speed=0){ctx.clearRect(0,0,440,440);const bp=speed>0.18?3:speed>0.08?2:1,ba=speed>0.18?0.18:speed>0.08?0.25:1;for(let p=0;p<bp;p++){ctx.globalAlpha=p===0?1:ba;drawSegments(p===0?a:a-(speed*p*0.4));}ctx.globalAlpha=1;const g=ctx.createRadialGradient(CX,CY,R-6,CX,CY,R+2);g.addColorStop(0,'rgba(255,255,255,0.06)');g.addColorStop(1,'rgba(0,0,0,0)');ctx.beginPath();ctx.arc(CX,CY,R,0,2*Math.PI);ctx.strokeStyle=g;ctx.lineWidth=8;ctx.stroke();if(!spinning&&!isDone){const li=getLanded(),sa2=a+li*ARC-Math.PI/2;ctx.beginPath();ctx.moveTo(CX,CY);ctx.arc(CX,CY,R,sa2,sa2+ARC);ctx.closePath();ctx.strokeStyle='rgba(255,255,255,0.18)';ctx.lineWidth=2;ctx.stroke();}}
+let toastTimer=null;
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3200);}
+function lockWheel(){isDone=true;document.getElementById('wheelOuter').classList.add('done');document.getElementById('spinBtn').classList.add('done-hub');drawWheel(angle);}
+function claimSegment(i){if(claimed[i]){showToast('משאלה זו כבר נצברה');return;}claimed[i]=true;log.unshift({w:WISHES[i],d:new Date().toLocaleDateString('he-IL'),seg:i});save();updateUI();showToast('נצבר: '+WISHES[i]);if(pointsCount()>=25)setTimeout(()=>{lockWheel();showWin();},500);}
+function save(){localStorage.setItem('ww8c',JSON.stringify(claimed));localStorage.setItem('ww8l',JSON.stringify(log));}
+function updateUI(){const p=pointsCount();document.getElementById('progCount').textContent=p;document.getElementById('progFill').style.width=Math.min(p/25*100,100)+'%';renderLog();drawWheel(angle);if(p>=25)lockWheel();}
+function renderLog(){const el=document.getElementById('logContainer');if(!log.length){el.innerHTML='<div class="empty-state">עדיין אין נקודות</div>';return;}let h='<table class="log-table"><thead><tr><th>#</th><th>משאלה</th><th>תאריך</th></tr></thead><tbody>';log.forEach((w,i)=>{h+=`<tr><td>${log.length-i}</td><td class="wish-name">${w.w}</td><td>${w.d}</td></tr>`;});el.innerHTML=h+'</tbody></table>';}
+function finalizeSpin(){smoothTilt(0,0,600);if(isDone)return;const landed=getLanded();drawWheel(angle,0);if(claimed[landed])showToast('"'+WISHES[landed]+'" — כבר נצבר, סובבי שוב');else claimSegment(landed);}
+function spinWheel(){if(spinning||isDone)return;spinning=true;tiltX=14;tiltY=-6;applyTilt();const turns=10+Math.random()*6,total=turns*2*Math.PI,dur=2000+Math.random()*600,start=performance.now(),sa=angle;let prevA=angle,prevT=0;function tick(now){const t=Math.min((now-start)/dur,1),e=t<0.25?(t/0.25)*0.75:0.75+(1-Math.pow(1-(t-0.25)/0.75,3))*0.25;angle=sa+total*e;const dt=t-prevT,spd=dt>0?Math.abs(angle-prevA)/dt*0.016:0;prevA=angle;prevT=t;tiltX=Math.min(spd*22,18)*(t<0.25?1:(1-t));tiltY=Math.sin(angle*0.3)*Math.min(spd*8,8);applyTilt();drawWheel(angle,spd);if(t<1){requestAnimationFrame(tick);return;}spinning=false;finalizeSpin();}requestAnimationFrame(tick);}
+function showWin(){document.getElementById('winWrap').classList.add('show');const cc=document.getElementById('winCanvas'),c=cc.getContext('2d');const ps=Array.from({length:70},()=>({x:Math.random()*380,y:-5,vx:(Math.random()-0.5)*2.5,vy:1.5+Math.random()*3,r:2+Math.random()*4,col:['#fff','#ccc','#888','#444'][Math.floor(Math.random()*4)],rot:Math.random()*6.28,rv:(Math.random()-0.5)*0.2}));let f=0;function step(){c.clearRect(0,0,380,340);ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.rot+=p.rv;c.save();c.translate(p.x,p.y);c.rotate(p.rot);c.fillStyle=p.col;c.fillRect(-p.r/2,-p.r/2,p.r,p.r);c.restore();});if(++f<200)requestAnimationFrame(step);else c.clearRect(0,0,380,340);}requestAnimationFrame(step);}
+function getA(e,el){const r=el.getBoundingClientRect(),cx2=r.left+r.width/2,cy2=r.top+r.height/2,t=e.touches?e.touches[0]:e;return Math.atan2(t.clientY-cy2,t.clientX-cx2);}
+const wo=document.getElementById('wheelOuter');
+wo.addEventListener('mousedown',e=>{if(spinning||isDone)return;isDragging=true;lastDA=getA(e,wo);dragVel=0;lastDT=performance.now();});
+wo.addEventListener('touchstart',e=>{if(spinning||isDone)return;isDragging=true;lastDA=getA(e,wo);dragVel=0;lastDT=performance.now();e.preventDefault();},{passive:false});
+window.addEventListener('mousemove',e=>{if(!isDragging||spinning||isDone)return;const a=getA(e,wo),da=a-lastDA,now=performance.now();dragVel=da/Math.max(now-lastDT,1)*16;angle+=da;lastDA=a;lastDT=now;tiltY=dragVel*10;tiltX=4;applyTilt();drawWheel(angle,Math.abs(dragVel));});
+window.addEventListener('touchmove',e=>{if(!isDragging||spinning||isDone)return;const a=getA(e,wo),da=a-lastDA,now=performance.now();dragVel=da/Math.max(now-lastDT,1)*16;angle+=da;lastDA=a;lastDT=now;tiltY=dragVel*10;tiltX=4;applyTilt();drawWheel(angle,Math.abs(dragVel));e.preventDefault();},{passive:false});
+let wasDragging=false;
+function release(){if(!isDragging)return;isDragging=false;if(isDone){smoothTilt(0,0,400);wasDragging=false;return;}if(Math.abs(dragVel)>0.015){wasDragging=true;spinning=true;const dir=dragVel>0?1:-1,spd=Math.abs(dragVel)*80*(1.2+Math.random()),total2=dir*spd,dur2=1200+Math.abs(total2)*60,start2=performance.now(),sa2=angle;let p2=angle,pt2=0;function tick2(now){const t=Math.min((now-start2)/dur2,1),e2=1-Math.pow(1-t,3),ca=sa2+total2*e2,dt=t-pt2,s2=dt>0?Math.abs(ca-p2)/dt*0.016:0;p2=ca;pt2=t;tiltX=s2*15*(1-t);tiltY=(dir>0?1:-1)*s2*8*(1-t);applyTilt();angle=ca;drawWheel(angle,s2);if(t<1){requestAnimationFrame(tick2);return;}spinning=false;finalizeSpin();setTimeout(()=>{wasDragging=false;},50);}requestAnimationFrame(tick2);}else{smoothTilt(0,0,400);wasDragging=false;}}
+window.addEventListener('mouseup',release);
+window.addEventListener('touchend',release);
+document.getElementById('spinBtn').addEventListener('click',()=>{if(!wasDragging&&!isDragging&&!isDone)spinWheel();});
+function doFullReset(){claimed=new Array(25).fill(false);log=[];isDone=false;localStorage.setItem('ww8c',JSON.stringify(claimed));localStorage.setItem('ww8l',JSON.stringify(log));document.getElementById('winWrap').classList.remove('show');document.getElementById('toast').classList.remove('show');document.getElementById('wheelOuter').classList.remove('done');document.getElementById('spinBtn').classList.remove('done-hub');document.getElementById('passBox').classList.remove('show');document.getElementById('passBoxMain').classList.remove('show');document.getElementById('passInput').value='';document.getElementById('passInputMain').value='';updateUI();showToast('הגלגל אופס בהצלחה ✓');}
+function tryReset(inputId,errId){const val=document.getElementById(inputId).value;if(val===PASS){doFullReset();}else{document.getElementById(errId).classList.add('show');document.getElementById(inputId).value='';}}
+document.getElementById('resetBtnMain').addEventListener('click',()=>{document.getElementById('passBoxMain').classList.toggle('show');document.getElementById('passInputMain').value='';document.getElementById('passErrMain').classList.remove('show');});
+document.getElementById('passConfirmMain').addEventListener('click',()=>tryReset('passInputMain','passErrMain'));
+document.getElementById('passInputMain').addEventListener('keydown',e=>{if(e.key==='Enter')tryReset('passInputMain','passErrMain');});
+document.getElementById('resetBtn').addEventListener('click',()=>{document.getElementById('passBox').classList.toggle('show');document.getElementById('passInput').value='';document.getElementById('passErr').classList.remove('show');});
+document.getElementById('passConfirm').addEventListener('click',()=>tryReset('passInput','passErr'));
+document.getElementById('passInput').addEventListener('keydown',e=>{if(e.key==='Enter')tryReset('passInput','passErr');});
+drawWheel(0);updateUI();
     </script>
 </body>
 </html>
