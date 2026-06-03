@@ -1325,12 +1325,33 @@ function openMedia() {
         let puzCurrentIdx = 0;
         let puzDragSource = null;
         let puzAutoTimer = null;
-
-        function puzNext() {
-            if (puzAutoTimer) clearTimeout(puzAutoTimer);
-            puzCurrentIdx = (puzCurrentIdx + 1) % puzImages.length;
-            puzInit();
+function puzCheck() {
+    const pieces = document.querySelectorAll('.puz-piece');
+    let correct = true;
+    pieces.forEach(p => {
+        if (p.getAttribute('data-idx') !== p.getAttribute('data-current')) {
+            correct = false;
         }
+    });
+
+    if (correct) {
+        // מפעיל את מסך ההצלחה החלק שהוספנו במקום ה-alert המעציק!
+        onPuzzleComplete(); 
+    }
+}
+
+function puzNext() {
+    // מוריד את ה-glow הירוק מהמקטע
+    document.getElementById('puzzle').classList.remove('success-glow');
+    // מסתיר את מסך ההצלחה
+    document.getElementById('puz-success').style.display = 'none';
+    // מאפס את פס ההתקדמות לפעם הבאה
+    document.getElementById('puz-progress-bar').style.width = '0%';
+
+    // עובר לתמונה הבאה בלולאה
+    puzCurrentIdx = (puzCurrentIdx + 1) % puzImages.length;
+    puzBuild();
+}
 
         function puzInit() {
             const board = document.getElementById('puz-board');
@@ -1402,22 +1423,7 @@ function openMedia() {
             puzCheck();
         }
 
-        function puzCheck() {
-            const pieces = Array.from(document.querySelectorAll('.puz-piece'));
-            const win = pieces.every((p, i) => parseInt(p.dataset.correct) === i);
-            if (win) {
-                const board = document.getElementById('puz-board');
-                const success = document.getElementById('puz-success');
-                const progressBar = document.getElementById('puz-progress-bar');
-                board.classList.add('puz-win-glow');
-                success.style.display = 'flex';
-                setTimeout(() => {
-                    progressBar.style.transition = 'width 2.5s linear';
-                    progressBar.style.width = '100%';
-                }, 50);
-                puzAutoTimer = setTimeout(() => { if(success.style.display === 'flex') puzNext(); }, 2500);
-            }
-        }
+       
 
         // פונקציית גלילה חלקה
         function scrollToSec(id) { 
