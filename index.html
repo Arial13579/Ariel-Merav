@@ -1313,7 +1313,6 @@ function openMedia() {
                 }, 1000);
             }
         }
-//problem
 
         // --- לוגיקת הפאזל (Puzzle) ---
   const puzImages = [
@@ -1401,73 +1400,25 @@ function openMedia() {
             target.style.backgroundPosition = sBg;
             target.dataset.correct = sIdx;
             puzCheck();
-    function showPuzzleSuccessAlert() {
-    // יצירת אלמנט ההתראה עם קלאסים התחלתיים של שקיפות (opacity-0) ומיקום גבוה (-translate-y-4)
-    const alertBox = document.createElement('div');
-    alertBox.className = "fixed top-12 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-xl text-emerald-400 px-6 py-4 rounded-2xl shadow-[0_8px_32px_rgba(16,185,129,0.2)] transition-all duration-500 ease-out opacity-0 -translate-y-4 pointer-events-none";
-    
-    // תוכן ההתראה
-    alertBox.innerHTML = `
-        <div class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-sm">✓</div>
-        <div class="flex flex-col">
-            <span class="font-bold text-sm tracking-wide text-white">כל הכבוד!</span>
-            <span class="text-xs opacity-80">הפאזל הושלם בהצלחה, עוברים לתמונה הבאה...</span>
-        </div>
-    `;
+        }
 
-    document.body.appendChild(alertBox);
+        function puzCheck() {
+            const pieces = Array.from(document.querySelectorAll('.puz-piece'));
+            const win = pieces.every((p, i) => parseInt(p.dataset.correct) === i);
+            if (win) {
+                const board = document.getElementById('puz-board');
+                const success = document.getElementById('puz-success');
+                const progressBar = document.getElementById('puz-progress-bar');
+                board.classList.add('puz-win-glow');
+                success.style.display = 'flex';
+                setTimeout(() => {
+                    progressBar.style.transition = 'width 2.5s linear';
+                    progressBar.style.width = '100%';
+                }, 50);
+                puzAutoTimer = setTimeout(() => { if(success.style.display === 'flex') puzNext(); }, 2500);
+            }
+        }
 
-    // טריגר לאנימציית כניסה - החלפת קלאסים בצורה נקייה ששומרת על המרכוז
-    setTimeout(() => {
-        alertBox.classList.remove('opacity-0', '-translate-y-4');
-        alertBox.classList.add('opacity-100', 'translate-y-0');
-    }, 50);
-
-    // אנימציית יציאה ומחיקה מהדף לאחר 2.5 שניות
-    setTimeout(() => {
-        alertBox.classList.remove('opacity-100', 'translate-y-0');
-        alertBox.classList.add('opacity-0', '-translate-y-4');
-        setTimeout(() => {
-            alertBox.remove();
-        }, 500);
-    }, 2500);
-}
-      function puzCheck() {
-    const pieces = Array.from(document.querySelectorAll('.puz-piece'));
-    const win = pieces.every((p, i) => parseInt(p.dataset.correct) === i);
-    if (win) {
-        // קריאה להתראה המגניבה החדשה שלך ברגע הניצחון!
-        showPuzzleSuccessAlert();
-
-        const board = document.getElementById('puz-board');
-        const success = document.getElementById('puz-success');
-        const progressBar = document.getElementById('puz-progress-bar');
-        
-        board.classList.add('puz-win-glow');
-        success.style.display = 'flex';
-        
-        setTimeout(() => {
-            progressBar.style.transition = 'width 2.5s linear';
-            progressBar.style.width = '100%';
-        }, 50);
-        
-        puzAutoTimer = setTimeout(() => {
-            if(success.style.display === 'flex') puzNext();
-        }, 2500);
-    }
-}
-
-
-
-
-
-
-       
-       
-
-
-
-       
         // פונקציית גלילה חלקה
         function scrollToSec(id) { 
             const el = document.getElementById(id);
