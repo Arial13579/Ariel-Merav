@@ -520,43 +520,59 @@ html { scroll-behavior: smooth; }
 }
 
 
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
 
-/* מחיקת רקע מהדף הראשי כדי לחשוף את הרקע של האתר שלך */
-.page {
-    background: transparent !important;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 24px 16px 40px;
-    font-family: 'Heebo', sans-serif;
-    direction: rtl;
-}
+/* כאן הורדתי את ה-background:#000 */
+.page{background:transparent;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 16px 40px;font-family:'Heebo',sans-serif;direction:rtl;-webkit-font-smoothing:antialiased}
 
-/* הפיכת המכלים לשקופים */
-.toast, .win-wrap, .hub {
-    background: rgba(255, 255, 255, 0.1) !important; /* רקע שקוף למחצה */
-    backdrop-filter: blur(10px); /* אפקט טשטוש יפה לרקע שקוף */
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-/* כותרות וטקסט - בחר צבע שמתאים לרקע האתר שלך (כאן זה לבן) */
-.main-title, .sub-title, .prog-count, .prog-max, .win-title, .win-sub {
-    color: #fff; 
-}
-
-/* התאמת אלמנטים נוספים */
-.prog-track { background: rgba(255, 255, 255, 0.2); }
-.prog-fill { background: #fff; }
-.divider { background: rgba(255, 255, 255, 0.2); }
-.log-table th, .log-table td { border-bottom: 1px solid rgba(255, 255, 255, 0.1); color: #ddd; }
-
-/* כפתורים שקופים */
-.reset-btn { background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.3); color: #fff; }
-.pass-input { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; }
-
-/* חשוב: הסרת צללים אטומים מהגלגל */
-.rim-shadow { display: none; }
+.main-title{font-size:22px;font-weight:700;color:#fff;margin-bottom:2px;text-align:center}
+.sub-title{font-size:12px;color:#555;margin-bottom:18px;text-align:center;font-weight:300}
+.wheel-scene{perspective:700px;width:440px;height:440px;margin:0 auto;cursor:grab;position:relative}
+.wheel-scene:active{cursor:grabbing}
+.wheel-scene.done{cursor:not-allowed;pointer-events:none}
+.wheel-3d{transform-style:preserve-3d;width:100%;height:100%}
+canvas#wc{border-radius:50%;display:block;touch-action:none}
+.needle{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:26px solid #fff;filter:drop-shadow(0 2px 8px rgba(255,255,255,0.5));z-index:5}
+.hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 38% 35%,#3a3a3a,#000);border:1.5px solid #333;box-shadow:inset 0 2px 8px rgba(255,255,255,0.08),0 0 20px rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;z-index:10;transition:opacity 0.3s}
+.hub:active{transform:translate(-50%,-50%) scale(0.93)}
+.hub.done-hub{cursor:not-allowed;opacity:0.3}
+.hub-inner{font-size:10px;font-weight:700;color:#fff;text-align:center;line-height:1.3;letter-spacing:0.5px}
+.toast-wrap{height:40px;display:flex;align-items:center;justify-content:center;margin:10px 0 6px}
+.toast{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:20px;padding:8px 20px;font-size:13px;font-weight:600;color:#fff;opacity:0;transform:translateY(6px);transition:opacity 0.3s,transform 0.3s;white-space:nowrap;max-width:380px;overflow:hidden;text-overflow:ellipsis}
+.toast.show{opacity:1;transform:translateY(0)}
+.progress-wrap{width:380px;margin:0 auto 12px}
+.prog-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+.prog-count{font-size:26px;font-weight:700;color:#fff}
+.prog-max{font-size:12px;color:#555;font-weight:300}
+.prog-track{width:100%;height:2px;background:#1a1a1a;border-radius:2px}
+.prog-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#444,#fff);transition:width 0.5s ease}
+.divider{width:380px;height:1px;background:#1a1a1a;margin:14px auto}
+.log-section{width:380px;margin:0 auto}
+.log-label{font-size:10px;font-weight:600;letter-spacing:2px;color:#555;margin-bottom:8px}
+.log-table{width:100%;border-collapse:collapse}
+.log-table th{font-size:10px;font-weight:600;color:#444;letter-spacing:1px;padding:0 8px 6px;text-align:right;border-bottom:1px solid #1a1a1a}
+.log-table td{font-size:12px;color:#888;padding:7px 8px;border-bottom:1px solid #111;text-align:right;vertical-align:middle}
+.log-table tr:last-child td{border-bottom:none}
+.log-table td:first-child{color:#444;font-size:11px;font-weight:600}
+.log-table td.wish-name{color:#ccc}
+.empty-state{font-size:12px;color:#333;text-align:center;padding:16px 0}
+.win-wrap{display:none;position:relative;width:380px;margin:16px auto 0;background:#0a0a0a;border:1px solid #1e1e1e;border-radius:20px;padding:32px 20px 24px;text-align:center;overflow:hidden}
+.win-wrap.show{display:block}
+.win-title{font-size:26px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.4}
+.win-sub{font-size:14px;color:#555;line-height:1.8;margin-bottom:8px}
+.win-canvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+.reset-area{margin-top:16px;border-top:1px solid #1a1a1a;padding-top:16px}
+.reset-btn{background:#1a1a1a;border:1px solid #444;border-radius:50px;font-family:'Heebo',sans-serif;font-size:12px;color:#aaa;cursor:pointer;padding:9px 24px;letter-spacing:1px;transition:background 0.2s,color 0.2s}
+.reset-btn:hover{background:#2a2a2a;color:#fff}
+.pass-box{display:none;margin-top:12px;flex-direction:column;align-items:center;gap:8px}
+.pass-box.show{display:flex}
+.pass-input{background:#0d0d0d;border:1px solid #333;border-radius:10px;padding:8px 14px;font-size:13px;color:#fff;font-family:'Heebo',sans-serif;text-align:center;width:160px;outline:none}
+.pass-confirm{background:#fff;color:#000;border:none;border-radius:50px;padding:8px 20px;font-size:12px;font-weight:700;font-family:'Heebo',sans-serif;cursor:pointer}
+.pass-err{font-size:11px;color:#c44;display:none}
+.pass-err.show{display:block}
+.rim-shadow{position:absolute;top:0;left:0;width:440px;height:440px;border-radius:50%;pointer-events:none;z-index:1;box-shadow:inset 0 -18px 40px rgba(0,0,0,0.7),inset 0 18px 30px rgba(255,255,255,0.04)}
+.main-reset-section{width:380px;margin:0 auto;text-align:center;padding:4px 0}
     </style>
 </head>
 <body>
