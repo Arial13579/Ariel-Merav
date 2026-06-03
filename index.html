@@ -870,36 +870,7 @@ html { scroll-behavior: smooth; }
     })();
 
 
-function checkPuzzleSolved() {
-    // ... לוגיקת הבדיקה הקיימת שלך שבודקת אם הפאזל הושלם ...
-    // אם הבדיקה מחזירה true:
-    onPuzzleComplete();
-}
 
-function onPuzzleComplete() {
-    const successScreen = document.getElementById('puz-success');
-    const progressBar = document.getElementById('puz-progress-bar');
-    const puzzleSection = document.getElementById('puzzle');
-
-    // 1. הצגת מסך הצלחה
-    successScreen.style.display = 'flex';
-    
-    // 2. הפעלת זוהר ירוק מאחורי האתר (על כל המקטע)
-    puzzleSection.classList.add('success-glow');
-
-    // 3. אנימציה של פס התקדמות
-    setTimeout(() => {
-        progressBar.style.width = '100%';
-    }, 100);
-
-    // 4. מעבר אוטומטי לפאזל הבא אחרי 2.5 שניות
-    setTimeout(() => {
-        puzzleSection.classList.remove('success-glow');
-        successScreen.style.display = 'none';
-        progressBar.style.width = '0%';
-        puzNext(); // קריאה לפונקציה שלך שמחליפה תמונה
-    }, 2500);
-}
 
 
 
@@ -1313,31 +1284,75 @@ function openMedia() {
                 }, 1000);
             }
         }
-
-        // --- לוגיקת הפאזל (Puzzle) ---
-  const puzImages = [
+// --- לוגיקת הפאזל (Puzzle) ---
+const puzImages = [
     "https://github.com/Arial13579/Ariel-Merav/blob/main/P3.jpg?raw=true",
     "https://github.com/Arial13579/Ariel-Merav/blob/main/P4.jpg?raw=true",
     "https://github.com/Arial13579/Ariel-Merav/blob/main/P5.jpg?raw=true",
     "https://github.com/Arial13579/Ariel-Merav/blob/main/P1.jpg?raw=true",
     "https://github.com/Arial13579/Ariel-Merav/blob/main/P2.jpg?raw=true"
 ];
-        let puzCurrentIdx = 0;
-        let puzDragSource = null;
-        let puzAutoTimer = null;
+let puzCurrentIdx = 0;
+let puzDragSource = null;
+let puzAutoTimer = null;
+
+// פונקציית בדיקה מתוקנת שעובדת עם מערך ה-dataset האמיתי של הפאזל
 function puzCheck() {
     const pieces = document.querySelectorAll('.puz-piece');
     let correct = true;
-    pieces.forEach(p => {
-        if (p.getAttribute('data-idx') !== p.getAttribute('data-current')) {
+    
+    pieces.forEach((p, index) => {
+        // בודק האם המיקום המקורי של החלק (dataset.correct) תואם למיקום הנוכחי שלו בגריד (index)
+        if (parseInt(p.dataset.correct) !== index) {
             correct = false;
         }
     });
 
     if (correct) {
-        // מפעיל את מסך ההצלחה החלק שהוספנו במקום ה-alert המעציק!
         onPuzzleComplete(); 
     }
+}
+
+function onPuzzleComplete() {
+    const successScreen = document.getElementById('puz-success');
+    const progressBar = document.getElementById('puz-progress-bar');
+    const puzzleSection = document.getElementById('puzzle');
+    
+    // תפיסת אלמנטי הטקסט בתוך מסך ההצלחה כדי לעדכן אותם דינמית
+    const successTitle = successScreen.querySelector('div');
+    const successSub = successScreen.querySelector('p');
+
+    // 1. הצגת מסך הצלחה
+    successScreen.style.display = 'flex';
+    
+    // 2. הפעלת זוהר ירוק מאחורי האתר (על כל המקטע)
+    puzzleSection.classList.add('success-glow');
+
+    // 3. אנימציה של פס התקדמות
+    setTimeout(() => {
+        progressBar.style.width = '100%';
+    }, 100);
+
+    // 4. בדיקה חכמה: האם זה היה הפאזל החמישי והאחרון? (אינדקס 4)
+    if (puzCurrentIdx === puzImages.length - 1) {
+        if (successTitle) successTitle.innerText = "סיימתם את כל הפאזלים! 🏆🎉";
+        if (successSub) successSub.innerText = "כל הכבוד, מירב ואריאל! השלמתם את כל השלבים!";
+        // עוצרים כאן ולא קוראים ל-puzNext כדי שהמסך הסופי יישאר קבוע בגאווה!
+        return;
+    }
+
+    // 5. מעבר אוטומטי לפאזל הבא אחרי 2.5 שניות (קורה רק בפאזלים 1 עד 4)
+    setTimeout(() => {
+        puzzleSection.classList.remove('success-glow');
+        successScreen.style.display = 'none';
+        progressBar.style.width = '0%';
+        
+        // מאפס את הטקסטים חזרה לברירת המחדל בשביל הפאזל הבא בתור
+        if (successTitle) successTitle.innerText = "הצלחתם! 🎉";
+        if (successSub) successSub.innerText = "מועבר לפאזל הבא...";
+        
+        puzNext(); 
+    }, 2500);
 }
 
 function puzNext() {
@@ -1348,111 +1363,87 @@ function puzNext() {
     // מאפס את פס ההתקדמות לפעם הבאה
     document.getElementById('puz-progress-bar').style.width = '0%';
 
-    // עובר לתמונה הבאה בלולאה
-    puzCurrentIdx = (puzCurrentIdx + 1) % puzImages.length;
-    puzBuild();
+    // קידום האינדקס לתמונה הבאה בסדר כרונולוגי ישר
+    puzCurrentIdx++;
+    
+    // בנייה מחדש של הלוח עם התמונה החדשה (פנייה ל-puzInit התקינה)
+    if (puzCurrentIdx < puzImages.length) {
+        puzInit();
+    }
 }
 
-        function puzInit() {
-            const board = document.getElementById('puz-board');
-            if (!board) return;
-            const diff = parseInt(document.getElementById('puz-diff').value);
-            const success = document.getElementById('puz-success');
-            const progressBar = document.getElementById('puz-progress-bar');
-            
-            if (puzAutoTimer) clearTimeout(puzAutoTimer);
-            success.style.display = 'none';
-            board.classList.remove('puz-win-glow');
-            progressBar.style.width = '0%';
-            board.innerHTML = '';
+function puzInit() {
+    const board = document.getElementById('puz-board');
+    if (!board) return;
+    const diff = parseInt(document.getElementById('puz-diff').value);
+    const success = document.getElementById('puz-success');
+    const progressBar = document.getElementById('puz-progress-bar');
+    
+    if (puzAutoTimer) clearTimeout(puzAutoTimer);
+    success.style.display = 'none';
+    board.classList.remove('puz-win-glow');
+    progressBar.style.width = '0%';
+    board.innerHTML = '';
 
-            const img = new Image();
-            img.src = puzImages[puzCurrentIdx];
-            img.onload = () => {
-                const aspect = img.width / img.height;
-                let w = Math.min(window.innerWidth * 0.9, 500);
-                let h = w / aspect;
-                board.style.width = w + 'px';
-                board.style.height = h + 'px';
-                board.style.gridTemplateColumns = `repeat(${diff}, 1fr)`;
-                board.style.gridTemplateRows = `repeat(${diff}, 1fr)`;
-                
-                let indices = Array.from({length: diff * diff}, (_, i) => i);
-                let shuffled = [...indices].sort(() => Math.random() - 0.5);
-                
-                shuffled.forEach((correctIdx) => {
-                    const piece = document.createElement('div');
-                    piece.className = 'puz-piece';
-                    piece.draggable = true;
-                    piece.dataset.correct = correctIdx;
-                    
-                    const r = Math.floor(correctIdx / diff);
-                    const c = correctIdx % diff;
-                    piece.style.backgroundImage = `url(${puzImages[puzCurrentIdx]})`;
-                    piece.style.backgroundSize = `${diff * 100}% ${diff * 100}%`;
-                    piece.style.backgroundPosition = `${(c/(diff-1))*100}% ${(r/(diff-1))*100}%`;
-                    
-                    // אירועי גרירה (מחשב)
-                    piece.ondragstart = (e) => { puzDragSource = piece; piece.classList.add('puz-dragging'); };
-                    piece.ondragover = (e) => e.preventDefault();
-                    piece.ondrop = (e) => puzSwap(piece);
-                    piece.ondragend = () => piece.classList.remove('puz-dragging');
-                    
-                    // אירועי מגע (טלפון)
-                    piece.ontouchstart = (e) => { puzDragSource = piece; };
-                    piece.ontouchend = (e) => {
-                        const touch = e.changedTouches[0];
-                        const target = document.elementFromPoint(touch.clientX, touch.clientY);
-                        if (target && target.classList.contains('puz-piece')) puzSwap(target);
-                    };
-                    board.appendChild(piece);
-                });
+    const img = new Image();
+    img.src = puzImages[puzCurrentIdx];
+    img.onload = () => {
+        const aspect = img.width / img.height;
+        let w = Math.min(window.innerWidth * 0.9, 500);
+        let h = w / aspect;
+        board.style.width = w + 'px';
+        board.style.height = h + 'px';
+        board.style.gridTemplateColumns = `repeat(${diff}, 1fr)`;
+        board.style.gridTemplateRows = `repeat(${diff}, 1fr)`;
+        
+        let indices = Array.from({length: diff * diff}, (_, i) => i);
+        let shuffled = [...indices].sort(() => Math.random() - 0.5);
+        
+        shuffled.forEach((correctIdx) => {
+            const piece = document.createElement('div');
+            piece.className = 'puz-piece';
+            piece.draggable = true;
+            piece.dataset.correct = correctIdx; // המזהה החשוב לבדיקה התקינה
+            
+            const r = Math.floor(correctIdx / diff);
+            const c = correctIdx % diff;
+            piece.style.backgroundImage = `url(${puzImages[puzCurrentIdx]})`;
+            piece.style.backgroundSize = `${diff * 100}% ${diff * 100}%`;
+            piece.style.backgroundPosition = `${(c/(diff-1))*100}% ${(r/(diff-1))*100}%`;
+            
+            // אירועי גרירה (מחשב)
+            piece.ondragstart = (e) => { puzDragSource = piece; piece.classList.add('puz-dragging'); };
+            piece.ondragover = (e) => e.preventDefault();
+            piece.ondrop = (e) => puzSwap(piece);
+            piece.ondragend = () => piece.classList.remove('puz-dragging');
+            
+            // אירועי מגע (טלפון)
+            piece.ontouchstart = (e) => { puzDragSource = piece; };
+            piece.ontouchend = (e) => {
+                const touch = e.changedTouches[0];
+                const target = document.elementFromPoint(touch.clientX, touch.clientY);
+                if (target && target.classList.contains('puz-piece')) puzSwap(target);
             };
-        }
+            board.appendChild(piece);
+        });
+    };
+}
 
-        function puzSwap(target) {
-            if (!puzDragSource || puzDragSource === target) return;
-            const sBg = puzDragSource.style.backgroundPosition;
-            const sIdx = puzDragSource.dataset.correct;
-            
-            puzDragSource.style.backgroundPosition = target.style.backgroundPosition;
-            puzDragSource.dataset.correct = target.dataset.correct;
-            
-            target.style.backgroundPosition = sBg;
-            target.dataset.correct = sIdx;
-            puzCheck();
-        }
+function puzSwap(target) {
+    if (!puzDragSource || puzDragSource === target) return;
+    const sBg = puzDragSource.style.backgroundPosition;
+    const sIdx = puzDragSource.dataset.correct;
+    
+    puzDragSource.style.backgroundPosition = target.style.backgroundPosition;
+    puzDragSource.dataset.correct = target.dataset.correct;
+    
+    target.style.backgroundPosition = sBg;
+    target.dataset.correct = sIdx;
+    puzCheck();
+}
 
-       
-
-        // פונקציית גלילה חלקה
-        function scrollToSec(id) { 
-            const el = document.getElementById(id);
-            if(el) el.scrollIntoView({ behavior: 'smooth' }); 
-        }
-
-        // הפעלה ראשונית של הכל כשהדף נטען
-        window.onload = () => {
-            loadQuiz();
-            puzInit();
-            
-            // אנימציות הופעה בגלילה (Reveal)
-            gsap.utils.toArray(".reveal").forEach(el => {
-                gsap.to(el, { 
-                    scrollTrigger: { trigger: el, start: "top 90%" }, 
-                    opacity: 1, 
-                    y: 0, 
-                    duration: 1.2, 
-                    ease: "power2.out" 
-                });
-            });
-
-            // הפעלת אפקט הטיה (Tilt) על אלמנטים רלוונטיים
-            if (typeof VanillaTilt !== 'undefined') {
-                VanillaTilt.init(document.querySelectorAll("[data-tilt]"), { max: 5, speed: 400 });
-            }
-        };
-        function scrollToSec(id) {
+// פונקציית גלילה חלקה
+function scrollToSec(id) { 
     const element = document.getElementById(id);
     if (element) {
         element.scrollIntoView({
@@ -1461,6 +1452,28 @@ function puzNext() {
         });
     }
 }
+
+// הפעלה ראשונית של הכל כשהדף נטען
+window.onload = () => {
+    loadQuiz();
+    puzInit();
+    
+    // אנימציות הופעה בגלילה (Reveal)
+    gsap.utils.toArray(".reveal").forEach(el => {
+        gsap.to(el, { 
+            scrollTrigger: { trigger: el, start: "top 90%" }, 
+            opacity: 1, 
+            y: 0, 
+            duration: 1.2, 
+            ease: "power2.out" 
+        });
+    });
+
+    // הפעלת אפקט הטיה (Tilt) על אלמנטים רלוונטיים
+    if (typeof VanillaTilt !== 'undefined') {
+        VanillaTilt.init(document.querySelectorAll("[data-tilt]"), { max: 5, speed: 400 });
+    }
+};
  /**
      * Bespoke Crimson Vortex Animation - Autonomous Motion
      * Built to integrate without breaking existing site logic.
