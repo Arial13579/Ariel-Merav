@@ -1284,6 +1284,13 @@ function openMedia() {
                 }, 1000);
             }
         }
+
+
+
+
+
+
+       
 // --- לוגיקת הפאזל (Puzzle) ---
 const puzImages = [
     "https://github.com/Arial13579/Ariel-Merav/blob/main/P3.jpg?raw=true",
@@ -1296,13 +1303,13 @@ let puzCurrentIdx = 0;
 let puzDragSource = null;
 let puzAutoTimer = null;
 
-// פונקציית בדיקה מתוקנת שעובדת עם מערך ה-dataset האמיתי של הפאזל
+// פונקציית בדיקה מתוקנת שעובדת על בסיס ה-dataset המקורי שלך
 function puzCheck() {
     const pieces = document.querySelectorAll('.puz-piece');
     let correct = true;
     
     pieces.forEach((p, index) => {
-        // בודק האם המיקום המקורי של החלק (dataset.correct) תואם למיקום הנוכחי שלו בגריד (index)
+        // בודק האם המיקום המקורי של החלק (dataset.correct) תואם למיקום הנוכחי שלו בלוח (index)
         if (parseInt(p.dataset.correct) !== index) {
             correct = false;
         }
@@ -1313,62 +1320,16 @@ function puzCheck() {
     }
 }
 
-function onPuzzleComplete() {
-    const successScreen = document.getElementById('puz-success');
-    const progressBar = document.getElementById('puz-progress-bar');
-    const puzzleSection = document.getElementById('puzzle');
-    
-    // תפיסת אלמנטי הטקסט בתוך מסך ההצלחה כדי לעדכן אותם דינמית
-    const successTitle = successScreen.querySelector('div');
-    const successSub = successScreen.querySelector('p');
-
-    // 1. הצגת מסך הצלחה
-    successScreen.style.display = 'flex';
-    
-    // 2. הפעלת זוהר ירוק מאחורי האתר (על כל המקטע)
-    puzzleSection.classList.add('success-glow');
-
-    // 3. אנימציה של פס התקדמות
-    setTimeout(() => {
-        progressBar.style.width = '100%';
-    }, 100);
-
-    // 4. בדיקה חכמה: האם זה היה הפאזל החמישי והאחרון? (אינדקס 4)
-    if (puzCurrentIdx === puzImages.length - 1) {
-        if (successTitle) successTitle.innerText = "סיימתם את כל הפאזלים! 🏆🎉";
-        if (successSub) successSub.innerText = "כל הכבוד, מירב ואריאל! השלמתם את כל השלבים!";
-        // עוצרים כאן ולא קוראים ל-puzNext כדי שהמסך הסופי יישאר קבוע בגאווה!
-        return;
-    }
-
-    // 5. מעבר אוטומטי לפאזל הבא אחרי 2.5 שניות (קורה רק בפאזלים 1 עד 4)
-    setTimeout(() => {
-        puzzleSection.classList.remove('success-glow');
-        successScreen.style.display = 'none';
-        progressBar.style.width = '0%';
-        
-        // מאפס את הטקסטים חזרה לברירת המחדל בשביל הפאזל הבא בתור
-        if (successTitle) successTitle.innerText = "הצלחתם! 🎉";
-        if (successSub) successSub.innerText = "מועבר לפאזל הבא...";
-        
-        puzNext(); 
-    }, 2500);
-}
-
+// פונקציית המעבר לפאזל הבא (מתוקנת לפנות ל-puzInit)
 function puzNext() {
-    // מוריד את ה-glow הירוק מהמקטע
-    document.getElementById('puzzle').classList.remove('success-glow');
-    // מסתיר את מסך ההצלחה
-    document.getElementById('puz-success').style.display = 'none';
-    // מאפס את פס ההתקדמות לפעם הבאה
-    document.getElementById('puz-progress-bar').style.width = '0%';
+    if (document.getElementById('puzzle')) document.getElementById('puzzle').classList.remove('success-glow');
+    if (document.getElementById('puz-success')) document.getElementById('puz-success').style.display = 'none';
+    if (document.getElementById('puz-progress-bar')) document.getElementById('puz-progress-bar').style.width = '0%';
 
-    // קידום האינדקס לתמונה הבאה בסדר כרונולוגי ישר
+    // מעבר לתמונה הבאה בסדר כרונולוגי ישר (1 עד 5)
     puzCurrentIdx++;
-    
-    // בנייה מחדש של הלוח עם התמונה החדשה (פנייה ל-puzInit התקינה)
     if (puzCurrentIdx < puzImages.length) {
-        puzInit();
+        puzInit(); // קריאה לפונקציית האתחול הקיימת שלך
     }
 }
 
@@ -1403,7 +1364,7 @@ function puzInit() {
             const piece = document.createElement('div');
             piece.className = 'puz-piece';
             piece.draggable = true;
-            piece.dataset.correct = correctIdx; // המזהה החשוב לבדיקה התקינה
+            piece.dataset.correct = correctIdx;
             
             const r = Math.floor(correctIdx / diff);
             const c = correctIdx % diff;
@@ -1455,25 +1416,87 @@ function scrollToSec(id) {
 
 // הפעלה ראשונית של הכל כשהדף נטען
 window.onload = () => {
-    loadQuiz();
+    if (typeof loadQuiz === 'function') loadQuiz();
     puzInit();
     
     // אנימציות הופעה בגלילה (Reveal)
-    gsap.utils.toArray(".reveal").forEach(el => {
-        gsap.to(el, { 
-            scrollTrigger: { trigger: el, start: "top 90%" }, 
-            opacity: 1, 
-            y: 0, 
-            duration: 1.2, 
-            ease: "power2.out" 
+    if (typeof gsap !== 'undefined') {
+        gsap.utils.toArray(".reveal").forEach(el => {
+            gsap.to(el, { 
+                scrollTrigger: { trigger: el, start: "top 90%" }, 
+                opacity: 1, 
+                y: 0, 
+                duration: 1.2, 
+                ease: "power2.out" 
+            });
         });
-    });
+    }
 
     // הפעלת אפקט הטיה (Tilt) על אלמנטים רלוונטיים
     if (typeof VanillaTilt !== 'undefined') {
         VanillaTilt.init(document.querySelectorAll("[data-tilt]"), { max: 5, speed: 400 });
     }
 };
+
+// פונקציית ניהול מסך ההצלחה והמעברים האוטומטיים
+function onPuzzleComplete() {
+    const successScreen = document.getElementById('puz-success');
+    const progressBar = document.getElementById('puz-progress-bar');
+    const puzzleSection = document.getElementById('puzzle');
+
+    if (!successScreen) return;
+
+    // תפיסת כותרות הטקסט בתוך הדיב של ההצלחה כדי לעדכן אותן דינמית
+    const successTitle = successScreen.querySelector('div, h2, h3');
+    const successSub = successScreen.querySelector('p');
+
+    // 1. הצגת מסך הצלחה
+    successScreen.style.display = 'flex';
+    
+    // 2. הפעלת זוהר ירוק מאחורי האתר (על כל המקטע)
+    if (puzzleSection) puzzleSection.classList.add('success-glow');
+
+    // 3. טעינת אנימציית הבר
+    if (progressBar) {
+        progressBar.style.width = '0%';
+        setTimeout(() => {
+            progressBar.style.width = '100%';
+        }, 100);
+    }
+
+    // 4. בדיקה חכמה: האם זה היה הפאזל החמישי והאחרון? (אינדקס 4 מתוך 5 תמונות)
+    if (puzCurrentIdx === puzImages.length - 1) {
+        if (successTitle) successTitle.innerText = "סיימתם את כל הפאזלים! 🏆🎉";
+        if (successSub) successSub.innerText = "כל הכבוד, מירב ואריאל! השלמתם את כל השלבים!";
+        // עצירה מוחלטת כאן כדי שהמסך הסופי יישאר קבוע בגאווה
+        return;
+    }
+
+    // 5. מעבר אוטומטי לפאזל הבא אחרי 2.5 שניות (קורה רק בשלבים 1 עד 4)
+    setTimeout(() => {
+        if (puzzleSection) puzzleSection.classList.remove('success-glow');
+        successScreen.style.display = 'none';
+        if (progressBar) progressBar.style.width = '0%';
+        
+        puzNext(); // מעבר תמונה וטעינת הלוח הבא
+    }, 2500);
+}
+
+
+
+
+
+
+
+
+
+
+       
+
+
+
+
+       
  /**
      * Bespoke Crimson Vortex Animation - Autonomous Motion
      * Built to integrate without breaking existing site logic.
