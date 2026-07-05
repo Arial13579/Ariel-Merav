@@ -1022,14 +1022,15 @@ canvas#wc{border-radius:50%;display:block;touch-action:none}
        
 
 // הגדרת המתנות שלך - וודא שהלינקים נכונים!
+// הגדרת המתנות שלך עם השמות החדשים
 const gifts = [
     { 
         title: "גיפט קארד מפנק", 
-        img: "https://github.com/Arial13579/Ariel-Merav/raw/main/גיפ קארד.png" // שנה ללינק הנכון
+        img: "https://github.com/Arial13579/Ariel-Merav/raw/main/גיפ קארד.png" 
     },
     { 
         title: "כרטיסים לגן החיות", 
-        img: "https://github.com/Arial13579/Ariel-Merav/raw/main/גן החיות.png // שנה ללינק הנכון
+        img: "https://github.com/Arial13579/Ariel-Merav/raw/main/גן החיות.png" 
     }
 ];
 
@@ -1038,9 +1039,9 @@ let currentGiftIndex = gifts.length;
 function updateBadge() {
     const badge = document.getElementById('gift-count');
     const btn = document.getElementById('gift-btn');
-    badge.innerText = currentGiftIndex;
+    if (badge) badge.innerText = currentGiftIndex;
     
-    if(currentGiftIndex === 0) {
+    if(currentGiftIndex === 0 && btn) {
         btn.classList.add('opacity-30', 'grayscale', 'cursor-not-allowed');
     }
 }
@@ -1048,8 +1049,11 @@ function updateBadge() {
 function showNextGift() {
     if (currentGiftIndex > 0) {
         const gift = gifts[currentGiftIndex - 1];
-        document.getElementById('gift-image').src = gift.img;
-        document.getElementById('gift-title').innerText = gift.title;
+        const modalImg = document.getElementById('gift-image');
+        const modalTitle = document.getElementById('gift-title');
+        
+        if (modalImg) modalImg.src = gift.img;
+        if (modalTitle) modalTitle.innerText = gift.title;
         document.getElementById('gift-modal').classList.remove('hidden');
         
         currentGiftIndex--;
@@ -1063,8 +1067,6 @@ function closeGift() {
 
 // הפעלה ראשונית
 updateBadge();
-
-
 
 
        
