@@ -1023,7 +1023,7 @@ canvas#wc{border-radius:50%;display:block;touch-action:none}
        
 
 // הגדרת המתנות שלך - וודא שהלינקים נכונים!
-// הגדרת המתנות שלך עם השמות החדשים
+// הגדרת המתנות
 const gifts = [
     { 
         title: "גיפט קארד מפנק", 
@@ -1035,11 +1035,21 @@ const gifts = [
     }
 ];
 
-let currentGiftIndex = gifts.length;
+// פונקציה לבדיקה אם המשתמש כבר השתמש במתנות
+function getRemainingGifts() {
+    const saved = localStorage.getItem('ariel_merav_gifts_count');
+    return saved !== null ? parseInt(saved) : gifts.length;
+}
+
+let currentGiftIndex = getRemainingGifts();
 
 function updateBadge() {
     const badge = document.getElementById('gift-count');
     const btn = document.getElementById('gift-btn');
+    
+    // שמירת המצב הנוכחי בזיכרון של הדפדפן
+    localStorage.setItem('ariel_merav_gifts_count', currentGiftIndex);
+    
     if (badge) badge.innerText = currentGiftIndex;
     
     if(currentGiftIndex === 0 && btn) {
@@ -1049,6 +1059,7 @@ function updateBadge() {
 
 function showNextGift() {
     if (currentGiftIndex > 0) {
+        // המיקום במערך מחושב לפי מה שנשאר
         const gift = gifts[currentGiftIndex - 1];
         const modalImg = document.getElementById('gift-image');
         const modalTitle = document.getElementById('gift-title');
@@ -1066,9 +1077,15 @@ function closeGift() {
     document.getElementById('gift-modal').classList.add('hidden');
 }
 
-// הפעלה ראשונית
+// עדכון ראשוני בעת טעינת הדף
 updateBadge();
 
+
+
+
+
+
+       
 
        
 
