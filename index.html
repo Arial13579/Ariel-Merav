@@ -1024,62 +1024,56 @@ canvas#wc{border-radius:50%;display:block;touch-action:none}
 
 // הגדרת המתנות שלך - וודא שהלינקים נכונים!
 // הגדרת המתנות
-const gifts = [
-    { 
-        title: "גיפט קארד מפנק", 
-        img: "https://github.com/Arial13579/Ariel-Merav/raw/main/גיפ קארד.png" 
-    },
-    { 
-        title: "כרטיסים לגן החיות", 
-        img: "https://github.com/Arial13579/Ariel-Merav/raw/main/גן החיות.png" 
+    // --- כאן השליטה המלאה שלך ---
+    const totalAllowedClicks = 2; // שנה ל-0 אם אתה רוצה לחסום אותה, או ל-2 אם אתה רוצה לאפשר
+    // ----------------------------
+
+    // פונקציה שבודקת מה המצב הנוכחי לפי מה שהגדרת בקוד
+    function getRemainingClicks() {
+        return totalAllowedClicks;
     }
-];
 
-// פונקציה לבדיקה אם המשתמש כבר השתמש במתנות
-function getRemainingGifts() {
-    const saved = localStorage.getItem('ariel_merav_gifts_count');
-    return saved !== null ? parseInt(saved) : gifts.length;
-}
+    let currentGiftIndex = getRemainingClicks();
 
-let currentGiftIndex = getRemainingGifts();
+    // הגדרת המתנות
+    const gifts = [
+        { title: "גיפט קארד מפנק", img: "https://github.com/Arial13579/Ariel-Merav/raw/main/גיפ קארד.png" },
+        { title: "כרטיסים לגן החיות", img: "https://github.com/Arial13579/Ariel-Merav/raw/main/גן החיות.png" }
+    ];
 
-function updateBadge() {
-    const badge = document.getElementById('gift-count');
-    const btn = document.getElementById('gift-btn');
-    
-    // שמירת המצב הנוכחי בזיכרון של הדפדפן
-    localStorage.setItem('ariel_merav_gifts_count', currentGiftIndex);
-    
-    if (badge) badge.innerText = currentGiftIndex;
-    
-    if(currentGiftIndex === 0 && btn) {
-        btn.classList.add('opacity-30', 'grayscale', 'cursor-not-allowed');
+    function showNextGift() {
+        // המיקום במערך מחושב לפי כמה נשאר
+        if (currentGiftIndex > 0) {
+            const gift = gifts[currentGiftIndex - 1];
+            document.getElementById('gift-image').src = gift.img;
+            document.getElementById('gift-title').innerText = gift.title;
+            document.getElementById('gift-modal').classList.remove('hidden');
+            
+            currentGiftIndex--; // יורד רק בזמן אמת בזיכרון של הדף
+            updateBadgeDisplay(currentGiftIndex);
+        }
     }
-}
 
-function showNextGift() {
-    if (currentGiftIndex > 0) {
-        // המיקום במערך מחושב לפי מה שנשאר
-        const gift = gifts[currentGiftIndex - 1];
-        const modalImg = document.getElementById('gift-image');
-        const modalTitle = document.getElementById('gift-title');
+    function updateBadgeDisplay(count) {
+        const badge = document.getElementById('gift-count');
+        const btn = document.getElementById('gift-btn');
         
-        if (modalImg) modalImg.src = gift.img;
-        if (modalTitle) modalTitle.innerText = gift.title;
-        document.getElementById('gift-modal').classList.remove('hidden');
+        if (badge) badge.innerText = count;
         
-        currentGiftIndex--;
-        updateBadge();
+        // אם המונה מגיע ל-0 או שהגדרת ב-totalAllowedClicks שאין יותר, ננעל
+        if (count <= 0 && btn) {
+            btn.classList.add('opacity-30', 'grayscale', 'cursor-not-allowed');
+        }
     }
-}
 
-function closeGift() {
-    document.getElementById('gift-modal').classList.add('hidden');
-}
+    function closeGift() {
+        document.getElementById('gift-modal').classList.add('hidden');
+    }
 
-// עדכון ראשוני בעת טעינת הדף
-updateBadge();
-
+    // הפעלה ראשונית
+    window.onload = function() {
+        updateBadgeDisplay(currentGiftIndex);
+    };
 
 
 
